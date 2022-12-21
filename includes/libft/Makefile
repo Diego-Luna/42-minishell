@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+         #
+#    By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/17 14:59:37 by dluna-lo          #+#    #+#              #
-#    Updated: 2022/11/15 15:10:37 by dluna-lo         ###   ########.fr        #
+#    Updated: 2022/12/21 11:41:50 by mtrembla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,11 +42,11 @@ CFLAGS			= -Wall -Werror -Wextra
 		${CC} ${CFLAGS} -I includes -c $< -o ${<:.c=.o}
 
 $(NAME): ${OBJS}
-		ar rcs ${NAME} ${OBJS}
+	@ar rcs ${NAME} ${OBJS}
 
 # Compiles sources into objects
 $(OBJS): $(OBJDIR)%.o : $(SRCDIR)%.c $(INC) | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 # Creates directory for binaries
 $(OBJDIR):
@@ -55,9 +55,9 @@ $(OBJDIR):
 all:	${NAME}
 
 clean:
-		${RM} ${OBJS}
+	@${RM} ${OBJS}
 
 fclean:	clean
-		${RM} ${NAME}
+	@${RM} ${NAME}
 
 re:		fclean all
