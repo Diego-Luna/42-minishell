@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+         #
+#    By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 11:24:49 by mtrembla          #+#    #+#              #
-#    Updated: 2022/12/21 11:33:24 by mtrembla         ###   ########.fr        #
+#    Updated: 2022/12/22 14:18:12 by dluna-lo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME = minishell
 SRC =	main.c \
 		signals.c \
 		parsing.c \
+		ft_run_comands.c \
 
 OBJ = $(SRC:.c=.o)
 
@@ -32,8 +33,10 @@ $(ODIR)/%.o:$(SDIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "\033[92m.\033[0m\c"
 
+# @$(MAKE) -C ./includes/readline ./configure
+# @$(MAKE) -C ./includes/readline make
 $(NAME): $(ODIR) $(OFIX)
-	@$(MAKE) all -C ./includes/libft
+	@$(MAKE) -C ./includes/libft
 	@$(CC) $(CFLAGS) $(OFIX) -o $(NAME) $(LIBFT) $(READLINE)
 
 $(ODIR):
@@ -46,8 +49,15 @@ clean:
 	@echo "🧹"
 
 fclean: clean
+	@$(MAKE) all -C ./includes/libft fclean
 	@$(RM) $(NAME)
 
 re: fclean all
+
+do_libft:
+	@$(MAKE) -C $(D_LIBFT)
+
+do_readline:
+	@$(MAKE) -C $(D_LIBFT)
 
 .PHONY: all clean fclean re
