@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:01 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/22 14:35:02 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2022/12/22 16:15:03 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 char	**g_env;
 
+// returns the size of an array
 int	ft_array_table(char **array)
 {
 	int	i;
@@ -24,6 +25,7 @@ int	ft_array_table(char **array)
 	return (i + 1);
 }
 
+// we make free, and we put at the end a null. 
 void	*ft_free(void *ptr)
 {
 	if (ptr)
@@ -31,6 +33,7 @@ void	*ft_free(void *ptr)
 	return (NULL);
 }
 
+// We free a table
 void	**ft_free_table(char **array)
 {
 	int	i;
