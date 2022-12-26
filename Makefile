@@ -6,7 +6,7 @@
 #    By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 11:24:49 by mtrembla          #+#    #+#              #
-#    Updated: 2022/12/22 16:53:22 by dluna-lo         ###   ########.fr        #
+#    Updated: 2022/12/26 15:16:34 by dluna-lo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRC =	main.c \
 		signals.c \
 		parsing.c \
 		ft_run_comands.c \
+		ft_special_commands.c \
 
 OBJ = $(SRC:.c=.o)
 

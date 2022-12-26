@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/22 20:02:36 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2022/12/26 18:11:57 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,9 @@ void	**ft_free_table(char **array);
 // Error
 void ft_error_message(char *str, char **table, t_state *state, int error);
 void	ft_run_when_is_no_error(t_state *state, void (*f)(t_state *state));
+
+// special_commands
+int ft_is_special_commands(char	*comand);
+int ft_execve(t_state *state);
 
 #endif

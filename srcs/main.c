@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:01 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/22 20:03:17 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2022/12/26 17:56:41 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ void	ft_init_state(t_state	*state, char **envp)
 int	main(int argc, char **argv, char **envp)
 {
 	t_state	state;
-	int i = 0;
 
 	(void)argc;
 	(void)argv;
@@ -115,7 +114,7 @@ int	main(int argc, char **argv, char **envp)
 	g_env = NULL;
 	ft_init_state(&state, envp);
 	ft_signals();
-	while (i < 3)
+	while (state.stop != STOP)
 	{
     	line = readline("minishell$> ");
 		if (!line)
@@ -127,7 +126,6 @@ int	main(int argc, char **argv, char **envp)
 			ft_minishell(&state, line);
 		}
 		free(line);
-		i++;
 	}
     return (0);
 }

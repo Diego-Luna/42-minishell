@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/22 20:02:54 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2022/12/26 18:13:46 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,16 +164,21 @@ void ft_free_all(t_state *state)
 void ft_process_comand(t_state	*state)
 {
 	int error;
-	state->pid = fork();
-	if (state->pid == 0)
+	state->index = 0;
+	if (state->stop != 1)
 	{
-		error = execve(state->cmds[0].cmd, state->cmds[0].cmd_args, g_env);
-		ft_error_message(M_ERROR_EXECVE, state->cmds[0].cmd_args, state, N_ERROR_EXECVE);
-		exit(error);
-	}
-	else
-	{
-		waitpid(state->pid, &state->fork_error, 0);
+		state->pid = fork();
+		if (state->pid == 0)
+		{
+			// error = execve(state->cmds[0].cmd, state->cmds[0].cmd_args, g_env);
+			error = ft_execve(state);
+			ft_error_message(M_ERROR_EXECVE, state->cmds[0].cmd_args, state, N_ERROR_EXECVE);
+			exit(error);
+		}
+		else
+		{
+			waitpid(state->pid, &state->fork_error, 0);
+		}
 	}
 }
 
@@ -208,13 +213,31 @@ void	ft_run_childs(t_state *state)
 				state->pipe[2 * state->index + 1]);
 			}
 			ft_pipe_close(state);
-			error = execve(state->cmds[state->index].cmd, state->cmds[state->index].cmd_args, g_env);
-			// printf("Error comando : cmd{%s} cmd_args{%s} -> \n", state->cmds[state->index].cmd, state->cmds[state->index].cmd_args[0]);
+			// error = execve(state->cmds[state->index].cmd, state->cmds[state->index].cmd_args, g_env);
+			error = ft_execve(state);
 			ft_error_message(M_ERROR_EXECVE_PIPES, state->cmds[state->index].cmd_args, state, N_ERROR_EXECVE_PIPES);
 			exit(error);
 		}
 		state->index++;
 	}
+}
+
+void ft_wait_childs(t_state	*state)
+{
+	waitpid(-1, &state->fork_error, 0);
+	state->i_run_pipes++;
+	if (state->i_run_pipes > 1)
+	{
+		int i = 1;
+		// while (i < state->cmd_nmbs)
+		while (i < state->index)
+		{
+			waitpid(-1, &state->fork_error, 0);
+			i++;
+		}
+		state->i_run_pipes = 2;
+	}
+	state->index = 0;
 }
 
 // Functions to run more than one, command with pipes.
@@ -228,21 +251,8 @@ void ft_process_comands(t_state	*state)
 	}
 	ft_create_pipes(state);
 	state->index = 0;
-
 	ft_run_when_is_no_error(state, ft_run_childs);
-	waitpid(-1, &state->fork_error, 0);
-	state->i_run_pipes++;
-	if (state->i_run_pipes > 1)
-	{
-		int i = 1;
-		while (i < state->cmd_nmbs)
-		{
-			waitpid(-1, &state->fork_error, 0);
-			i++;
-		}
-		state->i_run_pipes = 2;
-	}
-	state->index = 0;
+	ft_run_when_is_no_error(state, ft_wait_childs);
 	ft_pipe_close(state);
 	ft_free(state->pipe);
 }
@@ -252,6 +262,7 @@ void ft_run_comands(t_state	*state)
 {
 	state->save_stdout = dup(STDOUT_FILENO);
 	state->save_stdin = dup(STDIN_FILENO);
+	state->index = 0;
 	if (state->cmd_nmbs ==  1)
 	{
 		ft_process_comand(state);
@@ -309,9 +320,13 @@ void ft_create_command_array(t_state *state)
 		state->cmds[i].id = i;
 		state->cmds[i].cmd_args = ft_split(state->t_comands[i], ' ');
 		state->cmds[i].cmd = ft_get_comand_p(state->cmd_paths, state->cmds[i].cmd_args[0]);
-		if (!state->cmds[i].cmd)
+		if (!state->cmds[i].cmd && ft_is_special_commands(state->cmds[i].cmd_args[0]) == 0)
 		{
 			ft_error_message(M_ERROR_PATH, state->t_comands, state, N_ERROR_PATH);
+		}
+		if (ft_is_special_commands(state->cmds[i].cmd_args[0]) == 7)
+		{
+			state->stop = i + 1;
 		}
 		i++;
 	}
