@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/26 18:12:04 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2022/12/26 18:35:43 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,19 @@ int ft_is_special_commands(char	*comand)
 int ft_execve(t_state *state)
 {
 	int error;
-	// int comand;
-	// char *str_tem = NULL;
+	int comand;
+	char *str_tem = NULL;
 
-	// error = 0;
-	// comand = ft_is_special_commands(state->cmds[state->index].cmd_args[state->index]);
-	// if ( comand == 0)
-	// {
-	error = execve(state->cmds[state->index].cmd, state->cmds[state->index].cmd_args, g_env);
-	// }
+	error = 0;
+	comand = ft_is_special_commands(state->cmds[state->index].cmd_args[0]);
+	if (comand == 0)
+	{
+		error = execve(state->cmds[state->index].cmd, state->cmds[state->index].cmd_args, g_env);
+	}
+	if (comand == 7)
+	{
+		exit(0);
+	}
 	// if (comand == 3)
 	// {
 	// 	str_tem = ft_find_env(g_env, state, "PWD");
