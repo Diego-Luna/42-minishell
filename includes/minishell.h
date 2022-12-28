@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/28 16:52:22 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2022/12/28 18:26:01 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ typedef struct va_states
 	char	*env_path;
 	char	*line;
 	char	**cmd_paths;
-	// pid_t	pid;
-	pid_t	pid;
+	pid_t	*pid;
 	int 	*pipe;
 	int		cmd_nmbs;
 	int		pipe_nmbs;
@@ -70,6 +69,7 @@ typedef struct va_states
 	int		error;
 	int		fork_error;
 	int		stop;
+	int		pipe_stop;
 	int		debug;
 	int		save_stdout;
 	int		save_stdin;
@@ -103,6 +103,7 @@ void ft_error_message(char *str, char **table, t_state *state, int error);
 void	ft_run_when_is_no_error(t_state *state, void (*f)(t_state *state));
 
 // special_commands
+int	ft_wait_childs_exit(t_state	*state);
 int ft_is_special_commands(char	*comand);
 int ft_execve(t_state *state);
 

@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/26 19:03:32 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2022/12/28 18:43:58 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,6 @@ char	*ft_get_comand_p(char **paths, char *cmd)
 	return (NULL);
 }
 
-// We close all our pipes
-void	ft_pipe_close(t_state *state)
-{
-	int	i;
-
-	i = 0;
-	while (i < state->pipe_nmbs)
-	{
-		close(state->pipe[i]);
-		i++;
-	}
-}
-
 // Returns the number of commands sent.
 int ft_number_comands(char *line)
 {
@@ -85,24 +72,6 @@ int ft_number_comands(char *line)
 	size = ft_size_table(table, 0);
 	ft_free_table(table);
 	return (size);
-}
-
-// We create the number of pipes, necessary for communication between processes
-void	ft_create_pipes(t_state *state)
-{
-	int	i;
-
-	i = 0;
-	while (i < state->cmd_nmbs - 1)
-	{
-		if (pipe(state->pipe + 2 * i) < 0)
-		{
-			printf("Error in pipe");
-			state->error = 1;
-			return ;
-		}
-		i++;
-	}
 }
 
 // Function for debug, which shows us all the created commands and their information.
@@ -164,20 +133,21 @@ void ft_free_all(t_state *state)
 void ft_process_comand(t_state	*state)
 {
 	int error;
+	pid_t	pid;
+
 	state->index = 0;
-	if (state->stop != 1)
+	if (state->stop != STOP)
 	{
-		state->pid = fork();
-		if (state->pid == 0)
+		pid = fork();
+		if (pid == 0)
 		{
-			// error = execve(state->cmds[0].cmd, state->cmds[0].cmd_args, g_env);
 			error = ft_execve(state);
 			ft_error_message(M_ERROR_EXECVE, state->cmds[0].cmd_args, state, N_ERROR_EXECVE);
 			exit(error);
 		}
 		else
 		{
-			waitpid(state->pid, &state->fork_error, 0);
+			waitpid(pid, &state->fork_error, 0);
 		}
 	}
 }
@@ -194,80 +164,102 @@ void	ft_on_dup2(int zero, int one)
 void	ft_run_childs(t_state *state)
 {
 	int error;
+
+	error = 0;
+	state->index = 0;
 	while (state->index < state->cmd_nmbs && state->error == 0)
 	{
-		state->pid = fork();
-		if (state->pid == 0)
+		int		fd[2];
+
+		pipe(fd);
+		if (ft_wait_childs_exit(state) == 1)
 		{
-			if (state->index == 0)
+			state->pid[state->index] = fork();
+			if (state->pid[state->index] == 0)
 			{
-				ft_on_dup2(STDIN_FILENO, state->pipe[1]);
+				if (state->index < state->cmd_nmbs - 1)
+				{
+					close(fd[0]);
+					dup2(fd[1], STDOUT_FILENO);
+				}
+				error = ft_execve(state);
+				ft_error_message(M_ERROR_EXECVE_PIPES, state->cmds[state->index].cmd_args, state, N_ERROR_EXECVE_PIPES);
+				exit(error);
 			}
-			else if (state->index == state->cmd_nmbs - 1)
+			else if (state->index < state->cmd_nmbs)
 			{
-				ft_on_dup2(state->pipe[2 * state->index - 2], STDOUT_FILENO);
+				close(fd[1]);
+				dup2(fd[0], STDIN_FILENO);
 			}
-			else
-			{
-				ft_on_dup2(state->pipe[2 * state->index - 2], \
-				state->pipe[2 * state->index + 1]);
-			}
-			ft_pipe_close(state);
-			// error = execve(state->cmds[state->index].cmd, state->cmds[state->index].cmd_args, g_env);
-			error = ft_execve(state);
-			ft_error_message(M_ERROR_EXECVE_PIPES, state->cmds[state->index].cmd_args, state, N_ERROR_EXECVE_PIPES);
-			exit(error);
 		}
 		state->index++;
 	}
 }
 
-void	ft_wait_childs_exit(t_state	*state)
+// It is in charge of checking when an exit is used, with the pipes, if there is one we save the number of the command and return 0, if not 1
+int	ft_wait_childs_exit(t_state	*state)
 {
-	state->stop--;
-	if (state->stop == 1)
+	if (state->stop > STOP)
 	{
-		ft_pipe_close(state);
-		ft_free(state->pipe);
-		ft_free_all(state);
-		exit(0);
+		state->stop--;
 	}
+	if (state->stop == STOP)
+	{
+		state->pipe_stop = state->index + 1;
+		state->stop = NO_STOP;
+	}
+	if (state->stop == NO_ERROR)
+	{
+		return (1);
+	}
+	return (0);
 }
 
 void ft_wait_childs(t_state	*state)
 {
-	waitpid(-1, &state->fork_error, 0);
-	ft_wait_childs_exit(state);
-	state->i_run_pipes++;
-	if (state->i_run_pipes > 1)
-	{
-		int i = 1;
-		while (i < state->cmd_nmbs)
-		{
-			waitpid(-1, &state->fork_error, 0);
-			ft_wait_childs_exit(state);
-			i++;
-		}
-		state->i_run_pipes = 2;
-	}
 	state->index = 0;
+	if (state->pipe_stop == -1)
+	{
+		while (state->index < state->cmd_nmbs)
+		{
+			waitpid(state->pid[state->index], &state->fork_error, 0);
+			state->index++;
+		}
+	}else{
+		while (state->pipe_stop != 0)
+		{
+			waitpid(state->pid[state->index], &state->fork_error, 0);
+			state->index++;
+			state->pipe_stop--;
+		}
+		exit(100);
+	}
 }
 
 // Functions to run more than one, command with pipes.
 void ft_process_comands(t_state	*state)
 {
-	state->pipe_nmbs = 2 * (state->cmd_nmbs - 1);
-	state->pipe = (int *)malloc(sizeof(int) * state->pipe_nmbs);
-	if (!state->pipe)
+	pid_t	pid;
+
+	state->pid = ft_calloc(sizeof(pid_t), state->cmd_nmbs);
+	if (!state->pid)
 	{
 		ft_error_message(M_ERROR_CREATE_PIPE, NULL, state, N_ERROR_CREATE_PIPE);
 	}
-	ft_create_pipes(state);
 	state->index = 0;
-	ft_run_when_is_no_error(state, ft_run_childs);
-	ft_run_when_is_no_error(state, ft_wait_childs);
-	ft_pipe_close(state);
-	ft_free(state->pipe);
+	pid = fork();
+	if (pid == 0)
+	{
+		ft_run_when_is_no_error(state, ft_run_childs);
+		ft_run_when_is_no_error(state, ft_wait_childs);
+		exit(0);
+	}
+	waitpid(pid, &state->error, 0);
+	if (state->error == 25600)
+	{
+		state->stop = STOP;
+	}
+	ft_free(state->pid);
 }
 
 // The command handler

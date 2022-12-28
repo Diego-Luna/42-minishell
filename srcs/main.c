@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:01 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/26 17:56:41 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2022/12/28 18:32:55 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	ft_init_state(t_state	*state, char **envp)
 	state->cmd_paths = NULL;
 	state->pipe = NULL;
 	state->cmds = NULL;
+	state->pid = NULL;
 	state->cmd_nmbs = 0;
 	state->pipe_nmbs = 0;
 	state->index = 0;
@@ -101,6 +102,7 @@ void	ft_init_state(t_state	*state, char **envp)
 	state->i_run_pipes = 0;
 	state->error = NO_ERROR;
 	state->debug = 1;
+	state->pipe_stop = -1;
 }
 
 int	main(int argc, char **argv, char **envp)
