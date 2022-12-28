@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/26 18:11:57 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2022/12/28 16:52:22 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct va_states
 	char	*env_path;
 	char	*line;
 	char	**cmd_paths;
+	// pid_t	pid;
 	pid_t	pid;
 	int 	*pipe;
 	int		cmd_nmbs;

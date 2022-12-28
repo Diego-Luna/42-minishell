@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/26 18:37:12 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2022/12/26 19:03:32 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,8 @@ void	ft_wait_childs_exit(t_state	*state)
 	state->stop--;
 	if (state->stop == 1)
 	{
+		ft_pipe_close(state);
+		ft_free(state->pipe);
 		ft_free_all(state);
 		exit(0);
 	}
@@ -271,8 +273,8 @@ void ft_process_comands(t_state	*state)
 // The command handler
 void ft_run_comands(t_state	*state)
 {
-	// state->save_stdout = dup(STDOUT_FILENO);
-	// state->save_stdin = dup(STDIN_FILENO);
+	state->save_stdout = dup(STDOUT_FILENO);
+	state->save_stdin = dup(STDIN_FILENO);
 	state->index = 0;
 	if (state->cmd_nmbs ==  1)
 	{
@@ -282,8 +284,8 @@ void ft_run_comands(t_state	*state)
 	{
 		ft_process_comands(state);
 	}
-	// dup2(state->save_stdout, STDOUT_FILENO);
-	// dup2(state->save_stdin, STDIN_FILENO);
+	dup2(state->save_stdout, STDOUT_FILENO);
+	dup2(state->save_stdin, STDIN_FILENO);
 }
 
 // It shows us the error, at the same time that it helps us to debug.
