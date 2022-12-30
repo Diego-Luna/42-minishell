@@ -6,34 +6,30 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/29 18:36:20 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2022/12/30 18:34:00 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 // The global variable that stores environment variables
-char	**g_env;
+extern char	**g_env;
 
 // This function is in charge of finding the PATH variable, and returning its value, if there is an error it puts it in the global variable
 char	*ft_find_env(char **envp, t_state *state, char *path)
 {
 	int	i;
 	int	size;
-	char **table;
 
 	i = 0;
-	size = ft_size_table(envp, 0);
+	size = ft_size_table(envp);
 	while (i < size && ft_strncmp(path, envp[i], ft_strlen(path)))
 	{
 		i++;
 	}
 	if (i == size)
 	{
-		table = ft_calloc(sizeof(char *), 1);
-		table[0] = path;
-		ft_error_message(M_ERROR_FIND_ENV, table, state, N_ERROR_FIND_ENV);
-		ft_free(table);
+		// ft_error_message(M_ERROR_FIND_ENV, NULL, state, N_ERROR_FIND_ENV);
 		return (NULL);
 	}
 	return (envp[i] + 5);
@@ -69,7 +65,7 @@ int ft_number_comands(char *line)
 		return (0);
 	}
 	table = ft_split(line, '|');
-	size = ft_size_table(table, 0);
+	size = ft_size_table(table);
 	ft_free_table(table);
 	return (size);
 }
@@ -101,8 +97,12 @@ void ft_free_comand(t_state *state)
 	int i = 0 ;
 	int ii = 0 ;
 
-	ft_free_table(state->t_comands);
+	state->t_comands = (char **)ft_free_table(state->t_comands);
 	i = 0;
+	if (!state->cmds)
+	{
+		return;
+	}
 	while (i < state->cmd_nmbs)
 	{
 		ii = 0;
@@ -115,7 +115,7 @@ void ft_free_comand(t_state *state)
 		ft_free(state->cmds[i].cmd);
 		i++;
 	}
-	ft_free(state->cmds);
+	state->cmds = ft_free(state->cmds);
 }
 
 // free to everything
@@ -124,41 +124,40 @@ void ft_free_all(t_state *state)
 	int i = 0 ;
 	int ii = 0 ;
 
-	ft_free_table(state->cmd_paths);
+	state->cmd_paths = (char **)ft_free_table(state->cmd_paths);
 	ft_free_comand(state);
 	state->fork_error = 0;
+}
+
+// falta
+void	ft_process_comand_fork(t_state *state)
+{
+	int error;
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		error = ft_execve(state);
+		ft_error_message(M_ERROR_EXECVE, state->cmds[0].cmd_args, state, N_ERROR_EXECVE);
+		exit(error);
+	}
+	else
+	{
+		waitpid(pid, &state->fork_error, 0);
+	}
 }
 
 // This function creates a child process where the command sent will be executed.
 void ft_process_comand(t_state	*state)
 {
-	int error;
-	pid_t	pid;
-
 	state->index = 0;
 	if (state->stop != STOP)
 	{
-		pid = fork();
-		if (pid == 0)
-		{
-			error = ft_execve(state);
-			ft_error_message(M_ERROR_EXECVE, state->cmds[0].cmd_args, state, N_ERROR_EXECVE);
-			exit(error);
-		}
-		else
-		{
-			waitpid(pid, &state->fork_error, 0);
-		}
+		ft_run_unset_export(state);
+		ft_run_when_is_no_error(state, ft_process_comand_fork);
 	}
 }
-
-// we change from the output, input
-void	ft_on_dup2(int zero, int one)
-{
-	dup2(zero, STDIN_FILENO);
-	dup2(one, STDOUT_FILENO);
-}
-
 
 // The equation of the children commands with the fork
 void	ft_run_childs(t_state *state)
@@ -174,22 +173,26 @@ void	ft_run_childs(t_state *state)
 		pipe(fd);
 		if (ft_wait_childs_exit(state) == 1)
 		{
-			state->pid[state->index] = fork();
-			if (state->pid[state->index] == 0)
+			ft_run_unset_export(state);
+			if (state->error == NO_ERROR)
 			{
-				if (state->index < state->cmd_nmbs - 1)
+				state->pid[state->index] = fork();
+				if (state->pid[state->index] == 0)
 				{
-					close(fd[0]);
-					dup2(fd[1], STDOUT_FILENO);
+					if (state->index < state->cmd_nmbs - 1)
+					{
+						close(fd[0]);
+						dup2(fd[1], STDOUT_FILENO);
+					}
+					error = ft_execve(state);
+					ft_error_message(M_ERROR_EXECVE_PIPES, state->cmds[state->index].cmd_args, state, N_ERROR_EXECVE_PIPES);
+					exit(error);
 				}
-				error = ft_execve(state);
-				ft_error_message(M_ERROR_EXECVE_PIPES, state->cmds[state->index].cmd_args, state, N_ERROR_EXECVE_PIPES);
-				exit(error);
-			}
-			else if (state->index < state->cmd_nmbs)
-			{
-				close(fd[1]);
-				dup2(fd[0], STDIN_FILENO);
+				else if (state->index < state->cmd_nmbs)
+				{
+					close(fd[1]);
+					dup2(fd[0], STDIN_FILENO);
+				}
 			}
 		}
 		state->index++;
@@ -247,14 +250,8 @@ void ft_process_comands(t_state	*state)
 		ft_error_message(M_ERROR_CREATE_PIPE, NULL, state, N_ERROR_CREATE_PIPE);
 	}
 	state->index = 0;
-	pid = fork();
-	if (pid == 0)
-	{
-		ft_run_when_is_no_error(state, ft_run_childs);
-		ft_run_when_is_no_error(state, ft_wait_childs);
-		exit(0);
-	}
-	waitpid(pid, &state->error, 0);
+	ft_run_when_is_no_error(state, ft_run_childs);
+	ft_run_when_is_no_error(state, ft_wait_childs);
 	if (state->error == 25600)
 	{
 		state->stop = STOP;
@@ -295,10 +292,7 @@ void ft_error_message(char *str, char **table, t_state *state, int error)
 		printf(" %s", table[i]);
 		i++;
 	}
-	if (i > 0)
-	{
-		printf("\n");
-	}
+	printf("\n");
 	state->error = error;
 }
 
@@ -317,6 +311,7 @@ void	ft_run_when_is_no_error(t_state *state, void (*f)(t_state *state))
 void ft_create_command_array(t_state *state)
 {
 	int i = 0;
+	state->env_path = ft_find_env(g_env, state, "PATH");
 	state->cmd_paths = ft_split(state->env_path, ':');
 	state->cmds = ft_calloc(sizeof(t_cmd), state->cmd_nmbs);
 	state->t_comands = ft_split(state->line, '|');
@@ -324,11 +319,6 @@ void ft_create_command_array(t_state *state)
 	{
 		state->cmds[i].id = i;
 		state->cmds[i].cmd_args = ft_split(state->t_comands[i], ' ');
-		state->cmds[i].cmd = ft_get_comand_p(state->cmd_paths, state->cmds[i].cmd_args[0]);
-		if (!state->cmds[i].cmd && ft_is_special_commands(state->cmds[i].cmd_args[0]) == 0)
-		{
-			ft_error_message(M_ERROR_PATH, state->t_comands, state, N_ERROR_PATH);
-		}
 		if (ft_is_special_commands(state->cmds[i].cmd_args[0]) == 7)
 		{
 			state->stop = i + 1;
@@ -344,7 +334,6 @@ void	ft_minishell(t_state	*state, char *line)
 	state->line = line;
 	if (state->cmd_nmbs > 0 )
 	{
-		state->env_path = ft_find_env(g_env, state, "PATH");
 		ft_run_when_is_no_error(state, ft_create_command_array);
 		ft_run_when_is_no_error(state, ft_run_comands);
 		ft_free_all(state);

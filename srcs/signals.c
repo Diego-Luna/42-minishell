@@ -6,14 +6,14 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:28:21 by mtrembla          #+#    #+#             */
-/*   Updated: 2022/12/22 20:01:36 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2022/12/30 13:31:07 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 // The global variable that stores environment variables
-char	**g_env;
+extern char	**g_env;
 
 /*
 ft_disable_echo mute the usual outputs from signals by

@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/28 18:26:01 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2022/12/30 18:30:19 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@
 # define N_ERROR_CREATE_PIPE 4
 # define M_ERROR_EXECVE_PIPES "Error creating pipe"
 # define N_ERROR_EXECVE_PIPES 5
+# define M_ERROR_UNSET_MISSING "Error in unset missing argument"
+# define N_ERROR_UNSET_MISSING 6
+# define M_ERROR_UNSET_NOT_EXIST "Error in insert missing variable does not exist"
+# define N_ERROR_UNSET_NOT_EXIST 7
 // Error control
 
 
@@ -52,7 +56,6 @@ typedef struct va_t_cmd
 	int 	id;
 	char	**cmd_args;
 	char	*cmd;
-	pid_t	pid;
 }			t_cmd;
 
 typedef struct va_states
@@ -62,9 +65,7 @@ typedef struct va_states
 	char	*line;
 	char	**cmd_paths;
 	pid_t	*pid;
-	int 	*pipe;
 	int		cmd_nmbs;
-	int		pipe_nmbs;
 	int		index;
 	int		error;
 	int		fork_error;
@@ -73,7 +74,6 @@ typedef struct va_states
 	int		debug;
 	int		save_stdout;
 	int		save_stdin;
-	int		i_run_pipes;
 	t_cmd *cmds;
 }			t_state;
 
@@ -90,9 +90,11 @@ void	ft_minishell(t_state	*state, char *line);
 
 // ENV
 char	**ft_crate_env(char **old, int size, int f);
+void	ft_run_unset_export(t_state *state);
+char	*ft_get_comand_p(char **paths, char *cmd);
 
 // tables
-int	ft_size_table(char **array, int add);
+int	ft_size_table(char **array);
 
 // free
 void	*ft_free(void *ptr);
