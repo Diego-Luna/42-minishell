@@ -1,39 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/04 12:50:01 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/21 13:37:49 by mtrembla         ###   ########.fr       */
+/*   Created: 2022/12/21 13:58:06 by mtrembla          #+#    #+#             */
+/*   Updated: 2022/12/21 15:47:22 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+int	ft_splitable(char c)
 {
-	t_state	state;
-	t_tokens	tokens;
+	if (c == ' ' || c == '<' || c == '>' || c == '|')
+		return(1);
+	return(0);
+}
 
-	(void)argc;
-	(void)argv;
-	(void)envp;
-	(void)state;
-	
-	char *line;
+int	ft_number_of_tokens(char *s)
+{
+	int i = 0;
+	unsigned int	nb_of_tokens = 1;
 
-	ft_signals();
-	while (1)
+	while(s[i])
 	{
-    	line = readline("minishell$> ");
-		if (!line)
-			break;
-		if (line && *line)
-			add_history(line);
-		ft_parse(line, &tokens);
-		free(line);	
+		if (ft_splitable(s[i]))
+		{
+			nb_of_tokens++;
+			if(s[i] == s[i + 1])
+				i++;
+		}
+		i++;
 	}
-    return (0);
+	printf("%c\n", s[i-1]);
+	if(ft_splitable(s[i - 1]))
+		nb_of_tokens++;
+	return(nb_of_tokens);
 }

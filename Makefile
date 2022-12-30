@@ -6,7 +6,7 @@
 #    By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 11:24:49 by mtrembla          #+#    #+#              #
-#    Updated: 2022/12/21 11:33:24 by mtrembla         ###   ########.fr        #
+#    Updated: 2022/12/21 14:18:20 by mtrembla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,8 @@ NAME = minishell
 SRC =	main.c \
 		signals.c \
 		parsing.c \
+		dlist.c \
+		split.c \
 
 OBJ = $(SRC:.c=.o)
 

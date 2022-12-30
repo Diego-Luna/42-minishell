@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/21 11:26:46 by mtrembla         ###   ########.fr       */
+/*   Updated: 2022/12/21 14:53:16 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,37 @@ typedef struct va_states
 	int		i;
 }			t_state;
 
+typedef struct s_node
+{
+	char			*content;
+	struct s_node	*next;
+	struct s_node	*prev;
+}	t_node;
+
+typedef struct s_tokens
+{
+	t_node	*first;
+	t_node	*last;
+}	t_tokens;
+
 //signals
 void	ft_signals();
 void    ft_disable_echo(void);
 void	ft_sigint_handler();
+
+//dlist
+void	dlist_add_front(t_tokens *l, char *elem);
+void	dlist_remove_node(t_node *node);
+void	dlist_free(t_tokens *l);
+void	view(t_tokens l);
+
+//parsing
+void	ft_parse(char *line, t_tokens *tokens);
+void	ft_create_tokens(char *args, t_tokens *t);
+
+//split
+int	ft_splitable(char c);
+int	ft_number_of_tokens(char *str);
+
 
 #endif

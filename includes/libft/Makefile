@@ -6,7 +6,7 @@
 #    By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/17 14:59:37 by dluna-lo          #+#    #+#              #
-#    Updated: 2022/12/21 11:41:50 by mtrembla         ###   ########.fr        #
+#    Updated: 2022/12/21 13:44:03 by mtrembla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,6 +53,7 @@ $(OBJDIR):
 	mkdir -p $@
 
 all:	${NAME}
+	@echo "\033[92m.\033[0m\c"
 
 clean:
 	@${RM} ${OBJS}
