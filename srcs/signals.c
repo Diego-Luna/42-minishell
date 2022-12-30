@@ -3,17 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:28:21 by mtrembla          #+#    #+#             */
-/*   Updated: 2022/12/21 11:29:57 by mtrembla         ###   ########.fr       */
+/*   Updated: 2022/12/22 20:01:36 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+// The global variable that stores environment variables
+char	**g_env;
+
 /*
-ft_disable_echo mute the usual outputs from signals by 
+ft_disable_echo mute the usual outputs from signals by
 taking terminal attributes and changing them.
 signals are then redirected to their new fonction.
 */

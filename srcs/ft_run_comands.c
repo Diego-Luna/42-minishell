@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/22 14:33:15 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2022/12/29 18:36:20 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,24 @@
 char	**g_env;
 
 // This function is in charge of finding the PATH variable, and returning its value, if there is an error it puts it in the global variable
-char	*ft_find_path(char **envp, t_state *state)
+char	*ft_find_env(char **envp, t_state *state, char *path)
 {
 	int	i;
+	int	size;
+	char **table;
 
 	i = 0;
-	while (ft_strncmp("PATH", envp[i], 4))
+	size = ft_size_table(envp, 0);
+	while (i < size && ft_strncmp(path, envp[i], ft_strlen(path)))
 	{
 		i++;
 	}
-	if (!envp[i])
+	if (i == size)
 	{
-		printf("Error en PATH");
-		state->error = 1;
+		table = ft_calloc(sizeof(char *), 1);
+		table[0] = path;
+		ft_error_message(M_ERROR_FIND_ENV, table, state, N_ERROR_FIND_ENV);
+		ft_free(table);
 		return (NULL);
 	}
 	return (envp[i] + 5);
@@ -53,23 +58,10 @@ char	*ft_get_comand_p(char **paths, char *cmd)
 	return (NULL);
 }
 
-void	ft_pipe_close(t_state *state)
-{
-	int	i;
-
-	i = 0;
-	while (i < state->pipe_nmbs)
-	{
-		close(state->pipe[i]);
-		i++;
-	}
-}
-
 // Returns the number of commands sent.
 int ft_number_comands(char *line)
 {
-	int ii = 0;
-	int i = 0;
+	int size;
 	char **table;
 
 	if (ft_strlen(line) < 1)
@@ -77,34 +69,9 @@ int ft_number_comands(char *line)
 		return (0);
 	}
 	table = ft_split(line, '|');
-	while (table[i])
-	{
-		i++;
-	}
-	while (table[ii])
-	{
-		free(table[ii]);
-		ii++;
-	}
-	free(table);
-	return (i);
-}
-
-void	ft_create_pipes(t_state *state)
-{
-	int	i;
-
-	i = 0;
-	while (i < state->cmd_nmbs - 1)
-	{
-		if (pipe(state->pipe + 2 * i) < 0)
-		{
-			printf("Error in pipe");
-			state->error = 1;
-			return ;
-		}
-		i++;
-	}
+	size = ft_size_table(table, 0);
+	ft_free_table(table);
+	return (size);
 }
 
 // Function for debug, which shows us all the created commands and their information.
@@ -134,26 +101,21 @@ void ft_free_comand(t_state *state)
 	int i = 0 ;
 	int ii = 0 ;
 
-	while (state->t_comands[i])
-	{
-		free(state->t_comands[i]);
-		i++;
-	}
-	free(state->t_comands);
+	ft_free_table(state->t_comands);
 	i = 0;
 	while (i < state->cmd_nmbs)
 	{
 		ii = 0;
 		while (state->cmds[i].cmd_args[ii])
 		{
-			free(state->cmds[i].cmd_args[ii]);
+			ft_free(state->cmds[i].cmd_args[ii]);
 			ii++;
 		}
-		free(state->cmds[i].cmd_args);
-		free(state->cmds[i].cmd);
+		ft_free(state->cmds[i].cmd_args);
+		ft_free(state->cmds[i].cmd);
 		i++;
 	}
-	free(state->cmds);
+	ft_free(state->cmds);
 }
 
 // free to everything
@@ -162,27 +124,31 @@ void ft_free_all(t_state *state)
 	int i = 0 ;
 	int ii = 0 ;
 
-	while (state->cmd_paths[i])
-	{
-		free(state->cmd_paths[i]);
-		i++;
-	}
-	free(state->cmd_paths);
+	ft_free_table(state->cmd_paths);
 	ft_free_comand(state);
+	state->fork_error = 0;
 }
 
 // This function creates a child process where the command sent will be executed.
 void ft_process_comand(t_state	*state)
 {
-	state->pid = fork();
-	if (state->pid == 0)
+	int error;
+	pid_t	pid;
+
+	state->index = 0;
+	if (state->stop != STOP)
 	{
-		execve(state->cmds[0].cmd, state->cmds[0].cmd_args, g_env);
-		printf("final Error comando : %s\n", state->cmds[0].cmd_args[0]);
-	}
-	else
-	{
-		waitpid(state->pid, NULL, 0);
+		pid = fork();
+		if (pid == 0)
+		{
+			error = ft_execve(state);
+			ft_error_message(M_ERROR_EXECVE, state->cmds[0].cmd_args, state, N_ERROR_EXECVE);
+			exit(error);
+		}
+		else
+		{
+			waitpid(pid, &state->fork_error, 0);
+		}
 	}
 }
 
@@ -193,58 +159,107 @@ void	ft_on_dup2(int zero, int one)
 	dup2(one, STDOUT_FILENO);
 }
 
-// Functions to run more than one, command with pipes.
-void ft_process_comands(t_state	*state)
+
+// The equation of the children commands with the fork
+void	ft_run_childs(t_state *state)
 {
-	state->pipe_nmbs = 2 * (state->cmd_nmbs - 1);
-	state->pipe = (int *)malloc(sizeof(int) * state->pipe_nmbs);
-	if (!state->pipe)
-	{
-		printf("Error en Pipe");
-		state->error = 1;
-	}
-	ft_create_pipes(state);
+	int error;
+
+	error = 0;
 	state->index = 0;
 	while (state->index < state->cmd_nmbs && state->error == 0)
 	{
-		state->pid = fork();
-		if (state->pid == 0)
+		int		fd[2];
+
+		pipe(fd);
+		if (ft_wait_childs_exit(state) == 1)
 		{
-			if (state->index == 0)
+			state->pid[state->index] = fork();
+			if (state->pid[state->index] == 0)
 			{
-				ft_on_dup2(STDIN_FILENO, state->pipe[1]);
+				if (state->index < state->cmd_nmbs - 1)
+				{
+					close(fd[0]);
+					dup2(fd[1], STDOUT_FILENO);
+				}
+				error = ft_execve(state);
+				ft_error_message(M_ERROR_EXECVE_PIPES, state->cmds[state->index].cmd_args, state, N_ERROR_EXECVE_PIPES);
+				exit(error);
 			}
-			else if (state->index == state->cmd_nmbs - 1)
+			else if (state->index < state->cmd_nmbs)
 			{
-				ft_on_dup2(state->pipe[2 * state->index - 2], STDOUT_FILENO);
+				close(fd[1]);
+				dup2(fd[0], STDIN_FILENO);
 			}
-			else
-			{
-				ft_on_dup2(state->pipe[2 * state->index - 2], \
-				state->pipe[2 * state->index + 1]);
-			}
-			ft_pipe_close(state);
-			execve(state->cmds[state->index].cmd, state->cmds[state->index].cmd_args, g_env);
-			printf("Error comando : cmd{%s} cmd_args{%s} -> \n", state->cmds[state->index].cmd, state->cmds[state->index].cmd_args[0]);
-			exit(0);
 		}
 		state->index++;
 	}
-	waitpid(-1, NULL, 0);
-	state->i++;
-	if (state->i > 1)
+}
+
+// It is in charge of checking when an exit is used, with the pipes, if there is one we save the number of the command and return 0, if not 1
+int	ft_wait_childs_exit(t_state	*state)
+{
+	if (state->stop > STOP)
 	{
-		int i = 1;
-		while (i < state->cmd_nmbs)
+		state->stop--;
+	}
+	if (state->stop == STOP)
+	{
+		state->pipe_stop = state->index + 1;
+		state->stop = NO_STOP;
+	}
+	if (state->stop == NO_ERROR)
+	{
+		return (1);
+	}
+	return (0);
+}
+
+void ft_wait_childs(t_state	*state)
+{
+	state->index = 0;
+	if (state->pipe_stop == -1)
+	{
+		while (state->index < state->cmd_nmbs)
 		{
-			waitpid(-1, NULL, 0);
-			i++;
+			waitpid(state->pid[state->index], &state->fork_error, 0);
+			state->index++;
 		}
-		state->i = 2;
+	}else{
+		while (state->pipe_stop != 0)
+		{
+			waitpid(state->pid[state->index], &state->fork_error, 0);
+			state->index++;
+			state->pipe_stop--;
+		}
+		exit(100);
+	}
+}
+
+// Functions to run more than one, command with pipes.
+void ft_process_comands(t_state	*state)
+{
+	pid_t	pid;
+
+	state->pid = ft_calloc(sizeof(pid_t), state->cmd_nmbs);
+	if (!state->pid)
+	{
+		ft_error_message(M_ERROR_CREATE_PIPE, NULL, state, N_ERROR_CREATE_PIPE);
 	}
 	state->index = 0;
-	ft_pipe_close(state);
-	free(state->pipe);
+	pid = fork();
+	if (pid == 0)
+	{
+		ft_run_when_is_no_error(state, ft_run_childs);
+		ft_run_when_is_no_error(state, ft_wait_childs);
+		exit(0);
+	}
+	waitpid(pid, &state->error, 0);
+	if (state->error == 25600)
+	{
+		state->stop = STOP;
+	}
+	ft_free(state->pid);
 }
 
 // The command handler
@@ -252,10 +267,10 @@ void ft_run_comands(t_state	*state)
 {
 	state->save_stdout = dup(STDOUT_FILENO);
 	state->save_stdin = dup(STDIN_FILENO);
+	state->index = 0;
 	if (state->cmd_nmbs ==  1)
 	{
 		ft_process_comand(state);
-		// state->i = 0 ;
 	}
 	else
 	{
@@ -265,39 +280,73 @@ void ft_run_comands(t_state	*state)
 	dup2(state->save_stdin, STDIN_FILENO);
 }
 
-// We check the number of commands sent and create our array, with the information of each one
-void	ft_minishell(t_state	*state, char *line)
+// It shows us the error, at the same time that it helps us to debug.
+void ft_error_message(char *str, char **table, t_state *state, int error)
 {
 	int i = 0;
 
+	if (state->debug == 1)
+	{
+		printf("Error number:%d ", error);
+	}
+	printf("%s", str);
+	while (table && table[i])
+	{
+		printf(" %s", table[i]);
+		i++;
+	}
+	if (i > 0)
+	{
+		printf("\n");
+	}
+	state->error = error;
+}
+
+// A function that allows us to run the next part of the code as long as there are no errors.
+void	ft_run_when_is_no_error(t_state *state, void (*f)(t_state *state))
+{
+	if (state->error == NO_ERROR)
+	{
+		f(state);
+	}else{
+		return ;
+	}
+}
+
+// It is in charge of creating the array of the commanded functions
+void ft_create_command_array(t_state *state)
+{
+	int i = 0;
+	state->cmd_paths = ft_split(state->env_path, ':');
+	state->cmds = ft_calloc(sizeof(t_cmd), state->cmd_nmbs);
+	state->t_comands = ft_split(state->line, '|');
+	while (i < state->cmd_nmbs)
+	{
+		state->cmds[i].id = i;
+		state->cmds[i].cmd_args = ft_split(state->t_comands[i], ' ');
+		state->cmds[i].cmd = ft_get_comand_p(state->cmd_paths, state->cmds[i].cmd_args[0]);
+		if (!state->cmds[i].cmd && ft_is_special_commands(state->cmds[i].cmd_args[0]) == 0)
+		{
+			ft_error_message(M_ERROR_PATH, state->t_comands, state, N_ERROR_PATH);
+		}
+		if (ft_is_special_commands(state->cmds[i].cmd_args[0]) == 7)
+		{
+			state->stop = i + 1;
+		}
+		i++;
+	}
+}
+
+// We check the number of commands sent and create our array, with the information of each one
+void	ft_minishell(t_state	*state, char *line)
+{
 	state->cmd_nmbs = ft_number_comands(line);
+	state->line = line;
 	if (state->cmd_nmbs > 0 )
 	{
-		state->env_path = ft_find_path(g_env, state);
-		state->cmd_paths = ft_split(state->env_path, ':');
-		state->cmds = ft_calloc(sizeof(t_cmd), state->cmd_nmbs);
-		state->t_comands = ft_split(line, '|');
-		while (i < state->cmd_nmbs)
-		{
-			state->cmds[i].id = i;
-			state->cmds[i].cmd_args = ft_split(state->t_comands[i], ' ');
-			state->cmds[i].cmd = ft_get_comand_p(state->cmd_paths, state->cmds[i].cmd_args[0]);
-			if (!state->cmds[i].cmd)
-			{
-				printf("Error comand : %s\n", state->t_comands[i]);
-				state->error = 1;
-			}
-			i++;
-		}
-		// ft_print_cmds(state);
-		if (state->error == 1)
-		{
-			ft_free_all(state);
-		}
-		else
-		{
-			ft_run_comands(state);
-			ft_free_all(state);
-		}
+		state->env_path = ft_find_env(g_env, state, "PATH");
+		ft_run_when_is_no_error(state, ft_create_command_array);
+		ft_run_when_is_no_error(state, ft_run_comands);
+		ft_free_all(state);
 	}
 }
