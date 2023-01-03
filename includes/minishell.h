@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/30 18:30:19 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/03 12:37:59 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void	ft_minishell(t_state	*state, char *line);
 char	**ft_crate_env(char **old, int size, int f);
 void	ft_run_unset_export(t_state *state);
 char	*ft_get_comand_p(char **paths, char *cmd);
+int		ft_find_env_index(char **envp, char *path);
 
 // tables
 int	ft_size_table(char **array);

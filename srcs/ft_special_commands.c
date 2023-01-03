@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/30 18:34:20 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/03 13:11:22 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,10 @@ int ft_execve(t_state *state)
 	{
 		exit(0);
 	}
+	else if (comand == 4)
+	{
+		exit(0);
+	}
 	else if (comand == 3)
 	{
 		str_tem = ft_find_env(g_env, state, "PWD");
@@ -162,6 +166,52 @@ int ft_execve(t_state *state)
 	return (error);
 }
 
+int ft_add_env(t_state *state)
+{
+	int size;
+	int temp_leng;
+	char *temp;
+	char **past;
+	int i;
+
+	past = state->cmds[state->index].cmd_args;
+	i = 0;
+	if (ft_size_table(past) > 2)
+	{
+		ft_error_message(M_ERROR_UNSET_MISSING, NULL, state, N_ERROR_UNSET_MISSING);
+		return (-1);
+	}
+	if (ft_size_table(past) == 1)
+	{
+		while (g_env[i])
+		{
+			printf("[%i]%s\n", i, g_env[i]);
+			i++;
+		}
+		return 1;
+	}
+	temp_leng = ft_strlen(past[1]);
+	temp = ft_calloc(sizeof(char), temp_leng);
+	while (past[1][i] && past[1][i] != '=')
+	{
+		temp[i] = past[1][i];
+		i++;
+	}
+	if (ft_find_env(g_env, state, temp))
+	{
+		size = ft_find_env_index(g_env, temp);
+		g_env[size] = ft_free(g_env[size]);
+	}
+	else
+	{
+		size = ft_size_table(g_env);
+		g_env = ft_crate_env(g_env, 2, 1);
+	}
+	g_env[size] = ft_strdup(past[1]);
+	ft_free(temp);
+	return (1);
+}
+
 // falta
 void	ft_run_unset_export(t_state *state)
 {
@@ -174,5 +224,9 @@ void	ft_run_unset_export(t_state *state)
 	if (comand == 5)
 	{
 		ft_delate_env(state);
+	}
+	if (comand == 4)
+	{
+		ft_add_env(state);
 	}
 }

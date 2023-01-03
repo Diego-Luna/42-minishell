@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:01 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/30 17:32:27 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/02 18:22:09 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,23 +73,10 @@ char	**ft_crate_env(char **old, int size, int f)
 	if (!new)
 		return (NULL);
 	i = 0;
-	if (f < 0)
+	while (old[i])
 	{
-		while (old[i])
-		{
-			new[i] = ft_strdup(old[i]);
-			i++;
-		}
-	}else
-	{
-		while (old[i])
-		{
-			if ( i != f)
-			{
-				new[i] = ft_strdup(old[i]);
-			}
-			i++;
-		}
+		new[i] = ft_strdup(old[i]);
+		i++;
 	}
 	if (f > 0)
 	{

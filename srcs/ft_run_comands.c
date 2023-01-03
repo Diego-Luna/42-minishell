@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/30 18:34:00 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/03 11:29:05 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,24 @@ char	*ft_find_env(char **envp, t_state *state, char *path)
 		return (NULL);
 	}
 	return (envp[i] + 5);
+}
+
+int	ft_find_env_index(char **envp, char *path)
+{
+	int	i;
+	int	size;
+
+	i = 0;
+	size = ft_size_table(envp);
+	while (i < size && ft_strncmp(path, envp[i], ft_strlen(path)))
+	{
+		i++;
+	}
+	if (i == size)
+	{
+		return (-1);
+	}
+	return (i);
 }
 
 // ft_get_comand_p, is in charge of finding the path of the command, for the execution of the mimes, or returns null.
