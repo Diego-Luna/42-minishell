@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:01 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/02 18:22:09 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/03 18:22:56 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	ft_size_table(char **array)
 // we make free, and we put at the end a null.
 void	*ft_free(void *ptr)
 {
+	// check if have a value, and free value
 	if (ptr)
 	{
 		free(ptr);
@@ -52,14 +53,16 @@ void	**ft_free_table(char **array)
 	{
 		if (array[i])
 		{
+			// We make the value free and we put null, for convenience
 			array[i] = ft_free(array[i]);
 		}
 	}
+	// We make the value free and we put null, for convenience
 	array = ft_free(array);
 	return (NULL);
 }
 
-// falta
+// We create the necessary space to create our genv, and with the option of making the old version free.
 char	**ft_crate_env(char **old, int size, int f)
 {
 	char	**new;
@@ -85,7 +88,7 @@ char	**ft_crate_env(char **old, int size, int f)
 	return (new);
 }
 
-// falta
+// We start the state variables, and those that need mesh, start with NULL
 void	ft_init_state(t_state	*state, char **envp)
 {
 	if (g_env == NULL)

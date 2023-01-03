@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/03 13:11:22 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/03 18:38:31 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern char	**g_env;
 
-// falta
+// This function checks if the command is a special one or not, and if it is, it returns the corresponding number.
 int ft_is_special_commands(char	*comand)
 {
 	if (ft_strncmp(comand, "echo", 4) == 0)
@@ -48,7 +48,6 @@ int ft_is_special_commands(char	*comand)
 	return (0);
 }
 
-// falta
 void	ft_print_table(char **str)
 {
 	int i;
@@ -65,8 +64,8 @@ void	ft_print_table(char **str)
 	}
 }
 
-// falta
-int ft_find_env_position(char **envp, t_state *state, char *path)
+// look in a char table and return the position of it
+int ft_find_env_position(char **envp, char *path)
 {
 	int	i;
 	int	size;
@@ -85,7 +84,6 @@ int ft_find_env_position(char **envp, t_state *state, char *path)
 	return (i);
 }
 
-// falta
 int ft_delate_env(t_state *state)
 {
 	int position;
@@ -93,10 +91,10 @@ int ft_delate_env(t_state *state)
 
 	if (!state->cmds[state->index].cmd_args[1])
 	{
-		ft_error_message(M_ERROR_UNSET_MISSING, NULL, state, N_ERROR_UNSET_MISSING);
+		// ft_error_message(M_ERROR_UNSET_MISSING, NULL, state, N_ERROR_UNSET_MISSING);
 		return (-1);
 	}
-	position = ft_find_env_position(g_env, state, state->cmds[state->index].cmd_args[1]);
+	position = ft_find_env_position(g_env, state->cmds[state->index].cmd_args[1]);
 	if (position < 0)
 	{
 		ft_error_message(M_ERROR_UNSET_NOT_EXIST, &state->cmds[state->index].cmd_args[1], state, N_ERROR_UNSET_NOT_EXIST);
@@ -112,7 +110,7 @@ int ft_delate_env(t_state *state)
 	return (1);
 }
 
-// falta
+// Our own execve
 int ft_execve(t_state *state)
 {
 	int error;

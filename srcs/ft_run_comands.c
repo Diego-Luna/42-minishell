@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/03 11:29:05 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/03 18:26:22 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ void ft_free_all(t_state *state)
 	state->fork_error = 0;
 }
 
-// falta
+// Command process with flork, for a single command, the child process executes the command and the parent waits until it has finished.
 void	ft_process_comand_fork(t_state *state)
 {
 	int error;
