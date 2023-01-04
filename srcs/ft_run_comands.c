@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/03 18:26:22 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/04 14:45:31 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,10 @@ void	ft_run_childs(t_state *state)
 				}
 			}
 		}
+		else
+		{
+			break;
+		}
 		state->index++;
 	}
 }
@@ -229,7 +233,7 @@ int	ft_wait_childs_exit(t_state	*state)
 		state->pipe_stop = state->index + 1;
 		state->stop = NO_STOP;
 	}
-	if (state->stop == NO_ERROR)
+	if (state->stop == NO_STOP)
 	{
 		return (1);
 	}
