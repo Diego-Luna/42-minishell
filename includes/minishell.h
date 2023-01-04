@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/03 12:37:59 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/04 12:05:44 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@
 #include <termios.h>
 #include "./readline/readline.h"
 #include "./readline/history.h"
+
+// Comand control
+# define N_ECHO 1
+# define N_CD 2
+# define N_PWD 3
+# define N_EXPORT 4
+# define N_UNSET 5
+# define N_ENV 6
+# define N_EXIT 7
 
 // Error control,
 // N is the number and M is the message

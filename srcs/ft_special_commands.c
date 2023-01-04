@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/03 18:38:31 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/04 12:52:42 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,47 +19,65 @@ int ft_is_special_commands(char	*comand)
 {
 	if (ft_strncmp(comand, "echo", 4) == 0)
 	{
-		return (1);
+		return (N_ECHO);
 	}
 	if (ft_strncmp(comand, "cd", 2) == 0)
 	{
-		return (2);
+		return (N_CD);
 	}
 	if (ft_strncmp(comand, "pwd", 3) == 0)
 	{
-		return (3);
+		return (N_PWD);
 	}
 	if (ft_strncmp(comand, "export", 6) == 0)
 	{
-		return (4);
+		return (N_EXPORT);
 	}
 	if (ft_strncmp(comand, "unset", 5) == 0)
 	{
-		return (5);
+		return (N_UNSET);
 	}
 	if (ft_strncmp(comand, "env", 3) == 0)
 	{
-		return (6);
+		return (N_ENV);
 	}
 	if (ft_strncmp(comand, "exit", 4) == 0)
 	{
-		return (7);
+		return (N_EXIT);
 	}
 	return (0);
 }
 
-void	ft_print_table(char **str)
+void	ft_print_table(char **str, int new_line)
 {
 	int i;
+	int size;
 
 	i = 0;
 	if (!str[0])
 	{
 		return ;
 	}
+	size = ft_size_table(str);
 	while (str[i])
 	{
-		printf("%s\n", str[i]);
+		if (new_line >= 1)
+		{
+			printf("%s\n", str[i]);
+		}
+		else
+		{
+			if (i == 0)
+			{
+				printf("%s", str[i]);
+			}else if (i == size - 1)
+			{
+				printf(" %s", str[i]);
+			}else
+			{
+				printf(" %s", str[i]);
+			}
+		}
 		i++;
 	}
 }
@@ -87,11 +105,9 @@ int ft_find_env_position(char **envp, char *path)
 int ft_delate_env(t_state *state)
 {
 	int position;
-	char **copy;
 
 	if (!state->cmds[state->index].cmd_args[1])
 	{
-		// ft_error_message(M_ERROR_UNSET_MISSING, NULL, state, N_ERROR_UNSET_MISSING);
 		return (-1);
 	}
 	position = ft_find_env_position(g_env, state->cmds[state->index].cmd_args[1]);
@@ -110,6 +126,31 @@ int ft_delate_env(t_state *state)
 	return (1);
 }
 
+void	ft_echo(t_state *state)
+{
+	char **past;
+	int size;
+
+	past = state->cmds[state->index].cmd_args;
+	size = ft_size_table(past);
+	if (size == 1)
+	{
+		printf("\n");
+		return;
+	}
+	else if (size >= 2 && ft_strncmp(past[1], "-n", 2) > 0)
+	{
+		ft_print_table(past + 1, 0);
+		printf("\n");
+		return ;
+	}
+	else if (size >= 2 && ft_strncmp(past[1], "-n", 2) == 0)
+	{
+		ft_print_table(past + 2, 0);
+		return;
+	}
+}
+
 // Our own execve
 int ft_execve(t_state *state)
 {
@@ -119,23 +160,28 @@ int ft_execve(t_state *state)
 
 	error = 0;
 	comand = ft_is_special_commands(state->cmds[state->index].cmd_args[0]);
-	if (comand == 7){
+	if (comand == N_EXIT){
 		exit(0);
 	}
-	else if (comand == 6)
+	else if (comand == N_ENV)
 	{
-		ft_print_table(g_env);
+		ft_print_table(g_env, 1);
 		exit(0);
 	}
-	else if (comand == 5)
-	{
-		exit(0);
-	}
-	else if (comand == 4)
+	else if (comand == N_UNSET)
 	{
 		exit(0);
 	}
-	else if (comand == 3)
+	else if (comand == N_EXPORT)
+	{
+		exit(0);
+	}
+	else if (comand == N_ECHO)
+	{
+		ft_echo(state);
+		exit(0);
+	}
+	else if (comand == N_PWD)
 	{
 		str_tem = ft_find_env(g_env, state, "PWD");
 		if (!str_tem)
@@ -210,7 +256,7 @@ int ft_add_env(t_state *state)
 	return (1);
 }
 
-// falta
+// check when it is a command that affects environment variables, so that it is executed only in the parent process
 void	ft_run_unset_export(t_state *state)
 {
 	int error;
@@ -219,11 +265,11 @@ void	ft_run_unset_export(t_state *state)
 	error = 0;
 	comand = ft_is_special_commands(state->cmds[state->index].cmd_args[0]);
 
-	if (comand == 5)
+	if (comand == N_UNSET)
 	{
 		ft_delate_env(state);
 	}
-	if (comand == 4)
+	if (comand == N_EXPORT)
 	{
 		ft_add_env(state);
 	}
