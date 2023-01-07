@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/04 12:52:42 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/07 18:34:16 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,17 +102,22 @@ int ft_find_env_position(char **envp, char *path)
 	return (i);
 }
 
+// int ft_delate_env(t_state *state, char **env_name)
+// state->cmds[state->index].cmd_args[1]
 int ft_delate_env(t_state *state)
 {
 	int position;
 
+	// if (!env_name[1])
 	if (!state->cmds[state->index].cmd_args[1])
 	{
 		return (-1);
 	}
+	// position = ft_find_env_position(g_env, env_name[1]);
 	position = ft_find_env_position(g_env, state->cmds[state->index].cmd_args[1]);
 	if (position < 0)
 	{
+		// ft_error_message(M_ERROR_UNSET_NOT_EXIST, &env_name[1], state, N_ERROR_UNSET_NOT_EXIST);
 		ft_error_message(M_ERROR_UNSET_NOT_EXIST, &state->cmds[state->index].cmd_args[1], state, N_ERROR_UNSET_NOT_EXIST);
 		return (-1);
 	}
@@ -151,12 +156,50 @@ void	ft_echo(t_state *state)
 	}
 }
 
+void	ft_comand_cd(t_state *state)
+{
+	char **past;
+	char *path;
+	char *error;
+
+	printf("Run comand\n");
+	past = state->cmds[state->index].cmd_args;
+	if (ft_size_table(past) == 1)
+	{
+		printf("1>\n");
+		path = ft_find_env(g_env, state, "HOME");
+		if(!path)
+		{
+			printf("22>\n");
+			error = ft_strdup("HOME");
+			ft_error_message(M_ERROR_PATH, &error, state, N_ERROR_PATH);
+			ft_free(error);
+		}
+	}
+	// if (state->error == NO_ERROR)
+	// {
+
+	// }
+}
+
+void	ft_comand_pwd(t_state *state)
+{
+	char *str_tem = NULL;
+
+	str_tem = ft_find_env(g_env, state, "PWD");
+	if (!str_tem)
+	{
+		ft_error_message(M_ERROR_PATH, state->t_comands, state, N_ERROR_PATH);
+	}
+	ft_printf("%s\n", str_tem);
+}
+
 // Our own execve
 int ft_execve(t_state *state)
 {
 	int error;
 	int comand;
-	char *str_tem = NULL;
+	char *erro_path;
 
 	error = 0;
 	comand = ft_is_special_commands(state->cmds[state->index].cmd_args[0]);
@@ -183,21 +226,25 @@ int ft_execve(t_state *state)
 	}
 	else if (comand == N_PWD)
 	{
-		str_tem = ft_find_env(g_env, state, "PWD");
-		if (!str_tem)
-		{
-			ft_error_message(M_ERROR_PATH, state->t_comands, state, N_ERROR_PATH);
-		}
-		ft_printf("%s\n", str_tem);
+		ft_comand_pwd(state);
+		exit(0);
+	}
+	else if (comand == N_CD)
+	{
+		ft_comand_cd(state);
 		exit(0);
 	}
 	else
 	{
 		if (ft_find_env(g_env, state, "PATH") == NULL)
 		{
-			ft_error_message(M_ERROR_FIND_ENV, NULL, state, N_ERROR_FIND_ENV);
+			erro_path = ft_strdup("PATH");
+			ft_error_message(M_ERROR_FIND_ENV, &erro_path, state, N_ERROR_FIND_ENV);
+			ft_free(erro_path);
 			exit(5);
 		}
+		// state->env_path = ft_find_env(g_env, state, "PATH");
+		state->cmd_paths = ft_split(state->env_path, ':');
 		state->cmds[state->index].cmd = ft_get_comand_p(state->cmd_paths, state->cmds[state->index].cmd_args[0]);
 		if (!state->cmds[state->index].cmd)
 		{
@@ -261,12 +308,17 @@ void	ft_run_unset_export(t_state *state)
 {
 	int error;
 	int comand;
+	char **run_comand;
 
 	error = 0;
-	comand = ft_is_special_commands(state->cmds[state->index].cmd_args[0]);
+	run_comand = state->cmds[state->index].cmd_args;
+	// comand = ft_is_special_commands(state->cmds[state->index].cmd_args[0]);
+	comand = ft_is_special_commands(run_comand[0]);
 
 	if (comand == N_UNSET)
 	{
+		// ft_delate_env(state, state->cmds[state->index].cmd_args[1]);
+		// ft_delate_env(state, run_comand);
 		ft_delate_env(state);
 	}
 	if (comand == N_EXPORT)
