@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/04 12:05:44 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/06 19:12:35 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,10 @@
 # define N_ERROR_UNSET_MISSING 6
 # define M_ERROR_UNSET_NOT_EXIST "Error in insert missing variable does not exist"
 # define N_ERROR_UNSET_NOT_EXIST 7
+# define M_ERROR_NUMERIC_ARGUMENTS "Numeric argument required"
+# define N_ERROR_NUMERIC_ARGUMENTS 8
+# define M_ERROR_MANY_ARGUMENTS "many arguments"
+# define N_ERROR_MANY_ARGUMENTS 9
 // Error control
 
 

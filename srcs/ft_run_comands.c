@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/04 14:45:31 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/06 19:24:21 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,10 +213,6 @@ void	ft_run_childs(t_state *state)
 				}
 			}
 		}
-		else
-		{
-			break;
-		}
 		state->index++;
 	}
 }
@@ -224,20 +220,19 @@ void	ft_run_childs(t_state *state)
 // It is in charge of checking when an exit is used, with the pipes, if there is one we save the number of the command and return 0, if not 1
 int	ft_wait_childs_exit(t_state	*state)
 {
-	if (state->stop > STOP)
-	{
-		state->stop--;
-	}
-	if (state->stop == STOP)
-	{
-		state->pipe_stop = state->index + 1;
-		state->stop = NO_STOP;
-	}
-	if (state->stop == NO_STOP)
+	if (state->pipe_stop == -1)
 	{
 		return (1);
 	}
-	return (0);
+	else if (state->index < state->pipe_stop)
+	{
+		return (1);
+	}
+	else
+	{
+		return (0);
+	}
+
 }
 
 void ft_wait_childs(t_state	*state)
@@ -251,13 +246,12 @@ void ft_wait_childs(t_state	*state)
 			state->index++;
 		}
 	}else{
-		while (state->pipe_stop != 0)
+		while (state->index < state->pipe_stop)
 		{
 			waitpid(state->pid[state->index], &state->fork_error, 0);
 			state->index++;
-			state->pipe_stop--;
 		}
-		exit(100);
+		state->stop = STOP;
 	}
 }
 
@@ -274,10 +268,6 @@ void ft_process_comands(t_state	*state)
 	state->index = 0;
 	ft_run_when_is_no_error(state, ft_run_childs);
 	ft_run_when_is_no_error(state, ft_wait_childs);
-	if (state->error == 25600)
-	{
-		state->stop = STOP;
-	}
 	ft_free(state->pid);
 }
 
@@ -344,8 +334,63 @@ void ft_create_command_array(t_state *state)
 		if (ft_is_special_commands(state->cmds[i].cmd_args[0]) == 7)
 		{
 			state->stop = i + 1;
+			if (state->pipe_stop == -1 )
+			{
+				state->pipe_stop =  i;
+			}
 		}
 		i++;
+	}
+}
+
+int ft_str_is_a_number(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (ft_isdigit(str[i]) == 0)
+		{
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
+void	ft_check_exit(t_state	*state, char *line)
+{
+	int i;
+	char **table;
+
+	if (state->pipe_stop == -1)
+	{
+		ft_free_all(state);
+	}
+	else
+	{
+		i = ft_size_table(state->cmds[state->pipe_stop].cmd_args);
+		if (i == 2)
+		{
+			table = state->cmds[state->pipe_stop].cmd_args;
+			if (ft_str_is_a_number(table[1]) == 1)
+			{
+				i = ft_atoi(table[1]);
+			}
+			else
+			{
+				ft_error_message(M_ERROR_NUMERIC_ARGUMENTS, &table[1], state, N_ERROR_NUMERIC_ARGUMENTS);
+			}
+		}
+		else if (i > 2)
+		{
+			table = state->cmds[state->pipe_stop].cmd_args;
+			ft_error_message(M_ERROR_MANY_ARGUMENTS, table, state, N_ERROR_MANY_ARGUMENTS);
+		}
+		ft_free_all(state);
+		free(line);
+		exit(i);
 	}
 }
 
@@ -358,6 +403,6 @@ void	ft_minishell(t_state	*state, char *line)
 	{
 		ft_run_when_is_no_error(state, ft_create_command_array);
 		ft_run_when_is_no_error(state, ft_run_comands);
-		ft_free_all(state);
+		ft_check_exit(state, line);
 	}
 }
