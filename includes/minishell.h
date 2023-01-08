@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/21 14:53:16 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/08 18:32:18 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,12 @@ void	view(t_tokens l);
 
 //parsing
 void	ft_parse(char *line, t_tokens *tokens);
-void	ft_create_tokens(char *args, t_tokens *t);
 
 //split
-int	ft_splitable(char c);
-int	ft_number_of_tokens(char *str);
+int		ft_splitable(char c);
+void	ft_minishell_split(char *args, t_tokens *t);
+void	ft_create_token(char *args, int start, int end, t_tokens *l);
+char	*ft_strcpy(char *dest, char *src, int len);
 
 
 #endif
