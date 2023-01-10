@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/10 13:25:45 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/10 16:55:02 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,7 +269,7 @@ int ft_execve(t_state *state)
 			erro_path = ft_strdup("PATH=");
 			ft_error_message(M_ERROR_FIND_ENV, &erro_path, state, N_ERROR_FIND_ENV);
 			ft_free(erro_path);
-			exit(5);
+			exit(1);
 		}
 		state->env_path = ft_find_env(g_env, state, "PATH=");
 		state->cmd_paths = ft_split(state->env_path, ':');
@@ -277,7 +277,7 @@ int ft_execve(t_state *state)
 		if (!state->cmds[state->index].cmd)
 		{
 			ft_error_message(M_ERROR_PATH, state->t_comands, state, N_ERROR_PATH);
-			exit(5);
+			exit(1);
 		}
 		error = execve(state->cmds[state->index].cmd, state->cmds[state->index].cmd_args, g_env);
 		return (error);
@@ -390,4 +390,23 @@ void	ft_run_unset_export(t_state *state)
 	{
 		ft_add_env(state, run_comand);
 	}
+}
+
+
+void	ft_handle_error_pipe(t_state *state)
+{
+	char **tem_comand;
+	char *status;
+
+	if (state->fork_error == 256)
+	{
+		state->fork_error = 127;
+	}
+	status = ft_itoa(state->fork_error);
+	tem_comand = calloc(sizeof(char *), 3);
+	tem_comand[1] = ft_strjoin("?=", status);
+	ft_add_env(state, tem_comand);
+	ft_free(status);
+	ft_free(tem_comand[1]);
+	ft_free(tem_comand);
 }

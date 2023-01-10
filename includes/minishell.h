@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/10 12:44:54 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/10 15:56:53 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,5 +129,6 @@ int ft_is_special_commands(char	*comand);
 int ft_execve(t_state *state);
 int ft_delate_env(t_state *state, char **env_name);
 int ft_add_env(t_state *state, char **past);
+void	ft_handle_error_pipe(t_state *state);
 
 #endif

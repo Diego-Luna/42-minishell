@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:01 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/06 18:24:30 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/10 15:56:33 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	ft_init_state(t_state	*state, char **envp)
 	state->error = NO_ERROR;
 	state->debug = 1;
 	state->pipe_stop = -1;
+	ft_handle_error_pipe(state);
 }
 
 int	main(int argc, char **argv, char **envp)

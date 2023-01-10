@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/10 13:22:55 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/10 16:59:56 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -405,6 +405,7 @@ void	ft_minishell(t_state	*state, char *line)
 	{
 		ft_run_when_is_no_error(state, ft_create_command_array);
 		ft_run_when_is_no_error(state, ft_run_comands);
+		ft_handle_error_pipe(state);
 		ft_check_exit(state, line);
 	}
 }
