@@ -6,7 +6,7 @@
 #    By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/17 14:59:37 by dluna-lo          #+#    #+#              #
-#    Updated: 2022/11/15 15:10:37 by dluna-lo         ###   ########.fr        #
+#    Updated: 2023/01/10 13:18:04 by dluna-lo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ INC		=	libft.h
 
 CC				= gcc
 RM				= rm -f
-CFLAGS			= -Wall -Werror -Wextra
+CFLAGS			= -g -Wall -Werror -Wextra
 
 .c.o:
 		${CC} ${CFLAGS} -I includes -c $< -o ${<:.c=.o}

@@ -6,7 +6,7 @@
 #    By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 11:24:49 by mtrembla          #+#    #+#              #
-#    Updated: 2022/12/26 15:16:34 by dluna-lo         ###   ########.fr        #
+#    Updated: 2023/01/10 13:05:10 by dluna-lo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,17 +25,15 @@ ODIR = obj
 OFIX = $(addprefix $(ODIR)/, $(OBJ))
 
 CC = gcc
-FLAGS = -Wall -Wextra -Werror -g
+CFLAGS =  -g -Wall -Wextra -Werror
 RM = rm -fr
 LIBFT = ./includes/libft/libft.a
 READLINE = ./includes/readline/libreadline.a ./includes/readline/libhistory.a -lreadline -lcurses
 
 $(ODIR)/%.o:$(SDIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
-	@echo "\033[92m.\033[0m\c"
+# @echo "\033[92m.\033[0m\c"
 
-# @$(MAKE) -C ./includes/readline ./configure
-# @$(MAKE) -C ./includes/readline make
 $(NAME): $(ODIR) $(OFIX)
 	@$(MAKE) -C ./includes/libft
 	@$(CC) $(CFLAGS) $(OFIX) -o $(NAME) $(LIBFT) $(READLINE)

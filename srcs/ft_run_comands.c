@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/09 16:38:48 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/10 13:22:55 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char	*ft_find_env(char **envp, t_state *state, char *path)
 	i = 0;
 	size = ft_size_table(envp);
 	ii = ft_strlen(path);
+	(void)state;
 	while (i < size && ft_strncmp(path, envp[i], ii))
 	{
 		i++;
@@ -142,9 +143,6 @@ void ft_free_comand(t_state *state)
 // free to everything
 void ft_free_all(t_state *state)
 {
-	int i = 0 ;
-	int ii = 0 ;
-
 	state->cmd_paths = (char **)ft_free_table(state->cmd_paths);
 	ft_free_comand(state);
 	state->fork_error = 0;
@@ -175,8 +173,10 @@ void ft_process_comand(t_state	*state)
 	state->index = 0;
 	if (state->stop != STOP)
 	{
-		ft_run_unset_export(state);
-		ft_run_when_is_no_error(state, ft_process_comand_fork);
+		if (ft_run_comand_build(state) == 0)
+		{
+			ft_run_when_is_no_error(state, ft_process_comand_fork);
+		}
 	}
 }
 
@@ -261,8 +261,6 @@ void ft_wait_childs(t_state	*state)
 // Functions to run more than one, command with pipes.
 void ft_process_comands(t_state	*state)
 {
-	pid_t	pid;
-
 	state->pid = ft_calloc(sizeof(pid_t), state->cmd_nmbs);
 	if (!state->pid)
 	{

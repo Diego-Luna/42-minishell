@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/09 19:47:11 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/10 13:25:45 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int ft_find_env_position(char **envp, char *path)
 {
 	int	i;
 	int	size;
-	char **table;
 
 	i = 0;
 	size = ft_size_table(envp);
@@ -160,7 +159,7 @@ void	ft_comand_cd(t_state *state)
 {
 	char **past;
 	char **tem_comand;
-	char *tem[2];
+	char **tem;
 	char *path;
 	char *error;
 
@@ -179,29 +178,35 @@ void	ft_comand_cd(t_state *state)
 	{
 		path = state->cmds[state->index].cmd_args[1];
 	}
-	printf("\n D{%s} \n", path);
-	if (chdir(path) == 0)
+	if (path != NULL && chdir(path) == 0)
 	{
-		tem_comand = calloc(sizeof(char *), 2);
+		tem = calloc(sizeof(char *), 3);
+		tem_comand = calloc(sizeof(char *), 3);
 		tem_comand[1] = ft_strdup("OLDPWD");
 		ft_delate_env(state, tem_comand);
-		printf("\n delete OLDPWD \n");
-		// tem[0] = ft_find_env(g_env, state, "PWD=");
-		// tem[1] = ft_strjoin("OLDPWD=", tem[0]);
-		// ft_add_env(state, tem);
-		// tem[1] = ft_free(tem[1]);
-		// tem_comand[1] = ft_free(tem_comand[1]);
-		// tem_comand[1] = ft_strdup("PWD");
-		// ft_add_env(state, tem_comand);
-		// tem[0] = getcwd(NULL, 0);
-		// tem[1] = ft_strjoin("PWD=", tem[0]);
-		// ft_add_env(state, tem);
-		// ft_free_table(tem);
-		ft_free_table(tem_comand);
+		tem[0] = ft_find_env(g_env, state, "PWD=");
+		tem[1] = ft_strjoin("OLDPWD=", tem[0]);
+		ft_add_env(state, tem);
+		tem[1] = ft_free(tem[1]);
+		tem_comand[1] = ft_free(tem_comand[1]);
+		tem_comand[1] = ft_strdup("PWD");
+		ft_delate_env(state, tem_comand);
+		tem[0] = getcwd(NULL, 0);
+		tem[1] = ft_strjoin("PWD=", tem[0]);
+		ft_add_env(state, tem);
+		ft_free(tem[0]);
+		ft_free(tem[1]);
+		ft_free(tem_comand[0]);
+		ft_free(tem_comand[1]);
+		ft_free(tem);
+		ft_free(tem_comand);
 	}
-	else
+	else if (path != NULL)
 	{
-		ft_error_message(M_ERROR_PATH, &path, state, N_ERROR_PATH);
+		tem = calloc(sizeof(char *), 3);
+		tem[0] = ft_strdup(path);
+		ft_error_message(M_ERROR_NO_EXIST, tem, state, N_ERROR_NO_EXIST);
+		ft_free_table(tem);
 	}
 }
 
@@ -282,64 +287,43 @@ int ft_execve(t_state *state)
 
 int	ft_run_comand_build(t_state *state)
 {
-	int error;
 	int comand;
-	char *erro_path;
+	char **run_comand;
 
-	error = 0;
-	comand = ft_is_special_commands(state->cmds[state->index].cmd_args[0]);
+	run_comand = state->cmds[state->index].cmd_args;
+	comand = ft_is_special_commands(run_comand[0]);
 	if (comand == N_EXIT){
-		exit(0);
+		state->stop = STOP;
 	}
 	else if (comand == N_ENV)
 	{
 		ft_print_table(g_env, 1);
-		exit(0);
 	}
 	else if (comand == N_UNSET)
 	{
-		exit(0);
+		ft_delate_env(state, run_comand);
 	}
 	else if (comand == N_EXPORT)
 	{
-		exit(0);
+		ft_add_env(state, run_comand);
 	}
 	else if (comand == N_ECHO)
 	{
 		ft_echo(state);
-		exit(0);
 	}
 	else if (comand == N_PWD)
 	{
 		ft_comand_pwd(state);
-		exit(0);
 	}
 	else if (comand == N_CD)
 	{
 		ft_comand_cd(state);
-		exit(0);
 	}
 	else
 	{
-		if (ft_find_env(g_env, state, "PATH=") == NULL)
-		{
-			erro_path = ft_strdup("PATH=");
-			ft_error_message(M_ERROR_FIND_ENV, &erro_path, state, N_ERROR_FIND_ENV);
-			ft_free(erro_path);
-			exit(5);
-		}
-		state->env_path = ft_find_env(g_env, state, "PATH=");
-		state->cmd_paths = ft_split(state->env_path, ':');
-		state->cmds[state->index].cmd = ft_get_comand_p(state->cmd_paths, state->cmds[state->index].cmd_args[0]);
-		if (!state->cmds[state->index].cmd)
-		{
-			ft_error_message(M_ERROR_PATH, state->t_comands, state, N_ERROR_PATH);
-			exit(5);
-		}
-		error = execve(state->cmds[state->index].cmd, state->cmds[state->index].cmd_args, g_env);
-		return (error);
+		return (0);
 	}
-	return (error);
+	return (1);
 }
 
 // int ft_add_env(t_state *state)
@@ -348,10 +332,8 @@ int ft_add_env(t_state *state, char **past)
 	int size;
 	int temp_leng;
 	char *temp;
-	// char **past;
 	int i;
 
-	// past = state->cmds[state->index].cmd_args;
 	i = 0;
 	if (ft_size_table(past) > 2)
 	{
@@ -368,7 +350,7 @@ int ft_add_env(t_state *state, char **past)
 		return 1;
 	}
 	temp_leng = ft_strlen(past[1]);
-	temp = ft_calloc(sizeof(char), temp_leng);
+	temp = ft_calloc(sizeof(char), temp_leng + 1);
 	while (past[1][i] && past[1][i] != '=')
 	{
 		temp[i] = past[1][i];

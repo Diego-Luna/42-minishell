@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/09 17:57:58 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/10 12:44:54 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@
 # define N_ERROR_NUMERIC_ARGUMENTS 8
 # define M_ERROR_MANY_ARGUMENTS "many arguments"
 # define N_ERROR_MANY_ARGUMENTS 9
+# define M_ERROR_NO_EXIST "No exits: "
+# define N_ERROR_NO_EXIST 10
 // Error control
 
 
@@ -90,35 +92,38 @@ typedef struct va_states
 	t_cmd *cmds;
 }			t_state;
 
-//signals
+// --> signals
 void	ft_signals();
 void    ft_disable_echo(void);
 void	ft_sigint_handler();
 
 
-// run comands, and pipe
+// --> run comands, and pipe
 char	*ft_find_env(char **envp, t_state *state, char *path);
 void	ft_childs(t_state state, char **envp, char *argv);
 void	ft_minishell(t_state	*state, char *line);
 
-// ENV
+// --> ENV
 char	**ft_crate_env(char **old, int size, int f);
 void	ft_run_unset_export(t_state *state);
 char	*ft_get_comand_p(char **paths, char *cmd);
 int		ft_find_env_index(char **envp, char *path);
 
-// tables
+// --> tables
 int	ft_size_table(char **array);
 
-// free
+// --> free
 void	*ft_free(void *ptr);
 void	**ft_free_table(char **array);
 
-// Error
+// --> Error
 void ft_error_message(char *str, char **table, t_state *state, int error);
 void	ft_run_when_is_no_error(t_state *state, void (*f)(t_state *state));
 
-// special_commands
+// --> special_commands
+// controler
+int	ft_run_comand_build(t_state *state);
+
 int	ft_wait_childs_exit(t_state	*state);
 int ft_is_special_commands(char	*comand);
 int ft_execve(t_state *state);
