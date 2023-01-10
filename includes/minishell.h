@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/06 19:12:35 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/09 17:57:58 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,5 +122,7 @@ void	ft_run_when_is_no_error(t_state *state, void (*f)(t_state *state));
 int	ft_wait_childs_exit(t_state	*state);
 int ft_is_special_commands(char	*comand);
 int ft_execve(t_state *state);
+int ft_delate_env(t_state *state, char **env_name);
+int ft_add_env(t_state *state, char **past);
 
 #endif

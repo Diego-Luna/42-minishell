@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/07 18:33:53 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/09 16:38:48 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,12 @@ char	*ft_find_env(char **envp, t_state *state, char *path)
 	i = 0;
 	size = ft_size_table(envp);
 	ii = ft_strlen(path);
-	printf("\n Diego ii{%d}", ii);
 	while (i < size && ft_strncmp(path, envp[i], ii))
 	{
 		i++;
 	}
-	// if (i == size)
-	if (i == size && (envp[i][ii] == '=' || envp[i][ii] == '\n' || envp[i][ii] == 0))
+	// if (i == size && !(envp[i][ii] == '=' || envp[i][ii] == '\n' || envp[i][ii] == 0))
+	if (i == size)
 	{
 		// ft_error_message(M_ERROR_FIND_ENV, NULL, state, N_ERROR_FIND_ENV);
 		return (NULL);
@@ -328,8 +327,8 @@ void ft_create_command_array(t_state *state)
 {
 	int i = 0;
 
-	state->env_path = ft_find_env(g_env, state, "PATH");
-	ft_free(state->env_path);
+	// state->env_path = ft_find_env(g_env, state, "PATH");
+	// ft_free(state->env_path);
 	state->cmds = ft_calloc(sizeof(t_cmd), state->cmd_nmbs);
 	state->t_comands = ft_split(state->line, '|');
 	while (i < state->cmd_nmbs)
