@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:28:21 by mtrembla          #+#    #+#             */
-/*   Updated: 2022/12/21 11:29:57 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/10 13:03:46 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ void	ft_sigint_handler()
 {
 	printf("\n");
 	rl_on_new_line();
+	rl_replace_line("", 0);
 	rl_redisplay();
 }

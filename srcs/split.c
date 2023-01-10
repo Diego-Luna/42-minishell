@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:58:06 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/10 12:24:50 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/10 12:53:05 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ void	ft_minishell_split(char *args, t_tokens *t)
 void	ft_create_token(char *args, int start, int end, t_tokens *l)
 {
 	char *token;
-	token = malloc(sizeof(char) * (end - start + 1));
 
+	token = malloc(sizeof(char) * (end - start + 1));
 	ft_strcpy(token, &args[start], (end - start));
 	dlist_add_back(l, token);
 }
