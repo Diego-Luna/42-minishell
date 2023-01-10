@@ -1,35 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_redirect.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/17 14:33:12 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/10 18:53:54 by dluna-lo         ###   ########.fr       */
+/*   Created: 2023/01/10 18:06:30 by dluna-lo          #+#    #+#             */
+/*   Updated: 2023/01/10 18:08:04 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "../includes/minishell.h"
 
-char	*ft_strdup(const char *s1)
+// The global variable that stores environment variables
+extern char	**g_env;
+
+void	ft_find_redirect(t_state *state)
 {
-	int		str_len;
-	int		i;
-	char	*buffer;
-
-	str_len = 0;
-	i = 0;
-	while (s1[str_len])
-		str_len++;
-	buffer = (char *)malloc(sizeof(*buffer) * (str_len + 1));
-	if (!buffer)
-		return (NULL);
-	while (i < str_len)
-	{
-		buffer[i] = s1[i];
-		i++;
-	}
-	buffer[i] = '\0';
-	return (buffer);
+	
 }
