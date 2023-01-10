@@ -6,13 +6,13 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:58:40 by mtrembla          #+#    #+#             */
-/*   Updated: 2022/12/21 13:23:10 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/10 12:22:00 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	dlist_add_front(t_tokens *l, char *elem)
+void	dlist_add_back(t_tokens *l, char *elem)
 {
 	t_node	*new;
 
@@ -20,13 +20,13 @@ void	dlist_add_front(t_tokens *l, char *elem)
 	if (!new)
 		exit(0);
 	new->content = elem;
-	new->next = l->first;
-	new->prev = NULL;
-	if (l->first)
-		l->first->prev = new;
+	new->prev = l->last;
+	new->next = NULL;
+	if (l->last)
+		l->last->next = new;
 	else
-		l->last = new;
-	l->first = new;
+		l->first = new;
+	l->last = new;
 }
 
 void	dlist_remove_node(t_node *node) 
@@ -61,11 +61,13 @@ void	dlist_free(t_tokens *l)
 void	view(t_tokens l)
 {
 	t_node	*aff;
+	int i = 1;
 
 	aff = l.first;
 	while (aff)
 	{
-		printf("content:%s\n", aff->content);
+		printf("----------------\n");
+		printf("token%d:[%s]\n", i++, aff->content);
 		aff = aff->next;
 	}
 }

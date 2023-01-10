@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:58:06 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/08 18:31:27 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/10 12:24:50 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	ft_minishell_split(char *args, t_tokens *t)
 {
 	int i = 0;
 	int	start = 0;
-	int end = 0;
 	char quote;
 
 	while(args[i])
@@ -36,26 +35,21 @@ void	ft_minishell_split(char *args, t_tokens *t)
 			}
 		if (ft_splitable(args[i]))
 		{
-			if(!ft_splitable(args[i - 1]))
+			if(args[i - 1] && !ft_splitable(args[i - 1]))
 			{
-				end = i;
-				ft_create_token(args, start, end, t);
-				start = end;
+				ft_create_token(args, start, i, t);
+				start = i;
 			}
 			if(args[i] == args[i + 1])
 				i++;
-			end = i + 1;
 			if (args[i] != ' ')
-			ft_create_token(args, start, end, t);
-			start = end;
+			ft_create_token(args, start, (i + 1), t);
+			start = i + 1;
 		}
 		i++;
 	}
 	if(!ft_splitable(args[i - 1]))
-	{
-		end = ft_strlen(args);
-		ft_create_token(args, start, end, t);
-	}
+		ft_create_token(args, start, ft_strlen(args), t);
 }
 
 void	ft_create_token(char *args, int start, int end, t_tokens *l)
@@ -64,10 +58,7 @@ void	ft_create_token(char *args, int start, int end, t_tokens *l)
 	token = malloc(sizeof(char) * (end - start + 1));
 
 	ft_strcpy(token, &args[start], (end - start));
-	printf("token:%s\n", token);
-	if (token)
-	free(token);
-
+	dlist_add_back(l, token);
 }
 
 char	*ft_strcpy(char *dest, char *src, int len)
