@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:58:06 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/10 12:53:05 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/11 13:32:41 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,39 +37,17 @@ void	ft_minishell_split(char *args, t_tokens *t)
 		{
 			if(args[i - 1] && !ft_splitable(args[i - 1]))
 			{
-				ft_create_token(args, start, i, t);
+				dlist_add_back(t, ft_substr(args, start, (i - start)));
 				start = i;
 			}
 			if(args[i] == args[i + 1])
 				i++;
 			if (args[i] != ' ')
-			ft_create_token(args, start, (i + 1), t);
+			dlist_add_back(t, ft_substr(args, start, (i - start + 1)));
 			start = i + 1;
 		}
 		i++;
 	}
 	if(!ft_splitable(args[i - 1]))
-		ft_create_token(args, start, ft_strlen(args), t);
-}
-
-void	ft_create_token(char *args, int start, int end, t_tokens *l)
-{
-	char *token;
-
-	token = malloc(sizeof(char) * (end - start + 1));
-	ft_strcpy(token, &args[start], (end - start));
-	dlist_add_back(l, token);
-}
-
-char	*ft_strcpy(char *dest, char *src, int len)
-{
-	int i = 0;
-	
-	while (len--)
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
+		dlist_add_back(t, ft_substr(args, start, (ft_strlen(args))));
 }

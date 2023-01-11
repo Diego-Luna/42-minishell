@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:58:40 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/10 12:22:00 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/10 16:21:41 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	dlist_free(t_tokens *l)
 	{
 		temp = next;
 		next = next->next;
+		free(temp->content);
 		free(temp);
 	}
 	l->first = NULL;
