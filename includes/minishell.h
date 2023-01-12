@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/10 18:15:49 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:10:16 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,10 @@ typedef struct va_t_cmd
 	int 	id;
 	char	**cmd_args;
 	char	*cmd;
-	int	redirect;
 	char **r_cmd_args;
+	int	redirect;
+	char *s_redirection;
+	char **t_redirection;
 }			t_cmd;
 
 typedef struct va_states
@@ -81,6 +83,7 @@ typedef struct va_states
 	char	*env_path;
 	char	*line;
 	char	**cmd_paths;
+	char	**t_redirection;
 	pid_t	*pid;
 	int		cmd_nmbs;
 	int		index;

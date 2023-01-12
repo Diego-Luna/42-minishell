@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/10 18:53:55 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/11 19:19:45 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ void ft_free_comand(t_state *state)
 		}
 		ft_free(state->cmds[i].cmd_args);
 		ft_free(state->cmds[i].cmd);
+		ft_free_table(state->cmds[i].t_redirection);
 		i++;
 	}
 	state->cmds = ft_free(state->cmds);
@@ -145,6 +146,7 @@ void ft_free_all(t_state *state)
 {
 	state->cmd_paths = (char **)ft_free_table(state->cmd_paths);
 	ft_free_comand(state);
+	ft_free_table(state->t_redirection);
 	state->fork_error = 0;
 }
 
@@ -320,21 +322,81 @@ void	ft_run_when_is_no_error(t_state *state, void (*f)(t_state *state))
 	}
 }
 
+int	ft_str_in_str(char *str, char *find)
+{
+	int i = 0;
+	int i_save = 0;
+	int ii = 0;
+	int size;
+
+	if (!find)
+	{
+		return(-1);
+	}
+	size = ft_strlen(find);
+	while (str[i])
+	{
+		ii = 0;
+		i_save = i;
+		while (str[i] == find[ii])
+		{
+			ii++;
+			i++;
+			if (size == ii)
+			{
+				return (i_save);
+			}
+		}
+		i = i_save;
+		i++;
+	}
+	return (-1);
+}
+
 // It is in charge of creating the array of the commanded functions
 void ft_create_command_array(t_state *state)
 {
 	int i = 0;
+	int ii = 0;
+	int	size_copy = 0;
 
+	state->t_redirection = (char **)ft_calloc(sizeof(char *), 5);
+	state->t_redirection[0] =  ft_strdup("<");
+	state->t_redirection[1] =  ft_strdup(">");
+	state->t_redirection[2] =  ft_strdup("<<");
+	state->t_redirection[3] =  ft_strdup(">>");
+	state->t_redirection[4] =  0;
 	state->cmds = ft_calloc(sizeof(t_cmd), state->cmd_nmbs);
 	state->t_comands = ft_split(state->line, '|');
 	while (i < state->cmd_nmbs)
 	{
 		state->cmds[i].id = i;
-		if (ft_strncmp())
+		state->cmds[i].redirect = -1;
+		while (ii < 5)
 		{
-
+			if (ft_str_in_str(state->t_comands[i], state->t_redirection[ii]) >= 0)
+			{
+				state->cmds[i].redirect = ii;
+				ii = 6;
+			}
+			ii++;
 		}
-		state->cmds[i].cmd_args = ft_split(state->t_comands[i], ' ');
+		if (state->cmds[i].redirect >= 0)
+		{
+			state->cmds[i].t_redirection = ft_calloc(sizeof(char *), 3);
+			size_copy = ft_str_in_str(state->t_comands[i], state->t_redirection[state->cmds[i].redirect]);
+
+			state->cmds[i].t_redirection[0] = ft_calloc(sizeof(char *), size_copy);
+			ft_strlcpy(state->cmds[i].t_redirection[0], state->t_comands[i], size_copy + 1);
+			state->cmds[i].t_redirection[1] = ft_strdup(state->t_comands[i] + size_copy + ft_strlen(state->t_redirection[state->cmds[i].redirect]));
+
+			printf("\n Diego {%s} \n", state->cmds[i].t_redirection[1]);
+			state->cmds[i].cmd_args = ft_split(state->cmds[i].t_redirection[0], ' ');
+		}
+		else
+		{
+			state->cmds[i].cmd_args = ft_split(state->t_comands[i], ' ');
+		}
 		if (ft_is_special_commands(state->cmds[i].cmd_args[0]) == 7)
 		{
 			state->stop = i + 1;
