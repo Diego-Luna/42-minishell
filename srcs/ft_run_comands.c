@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/11 19:19:45 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/12 17:11:02 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,10 @@ void ft_free_comand(t_state *state)
 		ft_free(state->cmds[i].cmd_args);
 		ft_free(state->cmds[i].cmd);
 		ft_free_table(state->cmds[i].t_redirection);
+		if (state->cmds[i].file > 0 )
+		{
+			close(state->cmds[i].file);
+		}
 		i++;
 	}
 	state->cmds = ft_free(state->cmds);
@@ -175,6 +179,7 @@ void ft_process_comand(t_state	*state)
 	state->index = 0;
 	if (state->stop != STOP)
 	{
+		ft_on_redirection(state);
 		if (ft_run_comand_build(state) == 0)
 		{
 			ft_run_when_is_no_error(state, ft_process_comand_fork);
@@ -194,11 +199,11 @@ void	ft_run_childs(t_state *state)
 		int		fd[2];
 
 		pipe(fd);
-		if (ft_wait_childs_exit(state) == 1)
-		{
-			ft_run_unset_export(state);
-			if (state->error == NO_ERROR)
-			{
+		// if (ft_wait_childs_exit(state) == 1)
+		// {
+			// ft_run_unset_export(state);
+			// if (state->error == NO_ERROR)
+			// {
 				state->pid[state->index] = fork();
 				if (state->pid[state->index] == 0)
 				{
@@ -207,6 +212,7 @@ void	ft_run_childs(t_state *state)
 						close(fd[0]);
 						dup2(fd[1], STDOUT_FILENO);
 					}
+					ft_on_redirection(state);
 					error = ft_execve(state);
 					ft_error_message(M_ERROR_EXECVE_PIPES, state->cmds[state->index].cmd_args, state, N_ERROR_EXECVE_PIPES);
 					exit(error);
@@ -216,8 +222,8 @@ void	ft_run_childs(t_state *state)
 					close(fd[1]);
 					dup2(fd[0], STDIN_FILENO);
 				}
-			}
-		}
+			// }
+		// }
 		state->index++;
 	}
 }
@@ -243,21 +249,21 @@ int	ft_wait_childs_exit(t_state	*state)
 void ft_wait_childs(t_state	*state)
 {
 	state->index = 0;
-	if (state->pipe_stop == -1)
+	// if (state->pipe_stop == -1)
+	// {
+	while (state->index < state->cmd_nmbs)
 	{
-		while (state->index < state->cmd_nmbs)
-		{
-			waitpid(state->pid[state->index], &state->fork_error, 0);
-			state->index++;
-		}
-	}else{
-		while (state->index < state->pipe_stop)
-		{
-			waitpid(state->pid[state->index], &state->fork_error, 0);
-			state->index++;
-		}
-		state->stop = STOP;
+		waitpid(state->pid[state->index], &state->fork_error, 0);
+		state->index++;
 	}
+	// }else{
+	// 	while (state->index < state->pipe_stop)
+	// 	{
+	// 		waitpid(state->pid[state->index], &state->fork_error, 0);
+	// 		state->index++;
+	// 	}
+	// 	state->stop = STOP;
+	// }
 }
 
 // Functions to run more than one, command with pipes.
@@ -290,6 +296,8 @@ void ft_run_comands(t_state	*state)
 	}
 	dup2(state->save_stdout, STDOUT_FILENO);
 	dup2(state->save_stdin, STDIN_FILENO);
+	close(state->save_stdin);
+	close(state->save_stdout);
 }
 
 // It shows us the error, at the same time that it helps us to debug.
@@ -372,6 +380,7 @@ void ft_create_command_array(t_state *state)
 	{
 		state->cmds[i].id = i;
 		state->cmds[i].redirect = -1;
+		state->cmds[i].file = -1;
 		while (ii < 5)
 		{
 			if (ft_str_in_str(state->t_comands[i], state->t_redirection[ii]) >= 0)
@@ -385,26 +394,23 @@ void ft_create_command_array(t_state *state)
 		{
 			state->cmds[i].t_redirection = ft_calloc(sizeof(char *), 3);
 			size_copy = ft_str_in_str(state->t_comands[i], state->t_redirection[state->cmds[i].redirect]);
-
 			state->cmds[i].t_redirection[0] = ft_calloc(sizeof(char *), size_copy);
 			ft_strlcpy(state->cmds[i].t_redirection[0], state->t_comands[i], size_copy + 1);
 			state->cmds[i].t_redirection[1] = ft_strdup(state->t_comands[i] + size_copy + ft_strlen(state->t_redirection[state->cmds[i].redirect]));
-
-			printf("\n Diego {%s} \n", state->cmds[i].t_redirection[1]);
 			state->cmds[i].cmd_args = ft_split(state->cmds[i].t_redirection[0], ' ');
 		}
 		else
 		{
 			state->cmds[i].cmd_args = ft_split(state->t_comands[i], ' ');
 		}
-		if (ft_is_special_commands(state->cmds[i].cmd_args[0]) == 7)
-		{
-			state->stop = i + 1;
-			if (state->pipe_stop == -1 )
-			{
-				state->pipe_stop =  i;
-			}
-		}
+		// if (ft_is_special_commands(state->cmds[i].cmd_args[0]) == 7)
+		// {
+		// 	state->stop = i + 1;
+		// 	if (state->pipe_stop == -1 )
+		// 	{
+		// 		state->pipe_stop =  i;
+		// 	}
+		// }
 		i++;
 	}
 }
