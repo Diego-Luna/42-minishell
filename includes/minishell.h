@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/11 18:24:42 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/13 10:49:53 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,35 @@
 #include "./readline/readline.h"
 #include "./readline/history.h"
 
-typedef struct s_state
+// array comands
+typedef struct va_t_cmd
 {
+	int 	id;
+	char	**cmd_args;
+	char	*cmd;
+	pid_t	pid;
+}			t_cmd;
+
+typedef struct va_states
+{
+	int		infile;
+	int		outfile;
+	char	**envp;
+	char	**t_comands;
+	char	*env_path;
+	char	**cmd_paths;
+	pid_t	pid;
+	pid_t	*pids;
+	int 	*pipe;
+	int		cmd_nmbs;
+	int		pipe_nmbs;
+	int		index;
+	int		error;
+	int		stop;
+	int		save_stdout;
+	int		save_stdin;
 	int		i;
+	t_cmd *cmds;
 }			t_state;
 
 typedef struct s_node
@@ -64,5 +90,11 @@ char	*ft_trim_char(char *str, int ptr);
 int		ft_splitable(char c);
 void	ft_minishell_split(char *args, t_tokens *t);
 void	ft_create_token(char *args, int start, int end, t_tokens *l);
+
+// run comands, and pipe
+char	*ft_find_path(char **envp, t_state *state);
+void	ft_childs(t_state state, char **envp, char *argv);
+void	ft_minishell(t_state	*state, char *line);
+
 
 #endif
