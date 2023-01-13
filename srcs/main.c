@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:01 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/13 10:48:34 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/13 10:52:48 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,13 @@ int	main(int argc, char **argv, char **envp)
 	
 	char *line;
 
-	g_env = ft_crate_env(envp, 0, 0);
-	state.i = 0;
+	// g_env = ft_crate_env(envp, 0, 0);
+	// state.i = 0;
 	ft_signals();
 	while (1)
 	{
     	line = readline("minishell$> ");
 		if (line && *line)
-		{
 			add_history(line);
 		if (!line)
 			break;
