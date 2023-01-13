@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:30:09 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/11 14:07:13 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/11 18:45:37 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ void	ft_parse(char *line, t_tokens *tokens)
 	args = line;
 	tokens = malloc(sizeof(t_tokens));
 	ft_minishell_split(args, tokens);
-	view(*tokens);
-	ft_clean_quotes(tokens->first);
 	view(*tokens);
 	ft_clean_quotes(tokens->first);
 	view(*tokens);
@@ -64,6 +62,7 @@ char	*ft_trim_char(char *str, int ptr)
 			newstr[j++] = str[i];
 		i++;
 	}
+	newstr[j] = '\0';
 	free(str);
 	return(newstr);
 }

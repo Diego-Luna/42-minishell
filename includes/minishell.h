@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/11 13:56:39 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/11 18:24:42 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	dlist_add_back(t_tokens *l, char *elem);
 void	dlist_remove_node(t_node *node);
 void	dlist_free(t_tokens *l);
 void	view(t_tokens l);
+void addNode(t_tokens *l,  char *new_data);
 
 //parsing
 void	ft_parse(char *line, t_tokens *tokens);
