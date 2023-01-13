@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_special_commands.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/11 13:28:30 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/13 11:28:00 by diegofranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -374,11 +374,11 @@ int ft_add_env(t_state *state, char **past)
 // check when it is a command that affects environment variables, so that it is executed only in the parent process
 void	ft_run_unset_export(t_state *state)
 {
-	int error;
+	// int error;
 	int comand;
 	char **run_comand;
 
-	error = 0;
+	// error = 0;
 	run_comand = state->cmds[state->index].cmd_args;
 	comand = ft_is_special_commands(run_comand[0]);
 

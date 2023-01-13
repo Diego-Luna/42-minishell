@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_run_comands.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/12 18:59:43 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/13 11:27:46 by diegofranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,13 +335,13 @@ int	ft_str_in_str(char *str, char *find)
 	int i = 0;
 	int i_save = 0;
 	int ii = 0;
-	int size;
+	// int size;
 
 	if (!find)
 	{
 		return(-1);
 	}
-	size = ft_strlen(find);
+	// size = ft_strlen(find);
 	while (str[i])
 	{
 		ii = 0;
