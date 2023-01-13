@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/12 17:11:02 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/12 18:59:43 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,7 +350,7 @@ int	ft_str_in_str(char *str, char *find)
 		{
 			ii++;
 			i++;
-			if (size == ii)
+			if (!find[ii] && find[ii - 1] == str[i - 1])
 			{
 				return (i_save);
 			}
@@ -390,6 +390,7 @@ void ft_create_command_array(t_state *state)
 			}
 			ii++;
 		}
+		printf(" Diego string{%s} type{%d} \n", state->t_redirection[state->cmds[i].redirect], state->cmds[i].redirect);
 		if (state->cmds[i].redirect >= 0)
 		{
 			state->cmds[i].t_redirection = ft_calloc(sizeof(char *), 3);
@@ -474,7 +475,7 @@ void	ft_minishell(t_state	*state, char *line)
 	if (state->cmd_nmbs > 0 )
 	{
 		ft_run_when_is_no_error(state, ft_create_command_array);
-		ft_run_when_is_no_error(state, ft_run_comands);
+		// ft_run_when_is_no_error(state, ft_run_comands);
 		ft_handle_error_pipe(state);
 		ft_check_exit(state, line);
 	}

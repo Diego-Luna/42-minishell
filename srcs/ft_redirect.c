@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 18:06:30 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/12 18:47:32 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/12 18:52:01 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ int	ft_on_redirection(t_state *state)
 	index = state->index;
 	cmd = &state->cmds[index];
 	type = cmd->redirect;
-
 	if (state->cmds[index].redirect == -1)
 	{
 		return (0);
