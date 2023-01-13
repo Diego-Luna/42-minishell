@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:01 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/30 17:32:27 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/10 15:56:33 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	ft_size_table(char **array)
 // we make free, and we put at the end a null.
 void	*ft_free(void *ptr)
 {
+	// check if have a value, and free value
 	if (ptr)
 	{
 		free(ptr);
@@ -52,14 +53,16 @@ void	**ft_free_table(char **array)
 	{
 		if (array[i])
 		{
+			// We make the value free and we put null, for convenience
 			array[i] = ft_free(array[i]);
 		}
 	}
+	// We make the value free and we put null, for convenience
 	array = ft_free(array);
 	return (NULL);
 }
 
-// falta
+// We create the necessary space to create our genv, and with the option of making the old version free.
 char	**ft_crate_env(char **old, int size, int f)
 {
 	char	**new;
@@ -73,23 +76,10 @@ char	**ft_crate_env(char **old, int size, int f)
 	if (!new)
 		return (NULL);
 	i = 0;
-	if (f < 0)
+	while (old[i])
 	{
-		while (old[i])
-		{
-			new[i] = ft_strdup(old[i]);
-			i++;
-		}
-	}else
-	{
-		while (old[i])
-		{
-			if ( i != f)
-			{
-				new[i] = ft_strdup(old[i]);
-			}
-			i++;
-		}
+		new[i] = ft_strdup(old[i]);
+		i++;
 	}
 	if (f > 0)
 	{
@@ -98,7 +88,7 @@ char	**ft_crate_env(char **old, int size, int f)
 	return (new);
 }
 
-// falta
+// We start the state variables, and those that need mesh, start with NULL
 void	ft_init_state(t_state	*state, char **envp)
 {
 	if (g_env == NULL)
@@ -119,6 +109,7 @@ void	ft_init_state(t_state	*state, char **envp)
 	state->error = NO_ERROR;
 	state->debug = 1;
 	state->pipe_stop = -1;
+	ft_handle_error_pipe(state);
 }
 
 int	main(int argc, char **argv, char **envp)

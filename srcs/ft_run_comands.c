@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/30 18:34:00 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/12 18:59:43 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,29 @@ extern char	**g_env;
 char	*ft_find_env(char **envp, t_state *state, char *path)
 {
 	int	i;
+	int	ii;
+	int	size;
+
+	i = 0;
+	size = ft_size_table(envp);
+	ii = ft_strlen(path);
+	(void)state;
+	while (i < size && ft_strncmp(path, envp[i], ii))
+	{
+		i++;
+	}
+	// if (i == size && !(envp[i][ii] == '=' || envp[i][ii] == '\n' || envp[i][ii] == 0))
+	if (i == size)
+	{
+		// ft_error_message(M_ERROR_FIND_ENV, NULL, state, N_ERROR_FIND_ENV);
+		return (NULL);
+	}
+	return (envp[i] + 5);
+}
+
+int	ft_find_env_index(char **envp, char *path)
+{
+	int	i;
 	int	size;
 
 	i = 0;
@@ -29,10 +52,9 @@ char	*ft_find_env(char **envp, t_state *state, char *path)
 	}
 	if (i == size)
 	{
-		// ft_error_message(M_ERROR_FIND_ENV, NULL, state, N_ERROR_FIND_ENV);
-		return (NULL);
+		return (-1);
 	}
-	return (envp[i] + 5);
+	return (i);
 }
 
 // ft_get_comand_p, is in charge of finding the path of the command, for the execution of the mimes, or returns null.
@@ -113,6 +135,11 @@ void ft_free_comand(t_state *state)
 		}
 		ft_free(state->cmds[i].cmd_args);
 		ft_free(state->cmds[i].cmd);
+		ft_free_table(state->cmds[i].t_redirection);
+		if (state->cmds[i].file > 0 )
+		{
+			close(state->cmds[i].file);
+		}
 		i++;
 	}
 	state->cmds = ft_free(state->cmds);
@@ -121,15 +148,13 @@ void ft_free_comand(t_state *state)
 // free to everything
 void ft_free_all(t_state *state)
 {
-	int i = 0 ;
-	int ii = 0 ;
-
 	state->cmd_paths = (char **)ft_free_table(state->cmd_paths);
 	ft_free_comand(state);
+	ft_free_table(state->t_redirection);
 	state->fork_error = 0;
 }
 
-// falta
+// Command process with flork, for a single command, the child process executes the command and the parent waits until it has finished.
 void	ft_process_comand_fork(t_state *state)
 {
 	int error;
@@ -154,8 +179,11 @@ void ft_process_comand(t_state	*state)
 	state->index = 0;
 	if (state->stop != STOP)
 	{
-		ft_run_unset_export(state);
-		ft_run_when_is_no_error(state, ft_process_comand_fork);
+		ft_on_redirection(state);
+		if (ft_run_comand_build(state) == 0)
+		{
+			ft_run_when_is_no_error(state, ft_process_comand_fork);
+		}
 	}
 }
 
@@ -171,11 +199,11 @@ void	ft_run_childs(t_state *state)
 		int		fd[2];
 
 		pipe(fd);
-		if (ft_wait_childs_exit(state) == 1)
-		{
-			ft_run_unset_export(state);
-			if (state->error == NO_ERROR)
-			{
+		// if (ft_wait_childs_exit(state) == 1)
+		// {
+			// ft_run_unset_export(state);
+			// if (state->error == NO_ERROR)
+			// {
 				state->pid[state->index] = fork();
 				if (state->pid[state->index] == 0)
 				{
@@ -184,6 +212,7 @@ void	ft_run_childs(t_state *state)
 						close(fd[0]);
 						dup2(fd[1], STDOUT_FILENO);
 					}
+					ft_on_redirection(state);
 					error = ft_execve(state);
 					ft_error_message(M_ERROR_EXECVE_PIPES, state->cmds[state->index].cmd_args, state, N_ERROR_EXECVE_PIPES);
 					exit(error);
@@ -193,8 +222,8 @@ void	ft_run_childs(t_state *state)
 					close(fd[1]);
 					dup2(fd[0], STDIN_FILENO);
 				}
-			}
-		}
+			// }
+		// }
 		state->index++;
 	}
 }
@@ -202,48 +231,44 @@ void	ft_run_childs(t_state *state)
 // It is in charge of checking when an exit is used, with the pipes, if there is one we save the number of the command and return 0, if not 1
 int	ft_wait_childs_exit(t_state	*state)
 {
-	if (state->stop > STOP)
-	{
-		state->stop--;
-	}
-	if (state->stop == STOP)
-	{
-		state->pipe_stop = state->index + 1;
-		state->stop = NO_STOP;
-	}
-	if (state->stop == NO_ERROR)
+	if (state->pipe_stop == -1)
 	{
 		return (1);
 	}
-	return (0);
+	else if (state->index < state->pipe_stop)
+	{
+		return (1);
+	}
+	else
+	{
+		return (0);
+	}
+
 }
 
 void ft_wait_childs(t_state	*state)
 {
 	state->index = 0;
-	if (state->pipe_stop == -1)
+	// if (state->pipe_stop == -1)
+	// {
+	while (state->index < state->cmd_nmbs)
 	{
-		while (state->index < state->cmd_nmbs)
-		{
-			waitpid(state->pid[state->index], &state->fork_error, 0);
-			state->index++;
-		}
-	}else{
-		while (state->pipe_stop != 0)
-		{
-			waitpid(state->pid[state->index], &state->fork_error, 0);
-			state->index++;
-			state->pipe_stop--;
-		}
-		exit(100);
+		waitpid(state->pid[state->index], &state->fork_error, 0);
+		state->index++;
 	}
+	// }else{
+	// 	while (state->index < state->pipe_stop)
+	// 	{
+	// 		waitpid(state->pid[state->index], &state->fork_error, 0);
+	// 		state->index++;
+	// 	}
+	// 	state->stop = STOP;
+	// }
 }
 
 // Functions to run more than one, command with pipes.
 void ft_process_comands(t_state	*state)
 {
-	pid_t	pid;
-
 	state->pid = ft_calloc(sizeof(pid_t), state->cmd_nmbs);
 	if (!state->pid)
 	{
@@ -252,10 +277,6 @@ void ft_process_comands(t_state	*state)
 	state->index = 0;
 	ft_run_when_is_no_error(state, ft_run_childs);
 	ft_run_when_is_no_error(state, ft_wait_childs);
-	if (state->error == 25600)
-	{
-		state->stop = STOP;
-	}
 	ft_free(state->pid);
 }
 
@@ -275,6 +296,8 @@ void ft_run_comands(t_state	*state)
 	}
 	dup2(state->save_stdout, STDOUT_FILENO);
 	dup2(state->save_stdin, STDIN_FILENO);
+	close(state->save_stdin);
+	close(state->save_stdout);
 }
 
 // It shows us the error, at the same time that it helps us to debug.
@@ -307,23 +330,140 @@ void	ft_run_when_is_no_error(t_state *state, void (*f)(t_state *state))
 	}
 }
 
+int	ft_str_in_str(char *str, char *find)
+{
+	int i = 0;
+	int i_save = 0;
+	int ii = 0;
+	int size;
+
+	if (!find)
+	{
+		return(-1);
+	}
+	size = ft_strlen(find);
+	while (str[i])
+	{
+		ii = 0;
+		i_save = i;
+		while (str[i] == find[ii])
+		{
+			ii++;
+			i++;
+			if (!find[ii] && find[ii - 1] == str[i - 1])
+			{
+				return (i_save);
+			}
+		}
+		i = i_save;
+		i++;
+	}
+	return (-1);
+}
+
 // It is in charge of creating the array of the commanded functions
 void ft_create_command_array(t_state *state)
 {
 	int i = 0;
-	state->env_path = ft_find_env(g_env, state, "PATH");
-	state->cmd_paths = ft_split(state->env_path, ':');
+	int ii = 0;
+	int	size_copy = 0;
+
+	state->t_redirection = (char **)ft_calloc(sizeof(char *), 5);
+	state->t_redirection[0] =  ft_strdup("<");
+	state->t_redirection[1] =  ft_strdup(">");
+	state->t_redirection[2] =  ft_strdup("<<");
+	state->t_redirection[3] =  ft_strdup(">>");
+	state->t_redirection[4] =  0;
 	state->cmds = ft_calloc(sizeof(t_cmd), state->cmd_nmbs);
 	state->t_comands = ft_split(state->line, '|');
 	while (i < state->cmd_nmbs)
 	{
 		state->cmds[i].id = i;
-		state->cmds[i].cmd_args = ft_split(state->t_comands[i], ' ');
-		if (ft_is_special_commands(state->cmds[i].cmd_args[0]) == 7)
+		state->cmds[i].redirect = -1;
+		state->cmds[i].file = -1;
+		while (ii < 5)
 		{
-			state->stop = i + 1;
+			if (ft_str_in_str(state->t_comands[i], state->t_redirection[ii]) >= 0)
+			{
+				state->cmds[i].redirect = ii;
+				ii = 6;
+			}
+			ii++;
+		}
+		printf(" Diego string{%s} type{%d} \n", state->t_redirection[state->cmds[i].redirect], state->cmds[i].redirect);
+		if (state->cmds[i].redirect >= 0)
+		{
+			state->cmds[i].t_redirection = ft_calloc(sizeof(char *), 3);
+			size_copy = ft_str_in_str(state->t_comands[i], state->t_redirection[state->cmds[i].redirect]);
+			state->cmds[i].t_redirection[0] = ft_calloc(sizeof(char *), size_copy);
+			ft_strlcpy(state->cmds[i].t_redirection[0], state->t_comands[i], size_copy + 1);
+			state->cmds[i].t_redirection[1] = ft_strdup(state->t_comands[i] + size_copy + ft_strlen(state->t_redirection[state->cmds[i].redirect]));
+			state->cmds[i].cmd_args = ft_split(state->cmds[i].t_redirection[0], ' ');
+		}
+		else
+		{
+			state->cmds[i].cmd_args = ft_split(state->t_comands[i], ' ');
+		}
+		// if (ft_is_special_commands(state->cmds[i].cmd_args[0]) == 7)
+		// {
+		// 	state->stop = i + 1;
+		// 	if (state->pipe_stop == -1 )
+		// 	{
+		// 		state->pipe_stop =  i;
+		// 	}
+		// }
+		i++;
+	}
+}
+
+int ft_str_is_a_number(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (ft_isdigit(str[i]) == 0)
+		{
+			return (0);
 		}
 		i++;
+	}
+	return (1);
+}
+
+void	ft_check_exit(t_state	*state, char *line)
+{
+	int i;
+	char **table;
+
+	if (state->pipe_stop == -1)
+	{
+		ft_free_all(state);
+	}
+	else
+	{
+		i = ft_size_table(state->cmds[state->pipe_stop].cmd_args);
+		if (i == 2)
+		{
+			table = state->cmds[state->pipe_stop].cmd_args;
+			if (ft_str_is_a_number(table[1]) == 1)
+			{
+				i = ft_atoi(table[1]);
+			}
+			else
+			{
+				ft_error_message(M_ERROR_NUMERIC_ARGUMENTS, &table[1], state, N_ERROR_NUMERIC_ARGUMENTS);
+			}
+		}
+		else if (i > 2)
+		{
+			table = state->cmds[state->pipe_stop].cmd_args;
+			ft_error_message(M_ERROR_MANY_ARGUMENTS, table, state, N_ERROR_MANY_ARGUMENTS);
+		}
+		ft_free_all(state);
+		free(line);
+		exit(i);
 	}
 }
 
@@ -335,7 +475,8 @@ void	ft_minishell(t_state	*state, char *line)
 	if (state->cmd_nmbs > 0 )
 	{
 		ft_run_when_is_no_error(state, ft_create_command_array);
-		ft_run_when_is_no_error(state, ft_run_comands);
-		ft_free_all(state);
+		// ft_run_when_is_no_error(state, ft_run_comands);
+		ft_handle_error_pipe(state);
+		ft_check_exit(state, line);
 	}
 }
