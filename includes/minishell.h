@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/12 17:02:58 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/13 11:37:06 by diegofranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,40 @@ typedef struct va_states
 	t_cmd *cmds;
 }			t_state;
 
+typedef struct s_node
+{
+	char			*content;
+	struct s_node	*next;
+	struct s_node	*prev;
+}	t_node;
+
+typedef struct s_tokens
+{
+	t_node	*first;
+	t_node	*last;
+}	t_tokens;
+
 // --> signals
 void	ft_signals();
 void    ft_disable_echo(void);
 void	ft_sigint_handler();
 
+//dlist
+void	dlist_add_back(t_tokens *l, char *elem);
+void	dlist_remove_node(t_node *node);
+void	dlist_free(t_tokens *l);
+void	view(t_tokens l);
+void 	addNode(t_tokens *l,  char *new_data);
+
+//parsing
+void	ft_parse(char *line, t_tokens *tokens);
+void	ft_clean_quotes(t_node *n);
+char	*ft_trim_char(char *str, int ptr);
+
+//split
+int		ft_splitable(char c);
+void	ft_minishell_split(char *args, t_tokens *t);
+void	ft_create_token(char *args, int start, int end, t_tokens *l);
 
 // --> run comands, and pipe
 char	*ft_find_env(char **envp, t_state *state, char *path);

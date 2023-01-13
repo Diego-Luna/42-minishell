@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+         #
+#    By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 11:24:49 by mtrembla          #+#    #+#              #
-#    Updated: 2023/01/12 13:03:09 by dluna-lo         ###   ########.fr        #
+#    Updated: 2023/01/13 11:34:41 by diegofranci      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,8 @@ NAME = minishell
 SRC =	main.c \
 		signals.c \
 		parsing.c \
+		dlist.c \
+		split.c \
 		ft_run_comands.c \
 		ft_special_commands.c \
 		ft_redirect.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:01 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/10 15:56:33 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/13 11:36:59 by diegofranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,27 +114,29 @@ void	ft_init_state(t_state	*state, char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_state	state;
+	// t_state		state;
+	t_tokens	tokens;
 
 	(void)argc;
 	(void)argv;
+	(void)envp;
+	// state.i = 1;
+	
 	char *line;
 
-	g_env = NULL;
-	ft_init_state(&state, envp);
+	g_env = ft_crate_env(envp, 0, 0);
+	state.i = 0;
 	ft_signals();
 	while (state.stop != STOP)
 	{
     	line = readline("minishell$> ");
+		if (line && *line)
+			add_history(line);
 		if (!line)
 			break;
-		if (line && *line)
-		{
-			add_history(line);
-			state.error = 0 ;
-			ft_minishell(&state, line);
-		}
-		free(line);
+		ft_parse(line, &tokens);
+		free(line);	
 	}
+	rl_clear_history();
     return (0);
 }
