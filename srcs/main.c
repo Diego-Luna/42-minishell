@@ -6,7 +6,7 @@
 /*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:01 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/13 11:44:28 by diegofranci      ###   ########.fr       */
+/*   Updated: 2023/01/14 10:54:00 by diegofranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,13 +115,13 @@ void	ft_init_state(t_state	*state, char **envp)
 int	main(int argc, char **argv, char **envp)
 {
 	t_state		state;
-	t_tokens	tokens;
+	// t_tokens	tokens;
 
 	(void)argc;
 	(void)argv;
 	(void)envp;
 	// state.i = 1;
-	
+
 	char *line;
 
 	ft_init_state(&state, envp);
@@ -137,8 +137,8 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (!line)
 			break;
-		ft_parse(line, &tokens);
-		free(line);	
+		// ft_parse(line, &tokens);
+		free(line);
 	}
 	rl_clear_history();
     return (0);

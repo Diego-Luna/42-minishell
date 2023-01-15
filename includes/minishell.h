@@ -6,7 +6,7 @@
 /*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/13 11:37:06 by diegofranci      ###   ########.fr       */
+/*   Updated: 2023/01/14 12:37:31 by diegofranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,6 @@ void	ft_minishell(t_state	*state, char *line);
 
 // --> ENV
 char	**ft_crate_env(char **old, int size, int f);
-void	ft_run_unset_export(t_state *state);
 char	*ft_get_comand_p(char **paths, char *cmd);
 int		ft_find_env_index(char **envp, char *path);
 
@@ -152,6 +151,7 @@ int	ft_size_table(char **array);
 // --> free
 void	*ft_free(void *ptr);
 void	**ft_free_table(char **array);
+void	ft_close_fd(void);
 
 // --> Error
 void ft_error_message(char *str, char **table, t_state *state, int error);
@@ -161,8 +161,6 @@ void	ft_run_when_is_no_error(t_state *state, void (*f)(t_state *state));
 // controler
 int	ft_run_comand_build(t_state *state);
 
-int	ft_wait_childs_exit(t_state	*state);
-int ft_is_special_commands(char	*comand);
 int ft_execve(t_state *state);
 int ft_delate_env(t_state *state, char **env_name);
 int ft_add_env(t_state *state, char **past);
@@ -171,5 +169,7 @@ void	ft_handle_error_pipe(t_state *state);
 // --> redirection
 int	ft_on_redirection(t_state *state);
 
+// str
+char *ft_clean_str(char *str);
 
 #endif
