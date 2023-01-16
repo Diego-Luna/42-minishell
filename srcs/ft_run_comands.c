@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_run_comands.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/14 12:22:05 by diegofranci      ###   ########.fr       */
+/*   Updated: 2023/01/16 15:17:59 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -392,7 +392,6 @@ void ft_create_command_array(t_state *state)
 		state->cmds[i].redirect = -1;
 		state->cmds[i].file = -1;
 		ft_save_type_redirection(state, i);
-		printf("\n Diego {%d} \n", state->cmds[i].redirect);
 		if (state->cmds[i].redirect >= 0)
 		{
 			ft_cmd_args_in_redirection(state, i);
@@ -427,14 +426,29 @@ void	ft_check_exit(t_state	*state)
 	ft_close_fd();
 }
 
+void ft_add_info_comands(t_state *state)
+{
+	int i = 0;
+
+	while (i < state->cmd_nmbs)
+	{
+		 if (state->cmds[i].redirect == 2)
+		 {
+			ft_create_herodoc_(state, i);
+		 }
+		i++;
+	}
+}
+
 // We check the number of commands sent and create our array, with the information of each one
 void	ft_minishell(t_state	*state, char *line)
 {
 	state->cmd_nmbs = ft_number_comands(line);
 	state->line = line;
-	if (state->cmd_nmbs > 0 )
+	if (state->cmd_nmbs > 0)
 	{
 		ft_run_when_is_no_error(state, ft_create_command_array);
+		ft_run_when_is_no_error(state, ft_add_info_comands);
 		ft_run_when_is_no_error(state, ft_run_comands);
 		ft_handle_error_pipe(state);
 		ft_check_exit(state);

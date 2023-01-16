@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_special_commands.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/14 11:20:08 by diegofranci      ###   ########.fr       */
+/*   Updated: 2023/01/16 14:50:26 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ void	ft_comand_pwd(t_state *state)
 	{
 		ft_error_message(M_ERROR_PATH, state->t_comands, state, N_ERROR_PATH);
 	}
-	ft_printf("%s\n", str_tem);
+	printf("%s\n", str_tem);
 }
 
 // Our own execve
@@ -204,6 +204,7 @@ int ft_execve(t_state *state)
 		ft_error_message(M_ERROR_PATH, state->t_comands, state, N_ERROR_PATH);
 		exit(1);
 	}
+	ft_close_fd();
 	error = execve(state->cmds[state->index].cmd, state->cmds[state->index].cmd_args, g_env);
 	return (error);
 }

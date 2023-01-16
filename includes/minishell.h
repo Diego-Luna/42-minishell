@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/14 12:37:31 by diegofranci      ###   ########.fr       */
+/*   Updated: 2023/01/16 15:17:02 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ void	ft_handle_error_pipe(t_state *state);
 
 // --> redirection
 int	ft_on_redirection(t_state *state);
+void	ft_create_herodoc_(t_state *state, int index);
 
 // str
 char *ft_clean_str(char *str);
