@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/13 10:53:05 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/16 13:07:35 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ char	*ft_trim_char(char *str, int ptr);
 int		ft_splitable(char c);
 void	ft_minishell_split(char *args, t_tokens *t);
 void	ft_create_token(char *args, int start, int end, t_tokens *l);
+int	ft_quotes(char *args, int i);
 
 // run comands, and pipe
 char	*ft_find_path(char **envp, t_state *state);
