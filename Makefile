@@ -6,7 +6,7 @@
 #    By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 11:24:49 by mtrembla          #+#    #+#              #
-#    Updated: 2023/01/13 10:51:01 by mtrembla         ###   ########.fr        #
+#    Updated: 2023/01/16 11:17:28 by mtrembla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ $(ODIR)/%.o:$(SDIR)/%.c
 # @$(MAKE) -C ./includes/readline ./configure
 # @$(MAKE) -C ./includes/readline make
 $(NAME): $(ODIR) $(OFIX)
-	@$(MAKE) -C ./includes/libft
+	@$(MAKE) all -C ./includes/libft
 	@$(CC) $(CFLAGS) $(OFIX) -o $(NAME) $(LIBFT) $(READLINE)
 
 $(ODIR):
@@ -51,8 +51,8 @@ clean:
 	@echo "🧹"
 
 fclean: clean
-	@$(MAKE) all -C ./includes/libft fclean
 	@$(RM) $(NAME)
+#	@$(MAKE) fclean -C ./includes/libft
 
 re: fclean all
 

@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:58:06 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/13 11:25:50 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/13 12:55:27 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	ft_minishell_split(char *args, t_tokens *t)
 				quote = args[i++];
 				while(args[i] && args[i++] != quote)
 				{}
+				//put in separate function and check unclosed quotes
 			}
 		if (ft_splitable(args[i]))
 		{
