@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:58:40 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/13 12:12:08 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/16 13:34:57 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,6 @@ void	dlist_add_back(t_tokens *l, char *elem)
 	else
 		l->first = new;
 	l->last = new;
-}
-
-void addNode(t_tokens *l,  char *new_data) {
-    t_node* new_node = (t_node*) malloc(sizeof(t_node));
-
-    new_node->content = new_data;
-    new_node->next = NULL;
-    if (l->first == NULL) {
-        new_node->prev = NULL;
-        l->first = new_node;
-        return;
-    }
-    while (l->last->next != NULL)
-        l->last = l->last->next;
-    l->last->next = new_node;
-    new_node->prev = l->last;
-    return;
 }
 
 void	dlist_remove_node(t_node *node) 

@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/16 13:07:35 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/16 14:36:10 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void	dlist_add_back(t_tokens *l, char *elem);
 void	dlist_remove_node(t_node *node);
 void	dlist_free(t_tokens *l);
 void	view(t_tokens l);
-void 	addNode(t_tokens *l,  char *new_data);
 
 //parsing
 void	ft_parse(char *line, t_tokens *tokens);
@@ -89,8 +88,8 @@ char	*ft_trim_char(char *str, int ptr);
 //split
 int		ft_splitable(char c);
 void	ft_minishell_split(char *args, t_tokens *t);
-void	ft_create_token(char *args, int start, int end, t_tokens *l);
-int	ft_quotes(char *args, int i);
+int		ft_quotes(char *args, int i);
+int		ft_create_token(char *args, int i, int start, t_tokens *t);
 
 // run comands, and pipe
 char	*ft_find_path(char **envp, t_state *state);
