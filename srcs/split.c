@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:58:06 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/16 14:38:27 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/17 16:01:17 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	ft_quotes(char *args, int i)
 		return(i + 1);
 	}
 	printf("unclosed quotes\n");
-	exit(0);
+	//insert exit
 }
 
 int	ft_create_token(char *args, int i, int start, t_tokens *t)

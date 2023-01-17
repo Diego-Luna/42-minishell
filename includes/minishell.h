@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/16 14:36:10 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/17 16:03:48 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	view(t_tokens l);
 
 //parsing
 void	ft_parse(char *line, t_tokens *tokens);
-void	ft_clean_quotes(t_node *n);
+char	*ft_clean_quotes(char *old_str);
 char	*ft_trim_char(char *str, int ptr);
 
 //split

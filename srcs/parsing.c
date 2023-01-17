@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:30:09 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/13 11:49:11 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/17 16:03:22 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,27 +24,26 @@ void	ft_parse(char *line, t_tokens *tokens)
 	free(tokens);
 }
 
-void	ft_clean_quotes(t_node *n)
+char *ft_clean_quotes(char *old_str)
 {
-	char *str = n->content;
 	char	quote;
 	int	i = 0;
 
-	while(str[i])
+	while(old_str[i])
 	{
-		if (str[i] == '\'' || str[i] == '\"')
+		if (old_str[i] == '\'' || old_str[i] == '\"')
 		{
-			quote = str[i];
-			str = ft_trim_char(str, i);
-			while(str[i] && str[i] != quote)
+			quote = old_str[i];
+			old_str = ft_trim_char(old_str, i);
+			while(old_str[i] && old_str[i] != quote)
 				i++;
-			if (str[i])
-			str = ft_trim_char(str, i);
+			if (old_str[i])
+				old_str = ft_trim_char(old_str, i);
 		}
 		else
-		i++;
+			i++;
 	}
-	n->content = str;
+	return (old_str);
 }
 
 char	*ft_trim_char(char *str, int ptr)
