@@ -6,7 +6,7 @@
 #    By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 11:24:49 by mtrembla          #+#    #+#              #
-#    Updated: 2023/01/13 11:34:41 by diegofranci      ###   ########.fr        #
+#    Updated: 2023/01/14 12:37:56 by diegofranci      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,8 @@ SRC =	main.c \
 		ft_run_comands.c \
 		ft_special_commands.c \
 		ft_redirect.c \
+		free.c \
+		str_utils.c \
 
 OBJ = $(SRC:.c=.o)
 
