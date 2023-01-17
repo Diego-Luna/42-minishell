@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:01 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/17 12:01:13 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/17 15:29:15 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,31 +115,28 @@ void	ft_init_state(t_state	*state, char **envp)
 int	main(int argc, char **argv, char **envp)
 {
 	t_state		state;
-	// t_tokens	tokens;
+	char *line;
+
 
 	(void)argc;
 	(void)argv;
-	(void)envp;
-	// state.i = 1;
-
-	char *line;
-
 	ft_init_state(&state, envp);
 	ft_signals();
 	while (state.stop != STOP)
 	{
-    	line = readline("minishell$> ");
+    line = readline("minishell$> ");
 		if (line && *line)
 		{
 			add_history(line);
-			// ft_parse(line, &tokens);
 			state.error = 0 ;
 			ft_minishell(&state, line);
 		}
 		if (!line)
+		{
 			break;
+		}
 		free(line);
 	}
 	rl_clear_history();
-    return (0);
+  return (0);
 }

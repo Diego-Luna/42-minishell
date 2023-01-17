@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/17 15:21:34 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/17 15:47:30 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,12 +187,13 @@ void	ft_comand_pwd(t_state *state)
 {
 	char *str_tem = NULL;
 
-	str_tem = ft_find_env(g_env, "PWD");
+	str_tem = ft_find_env(g_env, "PWD=");
 	if (!str_tem)
 	{
 		ft_error_message(M_ERROR_PATH, state->t_comands, state, N_ERROR_PATH);
+		return;
 	}
-	printf("%s\n", str_tem);
+	printf("/%s\n", str_tem);
 }
 
 // Our own execve
@@ -205,6 +206,7 @@ int ft_execve(t_state *state)
 
  	if(access(state->cmds[i].cmd_args[0], X_OK | F_OK) != -1)
 	{
+		ft_close_fd();
 		error = execve(state->cmds[i].cmd_args[0], state->cmds[i].cmd_args, g_env);
 		return (error);
 	}
@@ -267,6 +269,7 @@ int	ft_run_comand_build(t_state *state)
 	{
 		return (0);
 	}
+	ft_close_fd();
 	return (1);
 }
 
