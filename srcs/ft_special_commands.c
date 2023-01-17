@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/16 19:02:15 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/17 15:21:34 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,14 @@ int ft_execve(t_state *state)
 {
 	int error;
 	char *erro_path;
+	int i = state->index;
+	// char *point;
 
+ 	if(access(state->cmds[i].cmd_args[0], X_OK | F_OK) != -1)
+	{
+		error = execve(state->cmds[i].cmd_args[0], state->cmds[i].cmd_args, g_env);
+		return (error);
+	}
 	if (ft_find_env(g_env, "PATH=") == NULL)
 	{
 		erro_path = ft_strdup("PATH=");
@@ -210,14 +217,14 @@ int ft_execve(t_state *state)
 	}
 	state->env_path = ft_find_env(g_env, "PATH=");
 	state->cmd_paths = ft_split(state->env_path, ':');
-	state->cmds[state->index].cmd = ft_get_comand_p(state->cmd_paths, state->cmds[state->index].cmd_args[0]);
-	if (!state->cmds[state->index].cmd)
+	state->cmds[i].cmd = ft_get_comand_p(state->cmd_paths, state->cmds[i].cmd_args[0]);
+	if (!state->cmds[i].cmd)
 	{
-		ft_error_message(M_ERROR_PATH, state->t_comands, state, N_ERROR_PATH);
+		ft_error_message(M_ERROR_PATH, state->cmds[i].cmd_args, state, N_ERROR_PATH);
 		exit(1);
 	}
 	ft_close_fd();
-	error = execve(state->cmds[state->index].cmd, state->cmds[state->index].cmd_args, g_env);
+	error = execve(state->cmds[i].cmd, state->cmds[i].cmd_args, g_env);
 	return (error);
 }
 
@@ -331,9 +338,11 @@ void	ft_handle_error_pipe(t_state *state)
 	}
 	status = ft_itoa(state->fork_error);
 	tem_comand = calloc(sizeof(char *), 3);
+	tem_comand[0] = ft_strdup("env");
 	tem_comand[1] = ft_strjoin("?=", status);
 	ft_add_env(state, tem_comand);
 	ft_free(status);
+	ft_free(tem_comand[0]);
 	ft_free(tem_comand[1]);
 	ft_free(tem_comand);
 }

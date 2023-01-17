@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/16 18:18:28 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/17 12:35:16 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -438,6 +438,7 @@ void ft_add_info_comands(t_state *state)
 		ii = 0;
 		while (cmd->cmd_args[ii])
 		{
+			cmd->cmd_args[ii] = ft_clean_quotes(cmd->cmd_args[ii]);
 			if (cmd->cmd_args[ii][0] == '$' && ft_strlen(cmd->cmd_args[ii]) > 1)
 			{
 				path = ft_strjoin(cmd->cmd_args[ii] + 1, "=");

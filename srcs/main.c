@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:01 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/15 19:29:48 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/17 12:01:13 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,12 +132,12 @@ int	main(int argc, char **argv, char **envp)
 		if (line && *line)
 		{
 			add_history(line);
+			// ft_parse(line, &tokens);
 			state.error = 0 ;
 			ft_minishell(&state, line);
 		}
 		if (!line)
 			break;
-		// ft_parse(line, &tokens);
 		free(line);
 	}
 	rl_clear_history();
