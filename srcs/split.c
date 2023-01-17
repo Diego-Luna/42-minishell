@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:58:06 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/13 11:25:50 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/17 16:01:17 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,33 +21,52 @@ int	ft_splitable(char c)
 
 void	ft_minishell_split(char *args, t_tokens *t)
 {
-	int i = 0;
-	int	start = 0;
-	char quote;
+	int i;
+	int	start;
 
+	i = 0;
+	start = 0;
 	while(args[i])
 	{
 		while (args[i] == '\"' || args[i] == '\'')
-			{
-				quote = args[i++];
-				while(args[i] && args[i++] != quote)
-				{}
-			}
+				i = ft_quotes(args, i);
 		if (ft_splitable(args[i]))
 		{
-			if(args[i - 1] && !ft_splitable(args[i - 1]))
-			{
-				dlist_add_back(t, ft_substr(args, start, (i - start)));
-				start = i;
-			}
-			if(args[i + 1] && args[i] == args[i + 1])
-				i++;
-			if (args[i] != ' ')
-			dlist_add_back(t, ft_substr(args, start, (i - start + 1)));
+			i = ft_create_token(args, i, start, t);
 			start = i + 1;
 		}
-		i++;
+		if(args[i])
+			i++;
 	}
 	if(!ft_splitable(args[i - 1]))
 		dlist_add_back(t, ft_substr(args, start, (ft_strlen(args))));
+}
+
+int	ft_quotes(char *args, int i)
+{
+	char	quote;
+	
+	quote = args[i++];
+	while (args[i])
+	{
+		while (args[i] != quote)
+		i++;
+		return(i + 1);
+	}
+	printf("unclosed quotes\n");
+	//insert exit
+}
+
+int	ft_create_token(char *args, int i, int start, t_tokens *t)
+{
+	if(args[i - 1] && !ft_splitable(args[i - 1]))
+	{
+		dlist_add_back(t, ft_substr(args, start, (i - start)));
+		start = i;
+	}
+	if(args[i + 1] && args[i] == args[i + 1])
+		i++;
+	if (args[i] != ' ')
+		dlist_add_back(t, ft_substr(args, start, (i - start + 1)));
+	return (i);
 }

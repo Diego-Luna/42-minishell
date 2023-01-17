@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:30:09 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/17 12:12:21 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/17 16:03:22 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,8 @@ void	ft_parse(char *line, t_tokens *tokens)
 	free(tokens);
 }
 
-// void	ft_clean_quotes(t_node *n)
 char *ft_clean_quotes(char *old_str)
 {
-	// char *str = n->content;
-	// char *str;
 	char	quote;
 	int	i = 0;
 
@@ -39,20 +36,13 @@ char *ft_clean_quotes(char *old_str)
 			quote = old_str[i];
 			old_str = ft_trim_char(old_str, i);
 			while(old_str[i] && old_str[i] != quote)
-			{
 				i++;
-			}
 			if (old_str[i])
-			{
 				old_str = ft_trim_char(old_str, i);
-			}
 		}
 		else
-		{
 			i++;
-		}
 	}
-	// n->content = str;
 	return (old_str);
 }
 

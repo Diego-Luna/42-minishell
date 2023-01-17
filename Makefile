@@ -6,7 +6,7 @@
 #    By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 11:24:49 by mtrembla          #+#    #+#              #
-#    Updated: 2023/01/14 12:37:56 by diegofranci      ###   ########.fr        #
+#    Updated: 2023/01/16 11:17:28 by mtrembla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ $(ODIR)/%.o:$(SDIR)/%.c
 # @echo "\033[92m.\033[0m\c"
 
 $(NAME): $(ODIR) $(OFIX)
-	@$(MAKE) -C ./includes/libft
+	@$(MAKE) all -C ./includes/libft
 	@$(CC) $(CFLAGS) $(OFIX) -o $(NAME) $(LIBFT) $(READLINE)
 
 $(ODIR):
@@ -53,8 +53,8 @@ clean:
 	@echo "🧹"
 
 fclean: clean
-	@$(MAKE) all -C ./includes/libft fclean
 	@$(RM) $(NAME)
+#	@$(MAKE) fclean -C ./includes/libft
 
 re: fclean all
 
