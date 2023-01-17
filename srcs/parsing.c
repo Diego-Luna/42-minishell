@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:30:09 by mtrembla          #+#    #+#             */
 /*   Updated: 2023/01/17 16:03:22 by mtrembla         ###   ########.fr       */
@@ -52,14 +52,17 @@ char	*ft_trim_char(char *str, int ptr)
 	int	i = 0;
 	int	j = 0;
 
-	newstr = malloc(sizeof(char *) * ft_strlen(str));
+	// newstr = malloc(sizeof(char *) * ft_strlen(str));
+	newstr = ft_calloc(sizeof(char), ft_strlen(str));
 	while (str[i])
 	{
 		if (i != ptr)
+		{
 			newstr[j++] = str[i];
+		}
 		i++;
 	}
 	newstr[j] = '\0';
-	free(str);
+	ft_free(str);
 	return(newstr);
 }

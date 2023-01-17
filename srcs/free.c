@@ -1,35 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/17 14:33:12 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/10 18:53:54 by dluna-lo         ###   ########.fr       */
+/*   Created: 2023/01/14 10:47:26 by diegofranci       #+#    #+#             */
+/*   Updated: 2023/01/15 19:26:27 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "../includes/minishell.h"
 
-char	*ft_strdup(const char *s1)
+// The global variable that stores environment variables
+extern char	**g_env;
+
+void	ft_close_fd(void)
 {
-	int		str_len;
-	int		i;
-	char	*buffer;
+	int	i;
 
-	str_len = 0;
-	i = 0;
-	while (s1[str_len])
-		str_len++;
-	buffer = (char *)malloc(sizeof(*buffer) * (str_len + 1));
-	if (!buffer)
-		return (NULL);
-	while (i < str_len)
+	i = 3;
+	while (i < 200)
 	{
-		buffer[i] = s1[i];
+		close(i);
 		i++;
 	}
-	buffer[i] = '\0';
-	return (buffer);
 }

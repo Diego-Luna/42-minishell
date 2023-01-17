@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+         #
+#    By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 11:24:49 by mtrembla          #+#    #+#              #
 #    Updated: 2023/01/16 11:17:28 by mtrembla         ###   ########.fr        #
@@ -18,6 +18,10 @@ SRC =	main.c \
 		dlist.c \
 		split.c \
 		ft_run_comands.c \
+		ft_special_commands.c \
+		ft_redirect.c \
+		free.c \
+		str_utils.c \
 
 OBJ = $(SRC:.c=.o)
 
@@ -26,17 +30,15 @@ ODIR = obj
 OFIX = $(addprefix $(ODIR)/, $(OBJ))
 
 CC = gcc
-FLAGS = -Wall -Wextra -Werror -g
+CFLAGS =  -g -Wall -Wextra -Werror
 RM = rm -fr
 LIBFT = ./includes/libft/libft.a
 READLINE = ./includes/readline/libreadline.a ./includes/readline/libhistory.a -lreadline -lcurses
 
 $(ODIR)/%.o:$(SDIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
-	@echo "\033[92m.\033[0m\c"
+# @echo "\033[92m.\033[0m\c"
 
-# @$(MAKE) -C ./includes/readline ./configure
-# @$(MAKE) -C ./includes/readline make
 $(NAME): $(ODIR) $(OFIX)
 	@$(MAKE) all -C ./includes/libft
 	@$(CC) $(CFLAGS) $(OFIX) -o $(NAME) $(LIBFT) $(READLINE)
