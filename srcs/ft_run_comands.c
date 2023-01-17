@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/16 15:17:59 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/16 18:18:28 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 extern char	**g_env;
 
 // This function is in charge of finding the PATH variable, and returning its value, if there is an error it puts it in the global variable
-char	*ft_find_env(char **envp, t_state *state, char *path)
+char	*ft_find_env(char **envp, char *path)
 {
 	int	i;
 	int	ii;
@@ -25,7 +25,6 @@ char	*ft_find_env(char **envp, t_state *state, char *path)
 	i = 0;
 	size = ft_size_table(envp);
 	ii = ft_strlen(path);
-	(void)state;
 	while (i < size && ft_strncmp(path, envp[i], ii))
 	{
 		i++;
@@ -429,13 +428,36 @@ void	ft_check_exit(t_state	*state)
 void ft_add_info_comands(t_state *state)
 {
 	int i = 0;
+	int ii = 0;
+	t_cmd *cmd;
+	char *path;
 
 	while (i < state->cmd_nmbs)
 	{
-		 if (state->cmds[i].redirect == 2)
-		 {
+		cmd = &state->cmds[i];
+		ii = 0;
+		while (cmd->cmd_args[ii])
+		{
+			if (cmd->cmd_args[ii][0] == '$' && ft_strlen(cmd->cmd_args[ii]) > 1)
+			{
+				path = ft_strjoin(cmd->cmd_args[ii] + 1, "=");
+				if (ft_find_env(g_env, path) != NULL)
+				{
+					cmd->cmd_args[ii] = ft_free(cmd->cmd_args[ii]);
+					cmd->cmd_args[ii] = ft_calloc(sizeof(char), ft_strlen(ft_find_env(g_env, path)));
+					ft_strlcat(cmd->cmd_args[ii], ft_find_env(g_env, path), ft_strlen(ft_find_env(g_env, path)));
+				}
+				else
+				{
+					cmd->cmd_args[ii] = ft_free(cmd->cmd_args[ii]);
+				}
+			}
+			ii++;
+		}
+		if (cmd->redirect == 2)
+		{
 			ft_create_herodoc_(state, i);
-		 }
+		}
 		i++;
 	}
 }

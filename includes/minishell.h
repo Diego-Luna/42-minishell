@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/16 15:17:02 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/16 18:18:05 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	ft_minishell_split(char *args, t_tokens *t);
 void	ft_create_token(char *args, int start, int end, t_tokens *l);
 
 // --> run comands, and pipe
-char	*ft_find_env(char **envp, t_state *state, char *path);
+char	*ft_find_env(char **envp, char *path);
 void	ft_childs(t_state state, char **envp, char *argv);
 void	ft_minishell(t_state	*state, char *line);
 

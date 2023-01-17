@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/16 14:50:26 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/16 19:02:15 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,13 @@ void	ft_print_table(char **str, int new_line)
 int ft_find_env_position(char **envp, char *path)
 {
 	int	i;
+	int	ii;
 	int	size;
 
 	i = 0;
 	size = ft_size_table(envp);
-	while (i < size && ft_strncmp(path, envp[i], ft_strlen(path)))
+	ii = ft_strlen(path);
+	while (i < size && ft_strncmp(path, envp[i], ii))
 	{
 		i++;
 	}
@@ -69,25 +71,35 @@ int ft_find_env_position(char **envp, char *path)
 
 int ft_delate_env(t_state *state, char **env_name)
 {
-	int position;
+	int position = 0;
+	int i = 0;
+	char *str;
 
+	(void)state;
 	if (!env_name[1])
 	{
 		return (-1);
 	}
-	position = ft_find_env_position(g_env, env_name[1]);
-	if (position < 0)
+	i = 1;
+	while (i < ft_size_table(env_name))
 	{
-		ft_error_message(M_ERROR_UNSET_NOT_EXIST, &env_name[1], state, N_ERROR_UNSET_NOT_EXIST);
-		return (-1);
+		str = ft_strjoin(env_name[i], "=");
+		position = ft_find_env_position(g_env, str);
+		if (position < 0)
+		{
+			ft_free(str);
+			return (-1);
+		}
+		ft_free(str);
+		ft_free(g_env[position]);
+		while (g_env[position + 1])
+		{
+			g_env[position] = g_env[position + 1];
+			position++;
+		}
+		g_env[position] = 0;
+		i++;
 	}
-	ft_free(g_env[position]);
-	while (g_env[position + 1])
-	{
-		g_env[position] = g_env[position + 1];
-		position++;
-	}
-	g_env[position] = 0;
 	return (1);
 }
 
@@ -127,7 +139,7 @@ void	ft_comand_cd(t_state *state)
 	past = state->cmds[state->index].cmd_args;
 	if (ft_size_table(past) == 1)
 	{
-		path = ft_find_env(g_env, state, "HOME=");
+		path = ft_find_env(g_env, "HOME=");
 		if(!path)
 		{
 			error = ft_strdup("HOME");
@@ -145,7 +157,7 @@ void	ft_comand_cd(t_state *state)
 		tem_comand = calloc(sizeof(char *), 3);
 		tem_comand[1] = ft_strdup("OLDPWD");
 		ft_delate_env(state, tem_comand);
-		tem[0] = ft_find_env(g_env, state, "PWD=");
+		tem[0] = ft_find_env(g_env, "PWD=");
 		tem[1] = ft_strjoin("OLDPWD=", tem[0]);
 		ft_add_env(state, tem);
 		tem[1] = ft_free(tem[1]);
@@ -175,7 +187,7 @@ void	ft_comand_pwd(t_state *state)
 {
 	char *str_tem = NULL;
 
-	str_tem = ft_find_env(g_env, state, "PWD");
+	str_tem = ft_find_env(g_env, "PWD");
 	if (!str_tem)
 	{
 		ft_error_message(M_ERROR_PATH, state->t_comands, state, N_ERROR_PATH);
@@ -189,14 +201,14 @@ int ft_execve(t_state *state)
 	int error;
 	char *erro_path;
 
-	if (ft_find_env(g_env, state, "PATH=") == NULL)
+	if (ft_find_env(g_env, "PATH=") == NULL)
 	{
 		erro_path = ft_strdup("PATH=");
 		ft_error_message(M_ERROR_FIND_ENV, &erro_path, state, N_ERROR_FIND_ENV);
 		ft_free(erro_path);
 		exit(1);
 	}
-	state->env_path = ft_find_env(g_env, state, "PATH=");
+	state->env_path = ft_find_env(g_env, "PATH=");
 	state->cmd_paths = ft_split(state->env_path, ':');
 	state->cmds[state->index].cmd = ft_get_comand_p(state->cmd_paths, state->cmds[state->index].cmd_args[0]);
 	if (!state->cmds[state->index].cmd)
@@ -251,37 +263,21 @@ int	ft_run_comand_build(t_state *state)
 	return (1);
 }
 
-// int ft_add_env(t_state *state)
-int ft_add_env(t_state *state, char **past)
+void ft_env_export(char *str)
 {
+	char *temp;
 	int size;
 	int temp_leng;
-	char *temp;
-	int i;
+	int i = 0;
 
-	i = 0;
-	if (ft_size_table(past) > 2)
-	{
-		ft_error_message(M_ERROR_UNSET_MISSING, NULL, state, N_ERROR_UNSET_MISSING);
-		return (-1);
-	}
-	if (ft_size_table(past) == 1)
-	{
-		while (g_env[i])
-		{
-			printf("[%i]%s\n", i, g_env[i]);
-			i++;
-		}
-		return 1;
-	}
-	temp_leng = ft_strlen(past[1]);
+	temp_leng = ft_strlen(str);
 	temp = ft_calloc(sizeof(char), temp_leng + 1);
-	while (past[1][i] && past[1][i] != '=')
+	while (str[i] && str[i] != '=')
 	{
-		temp[i] = past[1][i];
+		temp[i] = str[i];
 		i++;
 	}
-	if (ft_find_env(g_env, state, temp))
+	if (ft_find_env(g_env, temp))
 	{
 		size = ft_find_env_index(g_env, temp);
 		g_env[size] = ft_free(g_env[size]);
@@ -291,8 +287,36 @@ int ft_add_env(t_state *state, char **past)
 		size = ft_size_table(g_env);
 		g_env = ft_crate_env(g_env, 2, 1);
 	}
-	g_env[size] = ft_strdup(past[1]);
+	g_env[size] = ft_strdup(str);
 	ft_free(temp);
+}
+
+int ft_add_env(t_state *state, char **past)
+{
+	int i;
+
+	i = 0;
+	(void)state;
+	if (ft_size_table(past) == 1)
+	{
+		while (g_env[i])
+		{
+			printf("[%i]%s\n", i, g_env[i]);
+			i++;
+		}
+		return 1;
+	}
+	if (ft_strchr(past[1], '=') == NULL)
+	{
+		return 0;
+	}
+	i = 1;
+	while (i < ft_size_table(past))
+	{
+		ft_env_export(past[i]);
+		i++;
+	}
+
 	return (1);
 }
 
