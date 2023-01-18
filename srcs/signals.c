@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
+/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:28:21 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/16 10:53:12 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/18 12:24:11 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-// The global variable that stores environment variables
-extern char	**g_env;
 
 /*
 ft_disable_echo mute the usual outputs from signals by
@@ -21,7 +18,7 @@ taking terminal attributes and changing them.
 signals are then redirected to their new fonction.
 */
 
-void	ft_signals()
+void	ft_signals(void)
 {
 	ft_disable_echo();
 	signal(SIGINT, ft_sigint_handler);
@@ -31,14 +28,14 @@ void	ft_signals()
 //WARNING RESET BEFORE CLOSING!!!!!!!
 void    ft_disable_echo(void)
 {
-    struct termios    attributes;
+	struct termios	attributes;
 
-    tcgetattr(STDIN_FILENO, &attributes);
-    attributes.c_lflag &= ~ECHOCTL;
-    tcsetattr(STDIN_FILENO, TCSANOW, &attributes);
+	tcgetattr(STDIN_FILENO, &attributes);
+	attributes.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &attributes);
 }
 
-void	ft_sigint_handler()
+void	ft_sigint_handler(void)
 {
 	printf("\n");
 	rl_on_new_line();
