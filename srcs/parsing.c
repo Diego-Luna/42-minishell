@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:30:09 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/18 12:31:10 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/18 12:57:04 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@ void	ft_parse(char *line, t_tokens *tokens, t_state *state)
 {
 	char *args;
 
-	(void) state;
 	args = line;
 	tokens = malloc(sizeof(t_tokens));
 	ft_minishell_split(args, tokens);
 	view(*tokens);
-	// ft_minishell(state, line, tokens);
+	ft_minishell(state, line, tokens);
 	dlist_free(tokens);
 	free(tokens);
 }
