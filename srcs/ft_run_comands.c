@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/17 19:23:37 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/18 15:46:15 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void ft_print_cmds(t_state *state)
 {
 	int i = 0 ;
 	int ii = 0;
+	int iii = 0;
 
 	printf("\n ft_print_cmds \n");
 	while (i < state->cmd_nmbs)
@@ -105,6 +106,13 @@ void ft_print_cmds(t_state *state)
 			printf("cmd_args{%s} ", state->cmds[i].cmd_args[ii]);
 			ii++;
 		}
+		iii = 0;
+		while (state->cmds[i].t_redirection[iii])
+		{
+			printf("t_redirection{%s} ", state->cmds[i].t_redirection[iii]);
+			iii++;
+		}
+		
 		printf("\n");
 		i++;
 	}
@@ -125,8 +133,8 @@ void	ft_delete_herodoc(t_cmd *cmd)
 // We make all our commandos free
 void ft_free_comand(t_state *state)
 {
-	int i = 0 ;
-	int ii = 0 ;
+	int i = 0;
+	int ii = 0;
 
 	state->t_comands = (char **)ft_free_table(state->t_comands);
 	i = 0;
@@ -145,7 +153,14 @@ void ft_free_comand(t_state *state)
 		ft_delete_herodoc(&state->cmds[i]);
 		ft_free(state->cmds[i].cmd_args);
 		ft_free(state->cmds[i].cmd);
-		ft_free_table(state->cmds[i].t_redirection);
+		ii = 0;
+		while (state->cmds[i].t_redirection[ii])
+		{
+			ft_free(state->cmds[i].t_redirection[ii]);
+			ii++;
+		}
+		ft_free(state->cmds[i].t_redirection);
+		// ft_free_table(state->cmds[i].t_redirection);
 		if (state->cmds[i].file > 0 )
 		{
 			close(state->cmds[i].file);
@@ -273,10 +288,10 @@ void ft_run_comands(t_state	*state)
 	{
 		ft_process_comands(state);
 	}
-	close(state->save_stdin);
-	close(state->save_stdout);
 	dup2(state->save_stdout, STDOUT_FILENO);
 	dup2(state->save_stdin, STDIN_FILENO);
+	close(state->save_stdin);
+	close(state->save_stdout);
 }
 
 // It shows us the error, at the same time that it helps us to debug.
@@ -366,16 +381,86 @@ void ft_save_type_redirection(t_state *state, int i)
 	}
 }
 
+int ft_position_in_token(t_tokens l, char *str)
+{
+	int i = 0;
+	t_node	*aff;
+
+	aff = l.first;
+	while (aff)
+	{
+		if (ft_strncmp(aff->content, str, ft_strlen(aff->content)) == 0)
+		{
+			return (i);
+		}
+		i++;
+		aff = aff->next;
+	}
+	return (-1);
+}
+
+char *ft_get_char_node(t_tokens l, int position)
+{
+	int i;
+	t_node	*aff;
+
+	i = 0;
+	aff = l.first;
+	while (aff)
+	{
+		if (position == i)
+		{
+			return (aff->content);
+		}
+		i++;
+		aff = aff->next;
+	}
+	return (NULL);
+}
+
 void	ft_cmd_args_in_redirection(t_state *state, int i)
 {
+	int ii = 0;
+	int iii = 0;
+	int position_redi = 0;
 	int	size_copy = 0;
+	char	**new;
+	t_cmd *cmd;
 
-	state->cmds[i].t_redirection = ft_calloc(sizeof(char *), 3);
-	size_copy = ft_str_in_str(state->t_comands[i], state->t_redirection[state->cmds[i].redirect]);
-	state->cmds[i].t_redirection[0] = ft_calloc(sizeof(char *), size_copy);
-	ft_strlcpy(state->cmds[i].t_redirection[0], state->t_comands[i], size_copy + 1);
-	state->cmds[i].t_redirection[1] = ft_strdup(state->t_comands[i] + size_copy + ft_strlen(state->t_redirection[state->cmds[i].redirect]));
-	state->cmds[i].cmd_args = ft_split(state->cmds[i].t_redirection[0], ' ');
+	state->cmds[i].t_redirection = ft_calloc(sizeof(char *), 2);
+	cmd = &state->cmds[i];
+	position_redi = ft_position_in_token(*state->tokens, state->t_redirection[cmd->redirect]);
+	if (position_redi > ft_tokens_size(*state->tokens))
+	{
+		// error
+		printf("\n Error 🔥");
+		return;
+		// exit(0);
+	}
+	position_redi++;
+	// printf("\n Diego position_redi {%D} str{%s}", position_redi, ft_get_char_node(*state->tokens, position_redi));
+	state->cmds[i].t_redirection[0] = ft_strdup(ft_get_char_node(*state->tokens, position_redi));
+
+	state->cmds[i].cmd_args = ft_content_tokens(state, i, *state->tokens);
+	size_copy = ft_size_table(state->cmds[i].cmd_args);
+	new = ft_calloc( sizeof(char *), size_copy);
+	position_redi = 0;
+	while (ii < size_copy)
+	{
+		if (ft_strncmp(state->t_redirection[cmd->redirect], state->cmds[i].cmd_args[ii], ft_strlen(state->cmds[i].cmd_args[ii])) == 0)
+		{
+			position_redi = 1;
+			ii++;
+		}
+		else
+		{
+			new[iii] = ft_strdup(state->cmds[i].cmd_args[ii]);
+			iii++;
+		}
+		ii++;
+	}
+	state->cmds[i].cmd_args = (char **)ft_free_table(state->cmds[i].cmd_args);
+	state->cmds[i].cmd_args = new;
 }
 
 int ft_tokens_size(t_tokens l)
@@ -392,7 +477,7 @@ int ft_tokens_size(t_tokens l)
 	return (i);
 }
 
-char **ft_content_tokens(t_state *state, int number_pipe, t_tokens l )
+char **ft_content_tokens(t_state *state, int number_pipe, t_tokens l)
 {
 	char **table;
 	t_node	*aff;
@@ -583,6 +668,7 @@ void ft_create_command_array(t_state *state)
 		}
 		else
 		{
+			state->cmds[i].t_redirection = ft_calloc(sizeof(char *), 1);
 			state->cmds[i].cmd_args = ft_content_tokens(state, i, *state->tokens);
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/17 19:25:04 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/18 15:45:07 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,7 +271,6 @@ int	ft_run_comand_build(t_state *state)
 	{
 		return (0);
 	}
-	ft_close_fd();
 	return (1);
 }
 

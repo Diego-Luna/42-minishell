@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:58:06 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/17 16:01:17 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/18 15:40:57 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ void	ft_minishell_split(char *args, t_tokens *t)
 			i++;
 	}
 	if(!ft_splitable(args[i - 1]))
+	{
 		dlist_add_back(t, ft_substr(args, start, (ft_strlen(args))));
+	}
 }
 
 int	ft_quotes(char *args, int i)
@@ -55,6 +57,7 @@ int	ft_quotes(char *args, int i)
 	}
 	printf("unclosed quotes\n");
 	//insert exit
+	return (1);
 }
 
 int	ft_create_token(char *args, int i, int start, t_tokens *t)

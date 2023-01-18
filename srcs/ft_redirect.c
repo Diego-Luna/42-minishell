@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 18:06:30 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/17 15:56:21 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/18 15:30:12 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ void	ft_redirection_one(t_state *state)
 
 	index = state->index;
 	cmd = &state->cmds[index];
-	if (access(cmd->t_redirection[1], F_OK) == -1)
+	if (access(cmd->t_redirection[0], F_OK) == -1)
 	{
 		ft_error_message(M_ERROR_NO_FILE_DIC, cmd->t_redirection + 1, state, N_ERROR_NO_FILE_DIC);
 	}
-	cmd->file = open(cmd->t_redirection[1], O_RDONLY, 0644);
+	cmd->file = open(cmd->t_redirection[0], O_RDONLY, 0644);
 	dup2(cmd->file, STDIN_FILENO);
 }
 
@@ -40,7 +40,7 @@ void	ft_redirection_two(t_state *state)
 	index = state->index;
 	cmd = &state->cmds[index];
 
-	cmd->file = open(cmd->t_redirection[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	cmd->file = open(cmd->t_redirection[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	// cmd->file = open(cmd->t_redirection[1], O_WRONLY | O_CREAT | O_TRUNC);
 	dup2(cmd->file, STDOUT_FILENO);
 }
@@ -62,11 +62,11 @@ void	ft_create_herodoc_(t_state *state, int index)
 	cmd->file = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0000644);
 	if (cmd->file < 0)
 	{
-		ft_error_message(M_ERROR_NO_FILE_DIC, cmd->t_redirection + 1, state, N_ERROR_NO_FILE_DIC);
+		ft_error_message(M_ERROR_NO_FILE_DIC, cmd->t_redirection, state, N_ERROR_NO_FILE_DIC);
 		ft_free(file);
 		return;
 	}
-	str_clean = ft_clean_str(cmd->t_redirection[1]);
+	str_clean = ft_clean_str(cmd->t_redirection[0]);
 	str = readline("heredoc_tmp > ");
 	while (str)
 	{
@@ -109,14 +109,16 @@ void	ft_redirection_four(t_state *state)
 
 	index = state->index;
 	cmd = &state->cmds[index];
-	cmd->file = open(cmd->t_redirection[1], O_CREAT | O_APPEND | O_RDWR, 0644);
+	cmd->file = open(cmd->t_redirection[0], O_CREAT | O_APPEND | O_RDWR, 0644);
+	printf("\n diego {%d}  s{%s}\n", cmd->file, cmd->t_redirection[0]);
 	if (cmd->file < 0)
 	{
-		ft_error_message(M_ERROR_NO_FILE_DIC, cmd->t_redirection + 1, state, N_ERROR_NO_FILE_DIC);
+		ft_error_message(M_ERROR_NO_FILE_DIC, cmd->t_redirection, state, N_ERROR_NO_FILE_DIC);
 		return;
 	}
+	// close(cmd->file);
 	dup2(cmd->file, STDOUT_FILENO);
-	dprintf(2, "\n run >>\n");
+	// dprintf(2, "\n run >>\n");
 }
 
 int	ft_on_redirection(t_state *state)
