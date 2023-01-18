@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 18:06:30 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/18 15:30:12 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/18 18:23:03 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ft_redirection_one(t_state *state)
 }
 
 // >
-void	ft_redirection_two(t_state *state)
+void	ft_redirection_two(t_state *state, int is_dup2)
 {
 	int index;
 	t_cmd *cmd;
@@ -41,8 +41,13 @@ void	ft_redirection_two(t_state *state)
 	cmd = &state->cmds[index];
 
 	cmd->file = open(cmd->t_redirection[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	// cmd->file = open(cmd->t_redirection[1], O_WRONLY | O_CREAT | O_TRUNC);
-	dup2(cmd->file, STDOUT_FILENO);
+	if (is_dup2 == 1)
+	{
+		dup2(cmd->file, STDOUT_FILENO);
+	}else
+	{
+		close(cmd->file);
+	}
 }
 
 void	ft_create_herodoc_(t_state *state, int index)
@@ -102,7 +107,7 @@ void	ft_redirection_three(t_state *state)
 }
 
 // >>
-void	ft_redirection_four(t_state *state)
+void	ft_redirection_four(t_state *state, int is_dup2)
 {
 	int index;
 	t_cmd *cmd;
@@ -110,15 +115,19 @@ void	ft_redirection_four(t_state *state)
 	index = state->index;
 	cmd = &state->cmds[index];
 	cmd->file = open(cmd->t_redirection[0], O_CREAT | O_APPEND | O_RDWR, 0644);
-	printf("\n diego {%d}  s{%s}\n", cmd->file, cmd->t_redirection[0]);
 	if (cmd->file < 0)
 	{
 		ft_error_message(M_ERROR_NO_FILE_DIC, cmd->t_redirection, state, N_ERROR_NO_FILE_DIC);
 		return;
 	}
-	// close(cmd->file);
-	dup2(cmd->file, STDOUT_FILENO);
-	// dprintf(2, "\n run >>\n");
+	if (is_dup2 == 1)
+	{
+		dup2(cmd->file, STDOUT_FILENO);
+	}
+	else
+	{
+		close(cmd->file);
+	}
 }
 
 int	ft_on_redirection(t_state *state)
@@ -140,7 +149,7 @@ int	ft_on_redirection(t_state *state)
 	}
 	else if (type == 1)
 	{
-		ft_redirection_two(state);
+		ft_redirection_two(state, 1);
 	}
 	else if (type == 2)
 	{
@@ -148,7 +157,7 @@ int	ft_on_redirection(t_state *state)
 	}
 	else if (type == 3)
 	{
-		ft_redirection_four(state);
+		ft_redirection_four(state, 1);
 	}
 	return (1);
 }

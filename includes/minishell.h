@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/18 12:59:50 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/18 18:20:05 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,22 +48,24 @@
 # define N_ERROR_EXECVE 2
 # define M_ERROR_FIND_ENV "It was not found : 👨‍💻"
 # define N_ERROR_FIND_ENV 3
-# define M_ERROR_CREATE_PIPE "Error creating pipe 😭"
+# define M_ERROR_CREATE_PIPE "Error creating pipe: 😭"
 # define N_ERROR_CREATE_PIPE 4
-# define M_ERROR_EXECVE_PIPES "Error creating pipe 🖥"
+# define M_ERROR_EXECVE_PIPES "Error creating pipe: 🖥"
 # define N_ERROR_EXECVE_PIPES 5
-# define M_ERROR_UNSET_MISSING "Error in unset missing argument 🏁"
+# define M_ERROR_UNSET_MISSING "Error in unset missing argument: 🏁"
 # define N_ERROR_UNSET_MISSING 6
-# define M_ERROR_UNSET_NOT_EXIST "Error in insert missing variable does not exist 🧶"
+# define M_ERROR_UNSET_NOT_EXIST "Error in insert missing variable does not exist: 🧶"
 # define N_ERROR_UNSET_NOT_EXIST 7
-# define M_ERROR_NUMERIC_ARGUMENTS "Numeric argument required 🏃‍♂️"
+# define M_ERROR_NUMERIC_ARGUMENTS "Numeric argument required: 🏃‍♂️"
 # define N_ERROR_NUMERIC_ARGUMENTS 8
-# define M_ERROR_MANY_ARGUMENTS "many arguments 🙅"
+# define M_ERROR_MANY_ARGUMENTS "many arguments: 🙅"
 # define N_ERROR_MANY_ARGUMENTS 9
 # define M_ERROR_NO_EXIST "No exits: 😳"
 # define N_ERROR_NO_EXIST 10
 # define M_ERROR_NO_FILE_DIC "No such file or directory: 😳"
 # define N_ERROR_NO_FILE_DIC 11
+# define M_ERROR_TOKENS_REDE "Syntax error near unexpected tokens: 🙅"
+# define N_ERROR_TOKENS_REDE 12
 // Error control
 
 
@@ -172,6 +174,8 @@ void	ft_handle_error_pipe(t_state *state);
 char **ft_content_tokens(t_state *state, int number_pipe, t_tokens l);
 int	ft_on_redirection(t_state *state);
 void	ft_create_herodoc_(t_state *state, int index);
+void	ft_redirection_two(t_state *state, int is_dup2);
+void	ft_redirection_four(t_state *state, int is_dup2);
 
 // str
 char *ft_clean_str(char *str);

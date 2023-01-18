@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/18 15:46:15 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/18 18:19:27 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ void ft_free_comand(t_state *state)
 	while (i < state->cmd_nmbs)
 	{
 		ii = 0;
-		while (state->cmds[i].cmd_args[ii])
+		while (state->cmds[i].cmd_args && state->cmds[i].cmd_args[ii])
 		{
 			ft_free(state->cmds[i].cmd_args[ii]);
 			ii++;
@@ -190,7 +190,6 @@ void	ft_process_comand_fork(t_state *state)
 	{
 		error = ft_execve(state);
 		ft_error_message(M_ERROR_EXECVE, state->cmds[0].cmd_args, state, N_ERROR_EXECVE);
-		ft_close_fd();
 		exit(error);
 	}
 	else
@@ -430,15 +429,13 @@ void	ft_cmd_args_in_redirection(t_state *state, int i)
 	state->cmds[i].t_redirection = ft_calloc(sizeof(char *), 2);
 	cmd = &state->cmds[i];
 	position_redi = ft_position_in_token(*state->tokens, state->t_redirection[cmd->redirect]);
-	if (position_redi > ft_tokens_size(*state->tokens))
+	if (position_redi >= ft_tokens_size(*state->tokens) - 2)
 	{
-		// error
-		printf("\n Error 🔥");
+		state->cmds[i].cmd_args = NULL;
+		ft_error_message(M_ERROR_TOKENS_REDE, NULL, state, N_ERROR_TOKENS_REDE);
 		return;
-		// exit(0);
 	}
 	position_redi++;
-	// printf("\n Diego position_redi {%D} str{%s}", position_redi, ft_get_char_node(*state->tokens, position_redi));
 	state->cmds[i].t_redirection[0] = ft_strdup(ft_get_char_node(*state->tokens, position_redi));
 
 	state->cmds[i].cmd_args = ft_content_tokens(state, i, *state->tokens);
@@ -590,6 +587,7 @@ char *ft_save_token(t_state *state, int number_pipe)
 			aff = aff->next;
 		}
 	}
+	size++;
 	save = ft_calloc(sizeof(char), size);
 	aff = state->tokens->first;
 	i = 0;
@@ -620,11 +618,12 @@ char *ft_save_token(t_state *state, int number_pipe)
 			}
 			else if (pipe == number_pipe)
 			{
-				ft_strlcat(save, aff->content, size + 1);
+				ft_strlcat(save, aff->content, size);
+				// ft_strlcat(save, aff->content, size + 1);
 				i++;
 				if (aff->next)
 				{
-					ft_strlcat(save, " ", size + 1);
+					ft_strlcat(save, " ", 1);
 				}
 			}
 			aff = aff->next;
@@ -651,6 +650,7 @@ char **ft_table_token(t_state *state)
 // It is in charge of creating the array of the commanded functions
 void ft_create_command_array(t_state *state)
 {
+	(void)state;
 	int i = 0;
 
 	ft_create_t_redirection(state);
@@ -727,12 +727,23 @@ void ft_add_info_comands(t_state *state)
 			}
 			ii++;
 		}
+		if (cmd->redirect == 1)
+		{
+			state->index = i;
+			ft_redirection_two(state, 0);
+		}
+		if (cmd->redirect == 3)
+		{
+			state->index = i;
+			ft_redirection_four(state, 0);
+		}
 		if (cmd->redirect == 2)
 		{
 			ft_create_herodoc_(state, i);
 		}
 		i++;
 	}
+	state->index = 0;
 }
 
 int ft_number_comands_parsing(t_tokens tokens)
