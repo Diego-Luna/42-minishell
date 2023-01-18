@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/17 15:34:30 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/17 19:23:37 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,7 @@ void	ft_process_comand_fork(t_state *state)
 	{
 		error = ft_execve(state);
 		ft_error_message(M_ERROR_EXECVE, state->cmds[0].cmd_args, state, N_ERROR_EXECVE);
+		ft_close_fd();
 		exit(error);
 	}
 	else
@@ -272,10 +273,10 @@ void ft_run_comands(t_state	*state)
 	{
 		ft_process_comands(state);
 	}
-	dup2(state->save_stdout, STDOUT_FILENO);
-	dup2(state->save_stdin, STDIN_FILENO);
 	close(state->save_stdin);
 	close(state->save_stdout);
+	dup2(state->save_stdout, STDOUT_FILENO);
+	dup2(state->save_stdin, STDIN_FILENO);
 }
 
 // It shows us the error, at the same time that it helps us to debug.
@@ -377,6 +378,191 @@ void	ft_cmd_args_in_redirection(t_state *state, int i)
 	state->cmds[i].cmd_args = ft_split(state->cmds[i].t_redirection[0], ' ');
 }
 
+int ft_tokens_size(t_tokens l)
+{
+	t_node	*aff;
+	int i = 1;
+
+	aff = l.first;
+	while (aff)
+	{
+		i++;
+		aff = aff->next;
+	}
+	return (i);
+}
+
+char **ft_content_tokens(t_state *state, int number_pipe, t_tokens l )
+{
+	char **table;
+	t_node	*aff;
+	int i = 0;
+	int pipe = 0;
+
+	aff = l.first;
+	if (state->cmd_nmbs == 1)
+	{
+		while (aff)
+		{
+			i++;
+			aff = aff->next;
+		}
+	}
+	else
+	{
+		while (aff)
+		{
+			if (ft_strncmp(aff->content, "|\0", 2) == 0)
+			{
+				pipe++;
+			}
+			else if (pipe > number_pipe)
+			{
+				break;
+			}
+			else if (pipe == number_pipe)
+			{
+				i++;
+			}
+			aff = aff->next;
+		}
+	}
+	table = ft_calloc(sizeof(char *), i + 1);
+	aff = l.first;
+	pipe = 0;
+	i = 0;
+	if (state->cmd_nmbs == 1 )
+	{
+		while (aff)
+		{
+			table[i] = ft_strdup(aff->content);
+			aff = aff->next;
+			i++;
+		}
+	}
+	else
+	{
+		while (aff)
+		{
+			if (ft_strncmp(aff->content, "|\0", 2) == 0)
+			{
+				pipe++;
+			}
+			else if (pipe > number_pipe)
+			{
+				break;
+			}
+			else if (pipe == number_pipe)
+			{
+				table[i] = ft_strdup(aff->content);
+				i++;
+			}
+			aff = aff->next;
+		}
+	}
+	return (table);
+}
+
+char *ft_save_token(t_state *state, int number_pipe)
+{
+	char *save;
+	t_node	*aff;
+	int i = 0;
+	int pipe = 0;
+	int size = 0;
+
+	aff = state->tokens->first;
+	if (state->cmd_nmbs == 1)
+	{
+		while (aff)
+		{
+			i++;
+			size += ft_strlen(aff->content) + 1;
+			aff = aff->next;
+		}
+	}
+	else
+	{
+		while (aff)
+		{
+			if (ft_strncmp(aff->content, "|\0", 2) == 0)
+			{
+				pipe++;
+			}
+			else if (pipe > number_pipe)
+			{
+				break;
+			}
+			else if (pipe == number_pipe)
+			{
+				size += ft_strlen(aff->content);
+				i++;
+				if (aff->next && ft_strncmp(aff->next->content, "|\0", 2) != 0)
+				{
+					size++;
+				}
+			}
+			aff = aff->next;
+		}
+	}
+	save = ft_calloc(sizeof(char), size);
+	aff = state->tokens->first;
+	i = 0;
+	pipe = 0;
+	if (state->cmd_nmbs == 1)
+	{
+		while (aff)
+		{
+			ft_strlcat(save, aff->content, size + 1);
+			aff = aff->next;
+			if (aff)
+			{
+				ft_strlcat(save, " ", size + 1);
+			}
+		}
+	}
+	else
+	{
+		while (aff)
+		{
+			if (ft_strncmp(aff->content, "|\0", 2) == 0)
+			{
+				pipe++;
+			}
+			else if (pipe > number_pipe)
+			{
+				break;
+			}
+			else if (pipe == number_pipe)
+			{
+				ft_strlcat(save, aff->content, size + 1);
+				i++;
+				if (aff->next)
+				{
+					ft_strlcat(save, " ", size + 1);
+				}
+			}
+			aff = aff->next;
+		}
+	}
+	return (save);
+}
+
+char **ft_table_token(t_state *state)
+{
+	int i = 0;
+	char **table;
+
+	table = ft_calloc(sizeof(char *),  state->cmd_nmbs + 1);
+	while (i < state->cmd_nmbs)
+	{
+		table[i] = ft_save_token(state, i);
+		i++;
+	}
+
+	return (table);
+}
+
 // It is in charge of creating the array of the commanded functions
 void ft_create_command_array(t_state *state)
 {
@@ -384,7 +570,7 @@ void ft_create_command_array(t_state *state)
 
 	ft_create_t_redirection(state);
 	state->cmds = ft_calloc(sizeof(t_cmd), state->cmd_nmbs);
-	state->t_comands = ft_split(state->line, '|');
+	state->t_comands = ft_table_token(state);
 	while (i < state->cmd_nmbs)
 	{
 		state->cmds[i].id = i;
@@ -397,7 +583,7 @@ void ft_create_command_array(t_state *state)
 		}
 		else
 		{
-			state->cmds[i].cmd_args = ft_split(state->t_comands[i], ' ');
+			state->cmds[i].cmd_args = ft_content_tokens(state, i, *state->tokens);
 		}
 		i++;
 	}
@@ -463,13 +649,33 @@ void ft_add_info_comands(t_state *state)
 	}
 }
 
-// We check the number of commands sent and create our array, with the information of each one
-void	ft_minishell(t_state	*state, char *line)
+int ft_number_comands_parsing(t_tokens tokens)
 {
-	state->cmd_nmbs = ft_number_comands(line);
+	t_node	*aff;
+	int i = 1;
+
+	aff = tokens.first;
+	while (aff)
+	{
+		if (ft_strncmp(aff->content, "|\0", 2) == 0)
+		{
+			i++;
+		}
+		aff = aff->next;
+	}
+	return (i);
+}
+
+// We check the number of commands sent and create our array, with the information of each one
+void	ft_minishell(t_state	*state, char *line, t_tokens *tokens)
+{
+	// state->cmd_nmbs = ft_number_comands(line);
+	state->cmd_nmbs = ft_number_comands_parsing(*tokens);
 	state->line = line;
 	if (state->cmd_nmbs > 0)
 	{
+		state->tokens = NULL;
+		state->tokens = tokens;
 		ft_run_when_is_no_error(state, ft_create_command_array);
 		ft_run_when_is_no_error(state, ft_add_info_comands);
 		ft_run_when_is_no_error(state, ft_run_comands);

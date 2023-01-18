@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/17 16:03:48 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/18 11:53:51 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,19 @@ typedef struct va_t_cmd
 	int file;
 }			t_cmd;
 
+typedef struct s_node
+{
+	char			*content;
+	struct s_node	*next;
+	struct s_node	*prev;
+}	t_node;
+
+typedef struct s_tokens
+{
+	t_node	*first;
+	t_node	*last;
+}	t_tokens;
+
 typedef struct va_states
 {
 	char	**t_comands;
@@ -98,20 +111,8 @@ typedef struct va_states
 	int		save_stdout;
 	int		save_stdin;
 	t_cmd *cmds;
+	t_tokens *tokens;
 }			t_state;
-
-typedef struct s_node
-{
-	char			*content;
-	struct s_node	*next;
-	struct s_node	*prev;
-}	t_node;
-
-typedef struct s_tokens
-{
-	t_node	*first;
-	t_node	*last;
-}	t_tokens;
 
 // --> signals
 void	ft_signals();
@@ -125,7 +126,8 @@ void	dlist_free(t_tokens *l);
 void	view(t_tokens l);
 
 //parsing
-void	ft_parse(char *line, t_tokens *tokens);
+// void	ft_parse(char *line, t_tokens *tokens);
+void	ft_parse(char *line, t_tokens *tokens, t_state *state);
 char	*ft_clean_quotes(char *old_str);
 char	*ft_trim_char(char *str, int ptr);
 
@@ -138,7 +140,7 @@ int		ft_create_token(char *args, int i, int start, t_tokens *t);
 // --> run comands, and pipe
 char	*ft_find_env(char **envp, char *path);
 void	ft_childs(t_state state, char **envp, char *argv);
-void	ft_minishell(t_state	*state, char *line);
+void	ft_minishell(t_state	*state, char *line, t_tokens *tokens);
 
 // --> ENV
 char	**ft_crate_env(char **old, int size, int f);

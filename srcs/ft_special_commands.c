@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/17 15:47:30 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/17 19:25:04 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,7 @@ int ft_execve(t_state *state)
 		erro_path = ft_strdup("PATH=");
 		ft_error_message(M_ERROR_FIND_ENV, &erro_path, state, N_ERROR_FIND_ENV);
 		ft_free(erro_path);
+		ft_close_fd();
 		exit(1);
 	}
 	state->env_path = ft_find_env(g_env, "PATH=");
@@ -223,6 +224,7 @@ int ft_execve(t_state *state)
 	if (!state->cmds[i].cmd)
 	{
 		ft_error_message(M_ERROR_PATH, state->cmds[i].cmd_args, state, N_ERROR_PATH);
+		ft_close_fd();
 		exit(1);
 	}
 	ft_close_fd();
@@ -237,31 +239,31 @@ int	ft_run_comand_build(t_state *state)
 
 	run_comand = state->cmds[state->index].cmd_args;
 	comand = run_comand[0];
-	if (ft_strncmp(comand, "exit", 4) == 0)
+	if (ft_strncmp(comand, "exit\0", 5) == 0)
 	{
 		state->stop = STOP;
 	}
-	else if (ft_strncmp(comand, "env", 3) == 0)
+	else if (ft_strncmp(comand, "env\0", 4) == 0)
 	{
 		ft_print_table(g_env, 1);
 	}
-	else if (ft_strncmp(comand, "unset", 5) == 0)
+	else if (ft_strncmp(comand, "unset\0", 6) == 0)
 	{
 		ft_delate_env(state, run_comand);
 	}
-	else if (ft_strncmp(comand, "export", 6) == 0)
+	else if (ft_strncmp(comand, "export\0", 7) == 0)
 	{
 		ft_add_env(state, run_comand);
 	}
-	else if (ft_strncmp(comand, "echo", 4) == 0)
+	else if (ft_strncmp(comand, "echo\0", 5) == 0)
 	{
 		ft_echo(state);
 	}
-	else if (ft_strncmp(comand, "pwd", 3) == 0)
+	else if (ft_strncmp(comand, "pwd\0", 4) == 0)
 	{
 		ft_comand_pwd(state);
 	}
-	else if (ft_strncmp(comand, "cd", 2) == 0)
+	else if (ft_strncmp(comand, "cd\0", 3) == 0)
 	{
 		ft_comand_cd(state);
 	}

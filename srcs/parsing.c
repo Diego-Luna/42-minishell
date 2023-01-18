@@ -6,20 +6,21 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:30:09 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/17 16:03:22 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/18 11:53:20 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_parse(char *line, t_tokens *tokens)
+void	ft_parse(char *line, t_tokens *tokens, t_state *state)
 {
 	char *args;
-	
+
 	args = line;
 	tokens = malloc(sizeof(t_tokens));
 	ft_minishell_split(args, tokens);
 	view(*tokens);
+	ft_minishell(state, line, tokens); // run comands minishell
 	dlist_free(tokens);
 	free(tokens);
 }
