@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:58:06 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/18 15:40:57 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/18 15:51:30 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,12 @@ int	ft_quotes(char *args, int i)
 	char	quote;
 	
 	quote = args[i++];
-	while (args[i])
-	{
-		while (args[i] != quote)
+	while (args[i] && args[i] != quote)
 		i++;
+	if (args[i])
 		return(i + 1);
-	}
 	printf("unclosed quotes\n");
-	//insert exit
-	return (1);
+		return (i);
 }
 
 int	ft_create_token(char *args, int i, int start, t_tokens *t)

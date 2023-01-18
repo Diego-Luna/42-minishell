@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:30:09 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/18 15:43:25 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/18 15:52:00 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ void	ft_parse(char *line, t_tokens *tokens, t_state *state)
 char *ft_clean_quotes(char *old_str)
 {
 	char	quote;
-	int	i = 0;
+	int		i;
 
+	i = 0;
 	while(old_str[i])
 	{
 		if (old_str[i] == '\'' || old_str[i] == '\"')
@@ -52,17 +53,16 @@ char *ft_clean_quotes(char *old_str)
 char	*ft_trim_char(char *str, int ptr)
 {
 	char *newstr;
-	int	i = 0;
-	int	j = 0;
+	int	i;
+	int	j;
 
-	// newstr = malloc(sizeof(char *) * ft_strlen(str));
-	newstr = ft_calloc(sizeof(char), ft_strlen(str));
+	i = 0;
+	j = 0;
+	newstr = malloc(sizeof(char *) * ft_strlen(str));
 	while (str[i])
 	{
 		if (i != ptr)
-		{
 			newstr[j++] = str[i];
-		}
 		i++;
 	}
 	newstr[j] = '\0';
