@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_run_comands.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/19 16:26:49 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/19 16:32:42 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -760,7 +760,6 @@ void	ft_minishell(t_state	*state, char *line, t_tokens *tokens)
 		state->tokens = tokens;
 		ft_run_when_is_no_error(state, ft_create_command_array);
 		ft_run_when_is_no_error(state, ft_add_info_comands);
-		// ft_print_cmds(state);
 		ft_run_when_is_no_error(state, ft_run_comands);
 		ft_handle_error_pipe(state);
 		ft_check_exit(state);

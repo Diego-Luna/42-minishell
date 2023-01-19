@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/19 14:54:36 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/19 16:35:43 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,13 +115,13 @@ void	ft_echo(t_state *state)
 		printf("\n");
 		return;
 	}
-	else if (size >= 2 && ft_strncmp(past[1], "-n", 2) != 0)
+	else if (size >= 2 && ft_strncmp(past[1], "-n\0", 3) != 0)
 	{
 		ft_print_table(past + 1, 0);
 		printf("\n");
 		return ;
 	}
-	else if (size >= 2 && ft_strncmp(past[1], "-n", 2) == 0)
+	else if (size >= 2 && ft_strncmp(past[1], "-n\0", 3) == 0)
 	{
 		ft_print_table(past + 2, 0);
 		return;
