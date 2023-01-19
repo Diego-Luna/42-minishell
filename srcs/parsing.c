@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:30:09 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/19 16:16:21 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/19 16:21:05 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,34 +20,35 @@ void	ft_parse(char *line, t_tokens *tokens, t_state *state)
 	tokens = malloc(sizeof(t_tokens));
 	tokens->first =NULL;
 	tokens->last =NULL;
+	tokens->error = 0;
 	ft_minishell_split(args, tokens);
-	// view(*tokens);
+	if (!tokens->error)
 	ft_minishell(state, line, tokens); // run comands minishell
 	dlist_free(tokens);
 	free(tokens);
 }
 
-char *ft_clean_quotes(char *old_str)
+char *ft_clean_quotes(char *str)
 {
 	char	quote;
 	int		i;
 
 	i = 0;
-	while(old_str[i])
+	while(str[i])
 	{
-		if (old_str[i] == '\'' || old_str[i] == '\"')
+		if (str[i] == '\'' || str[i] == '\"')
 		{
-			quote = old_str[i];
-			old_str = ft_trim_char(old_str, i);
-			while(old_str[i] && old_str[i] != quote)
+			quote = str[i];
+			str = ft_trim_char(str, i);
+			while(str[i] && str[i] != quote)
 				i++;
-			if (old_str[i])
-				old_str = ft_trim_char(old_str, i);
+			if (str[i])
+				str = ft_trim_char(str, i);
 		}
 		else
 			i++;
 	}
-	return (old_str);
+	return (str);
 }
 
 char	*ft_trim_char(char *str, int ptr)

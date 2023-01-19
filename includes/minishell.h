@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/19 16:10:02 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/19 16:21:18 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct s_tokens
 {
 	t_node	*first;
 	t_node	*last;
+	int		error;
 }	t_tokens;
 
 typedef struct va_states
@@ -111,6 +112,7 @@ typedef struct va_states
 void	ft_signals();
 void    ft_disable_echo(void);
 void	ft_sigint_handler();
+void	ft_fork_signal(void);
 
 //dlist
 void	dlist_add_back(t_tokens *l, char *elem);
@@ -127,7 +129,7 @@ char	*ft_trim_char(char *str, int ptr);
 //split
 int		ft_splitable(char c);
 void	ft_minishell_split(char *args, t_tokens *t);
-int		ft_quotes(char *args, int i);
+int		ft_quotes(char *args, int i, t_tokens *t);
 int		ft_create_token(char *args, int i, int start, t_tokens *t);
 
 // --> run comands, and pipe
