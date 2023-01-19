@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/18 18:19:27 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/18 19:28:20 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ char	*ft_find_env(char **envp, char *path)
 	{
 		return (NULL);
 	}
-	return (envp[i] + 5);
+	// return (envp[i] + 5);
+	return (envp[i] + ii);
 }
 
 int	ft_find_env_index(char **envp, char *path)
@@ -238,6 +239,7 @@ void	ft_run_childs(t_state *state)
 				error = ft_execve(state);
 				ft_error_message(M_ERROR_EXECVE_PIPES, state->cmds[state->index].cmd_args, state, N_ERROR_EXECVE_PIPES);
 			}
+			ft_close_fd();
 			exit(error);
 		}
 		else if (state->index < state->cmd_nmbs)
@@ -693,8 +695,8 @@ int ft_str_is_a_number(char *str)
 
 void	ft_check_exit(t_state	*state)
 {
-	ft_free_all(state);
 	ft_close_fd();
+	ft_free_all(state);
 }
 
 void ft_add_info_comands(t_state *state)
@@ -717,13 +719,14 @@ void ft_add_info_comands(t_state *state)
 				if (ft_find_env(g_env, path) != NULL)
 				{
 					cmd->cmd_args[ii] = ft_free(cmd->cmd_args[ii]);
-					cmd->cmd_args[ii] = ft_calloc(sizeof(char), ft_strlen(ft_find_env(g_env, path)));
-					ft_strlcat(cmd->cmd_args[ii], ft_find_env(g_env, path), ft_strlen(ft_find_env(g_env, path)));
+					cmd->cmd_args[ii] = ft_calloc(sizeof(char), ft_strlen(ft_find_env(g_env, path)) + 1);
+					ft_strlcat(cmd->cmd_args[ii], ft_find_env(g_env, path), ft_strlen(ft_find_env(g_env, path)) + 1);
 				}
-				else
+				else if (ii > 0)
 				{
 					cmd->cmd_args[ii] = ft_free(cmd->cmd_args[ii]);
 				}
+				ft_free(path);
 			}
 			ii++;
 		}
@@ -743,7 +746,6 @@ void ft_add_info_comands(t_state *state)
 		}
 		i++;
 	}
-	state->index = 0;
 }
 
 int ft_number_comands_parsing(t_tokens tokens)

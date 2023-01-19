@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/18 15:45:07 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/18 19:28:55 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ void	ft_comand_pwd(t_state *state)
 		ft_error_message(M_ERROR_PATH, state->t_comands, state, N_ERROR_PATH);
 		return;
 	}
-	printf("/%s\n", str_tem);
+	printf("%s\n", str_tem);
 }
 
 // Our own execve
@@ -239,6 +239,8 @@ int	ft_run_comand_build(t_state *state)
 
 	run_comand = state->cmds[state->index].cmd_args;
 	comand = run_comand[0];
+	if (!comand)
+		return (1);
 	if (ft_strncmp(comand, "exit\0", 5) == 0)
 	{
 		state->stop = STOP;
@@ -336,7 +338,8 @@ void	ft_handle_error_pipe(t_state *state)
 	char **tem_comand;
 	char *status;
 
-	if (state->fork_error == 256)
+	// if (state->fork_error == 256)
+	if (state->fork_error > 0)
 	{
 		state->fork_error = 127;
 	}
