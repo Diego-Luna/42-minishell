@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:58:06 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/18 15:51:30 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/19 14:11:50 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_minishell_split(char *args, t_tokens *t)
 	while(args[i])
 	{
 		while (args[i] == '\"' || args[i] == '\'')
-				i = ft_quotes(args, i);
+				i = ft_quotes(args, i, t);
 		if (ft_splitable(args[i]))
 		{
 			i = ft_create_token(args, i, start, t);
@@ -44,7 +44,7 @@ void	ft_minishell_split(char *args, t_tokens *t)
 	}
 }
 
-int	ft_quotes(char *args, int i)
+int	ft_quotes(char *args, int i, t_tokens *t)
 {
 	char	quote;
 	
@@ -53,7 +53,8 @@ int	ft_quotes(char *args, int i)
 		i++;
 	if (args[i])
 		return(i + 1);
-	printf("unclosed quotes\n");
+	t->error = 1;
+	printf("ERROR: Unclosed quotes\n");
 		return (i);
 }
 
