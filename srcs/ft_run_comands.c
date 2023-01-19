@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/19 16:32:42 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/19 17:19:17 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,24 +97,24 @@ void ft_print_cmds(t_state *state)
 	int ii = 0;
 	int iii = 0;
 
-	printf("\n ft_print_cmds \n");
-	while (i < state->cmd_nmbs)
+	ft_printf("\n ft_print_cmds \n");
+	while (state->cmd_nmbs && i < state->cmd_nmbs)
 	{
-		printf("id{%i} cmd{%s} ", state->cmds[i].id, state->cmds[i].cmd);
+		ft_printf("id{%i} cmd{%s} ", state->cmds[i].id, state->cmds[i].cmd);
 		ii = 0;
-		while (state->cmds[i].cmd_args[ii])
+		while (state->cmds[i].cmd_args && ii < state->cmd_nmbs && state->cmds[i].cmd_args[ii])
 		{
-			printf("cmd_args{%s} ", state->cmds[i].cmd_args[ii]);
+			ft_printf("cmd_args{%s} ", state->cmds[i].cmd_args[ii]);
 			ii++;
 		}
 		iii = 0;
-		while (state->cmds[i].t_redirection[iii])
+		while (state->cmds[i].t_redirection && state->cmds[i].t_redirection[iii])
 		{
-			printf("t_redirection{%s} ", state->cmds[i].t_redirection[iii]);
+			ft_printf("t_redirection{%s} ", state->cmds[i].t_redirection[iii]);
 			iii++;
 		}
 		
-		printf("\n");
+		ft_printf("\n");
 		i++;
 	}
 }
@@ -307,19 +307,44 @@ void ft_create_t_redirection(t_state *state)
 
 void ft_save_type_redirection(t_state *state, int i)
 {
+	t_node	*aff;
 	int ii;
 
-	ii = 4;
-	while (ii >= 0)
+	aff = state->tokens->first;
+	(void)i;
+	while (aff)
 	{
-		if (ft_str_in_str(state->t_comands[i], state->t_redirection[ii]) >= 0)
+		if (aff->content)
 		{
-			state->cmds[i].redirect = ii;
-			break;
+			ii = 3;
+			while (ii >= 0)
+			{
+				if (ft_strncmp(aff->content, state->t_redirection[ii], ft_strlen(state->t_redirection[ii])) == 0)
+				{
+					state->cmds[i].redirect = ii;
+					break;
+				}
+				ii--;
+			}
 		}
-		ii--;
+		aff = aff->next;
 	}
 }
+// void ft_save_type_redirection(t_state *state, int i)
+// {
+// 	int ii;
+
+// 	ii = 4;
+// 	while (ii >= 0)
+// 	{
+// 		if (ft_str_in_str(state->t_comands[i], state->t_redirection[ii]) >= 0)
+// 		{
+// 			state->cmds[i].redirect = ii;
+// 			break;
+// 		}
+// 		ii--;
+// 	}
+// }
 
 int ft_position_in_token(t_tokens l, char *str, int n_pipe)
 {
@@ -599,6 +624,7 @@ void ft_create_command_array(t_state *state)
 	int i = 0;
 
 	ft_create_t_redirection(state);
+	// state->cmds = ft_calloc(sizeof(t_cmd), state->cmd_nmbs);
 	state->cmds = ft_calloc(sizeof(t_cmd), state->cmd_nmbs + 1);
 	state->t_comands = ft_table_token(state);
 	while (i < state->cmd_nmbs)
@@ -635,21 +661,6 @@ int ft_str_is_a_number(char *str)
 	}
 	return (1);
 }
-
-// char *ft_cur_str(char *str)
-// {
-// 	int i = 0;
-// 	int ii = 0;
-// 	char *new;
-
-// 	while (str[i] && !(str[i] == ' ' || str[i] == '\t' || str[i] == '\''  || str[i] == '\"'))
-// 	{
-// 		i++;
-// 	}
-// 	new = ft_calloc(sizeof(char), i + 1);
-
-
-// }
 
 void ft_handle_env_varibles(t_state *state, int i, int ii)
 {
@@ -759,7 +770,9 @@ void	ft_minishell(t_state	*state, char *line, t_tokens *tokens)
 		state->tokens = NULL;
 		state->tokens = tokens;
 		ft_run_when_is_no_error(state, ft_create_command_array);
+		// ft_print_cmds(state);
 		ft_run_when_is_no_error(state, ft_add_info_comands);
+		// ft_print_cmds(state);
 		ft_run_when_is_no_error(state, ft_run_comands);
 		ft_handle_error_pipe(state);
 		ft_check_exit(state);
