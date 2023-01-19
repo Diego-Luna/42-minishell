@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/19 14:25:09 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/19 16:16:54 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ typedef struct va_states
 void	ft_signals();
 void    ft_disable_echo(void);
 void	ft_sigint_handler();
+void	ft_fork_signal(void);
 
 //dlist
 void	dlist_add_back(t_tokens *l, char *elem);

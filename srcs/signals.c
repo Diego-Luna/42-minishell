@@ -6,7 +6,7 @@
 /*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:28:21 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/18 12:24:11 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/19 16:16:57 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@ void	ft_signals(void)
 	ft_disable_echo();
 	signal(SIGINT, ft_sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
+}
+
+void	ft_fork_signal(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_DFL);
 }
 
 //WARNING RESET BEFORE CLOSING!!!!!!!
