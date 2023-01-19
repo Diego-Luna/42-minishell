@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_run_comands.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/19 16:16:17 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/19 16:26:49 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,14 +128,13 @@ void	ft_process_comand_fork(t_state *state)
 	pid = fork();
 	if (pid == 0)
 	{
+		ft_fork_signal();
 		error = ft_execve(state);
 		ft_error_message(M_ERROR_EXECVE, state->cmds[0].cmd_args, state, N_ERROR_EXECVE);
 		exit(error);
 	}
 	else
-	{
 		waitpid(pid, &state->fork_error, 0);
-	}
 }
 
 // This function creates a child process where the command sent will be executed.
@@ -167,6 +166,7 @@ void	ft_run_childs(t_state *state)
 		state->pid[state->index] = fork();
 		if (state->pid[state->index] == 0)
 		{
+			ft_fork_signal();
 			if (state->index < state->cmd_nmbs - 1)
 			{
 				close(fd[0]);
