@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/19 13:53:51 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/19 16:16:17 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -636,10 +636,54 @@ int ft_str_is_a_number(char *str)
 	return (1);
 }
 
+// char *ft_cur_str(char *str)
+// {
+// 	int i = 0;
+// 	int ii = 0;
+// 	char *new;
+
+// 	while (str[i] && !(str[i] == ' ' || str[i] == '\t' || str[i] == '\''  || str[i] == '\"'))
+// 	{
+// 		i++;
+// 	}
+// 	new = ft_calloc(sizeof(char), i + 1);
+
+
+// }
+
+void ft_handle_env_varibles(t_state *state, int i, int ii)
+{
+	t_cmd *cmd;
+
+	cmd = &state->cmds[i];
+	char *path_clean;
+	char *path;
+
+	// if (cmd->cmd_args[ii][0] == '$' && ft_strlen(cmd->cmd_args[ii]) > 1)
+	if (ft_strchr_get(cmd->cmd_args[ii], '$') >= 0 && ft_strlen(cmd->cmd_args[ii]) > (size_t)ft_strchr_get(cmd->cmd_args[ii], '$')  && ft_strlen(cmd->cmd_args[ii]) > 1)
+	{
+		path_clean = ft_clean_str(ft_strchr(cmd->cmd_args[ii], '$') + 1);
+		path = ft_strjoin(path_clean, "=");
+		if (ft_find_env(state->g_env, path) != NULL)
+		{
+			cmd->cmd_args[ii] = ft_free(cmd->cmd_args[ii]);
+			cmd->cmd_args[ii] = ft_calloc(sizeof(char), ft_strlen(ft_find_env(state->g_env, path)) + 1);
+			ft_strlcat(cmd->cmd_args[ii], ft_find_env(state->g_env, path), ft_strlen(ft_find_env(state->g_env, path)) + 1);
+		}
+		else if (ii > 0)
+		{
+			cmd->cmd_args[ii] = ft_free(cmd->cmd_args[ii]);
+		}
+		ft_free(path);
+		ft_free(path_clean);
+	}
+}
+
 void ft_add_info_comands(t_state *state)
 {
 	int i = 0;
 	int ii = 0;
+	int modife = 1;
 	t_cmd *cmd;
 	char *path;
 
@@ -649,21 +693,17 @@ void ft_add_info_comands(t_state *state)
 		ii = 0;
 		while (cmd->cmd_args[ii])
 		{
-			cmd->cmd_args[ii] = ft_clean_quotes(cmd->cmd_args[ii]);
-			if (cmd->cmd_args[ii][0] == '$' && ft_strlen(cmd->cmd_args[ii]) > 1)
+			if (cmd->cmd_args[ii][0] == '\'')
 			{
-				path = ft_strjoin(cmd->cmd_args[ii] + 1, "=");
-				if (ft_find_env(state->g_env, path) != NULL)
-				{
-					cmd->cmd_args[ii] = ft_free(cmd->cmd_args[ii]);
-					cmd->cmd_args[ii] = ft_calloc(sizeof(char), ft_strlen(ft_find_env(state->g_env, path)) + 1);
-					ft_strlcat(cmd->cmd_args[ii], ft_find_env(state->g_env, path), ft_strlen(ft_find_env(state->g_env, path)) + 1);
-				}
-				else if (ii > 0)
-				{
-					cmd->cmd_args[ii] = ft_free(cmd->cmd_args[ii]);
-				}
-				ft_free(path);
+				modife = 0;
+			}
+			cmd->cmd_args[ii] = ft_clean_quotes(cmd->cmd_args[ii]);
+			path = ft_clean_space_str(cmd->cmd_args[ii]);
+			cmd->cmd_args[ii] = ft_free(cmd->cmd_args[ii]);
+			cmd->cmd_args[ii] = path;
+			if (modife == 1)
+			{
+				ft_handle_env_varibles(state, i, ii);
 			}
 			ii++;
 		}
@@ -714,12 +754,13 @@ void	ft_minishell(t_state	*state, char *line, t_tokens *tokens)
 	// state->cmd_nmbs = ft_number_comands(line);
 	state->cmd_nmbs = ft_number_comands_parsing(*tokens);
 	state->line = line;
-	if (state->cmd_nmbs > 0)
+	if (state->cmd_nmbs > 0 && state->error == NO_ERROR)
 	{
 		state->tokens = NULL;
 		state->tokens = tokens;
 		ft_run_when_is_no_error(state, ft_create_command_array);
 		ft_run_when_is_no_error(state, ft_add_info_comands);
+		// ft_print_cmds(state);
 		ft_run_when_is_no_error(state, ft_run_comands);
 		ft_handle_error_pipe(state);
 		ft_check_exit(state);

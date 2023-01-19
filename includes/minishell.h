@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/19 13:01:10 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/19 16:10:02 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,9 @@ void	ft_redirection_two(t_state *state, int is_dup2);
 void	ft_redirection_four(t_state *state, int is_dup2);
 
 // str
+char *ft_clean_space_str(char *str);
 char *ft_clean_str(char *str);
+int	ft_strchr_get(const char *s, int c);
 
 // --> tokens utils
 int ft_tokens_size(t_tokens l);
