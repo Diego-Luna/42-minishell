@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/18 18:20:05 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/19 13:01:10 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,6 @@
 #include <termios.h>
 #include "./readline/readline.h"
 #include "./readline/history.h"
-
-// Comand control
-# define N_ECHO 1
-# define N_CD 2
-# define N_PWD 3
-# define N_EXPORT 4
-# define N_UNSET 5
-# define N_ENV 6
-# define N_EXIT 7
 
 // Error control,
 // N is the number and M is the message
@@ -68,7 +59,6 @@
 # define N_ERROR_TOKENS_REDE 12
 // Error control
 
-
 // array comands
 typedef struct va_t_cmd
 {
@@ -97,23 +87,24 @@ typedef struct s_tokens
 
 typedef struct va_states
 {
+	char	**t_redirection;
 	char	**t_comands;
+	char	**cmd_paths;
+	char	**g_env;
+	t_tokens *tokens;
 	char	*env_path;
 	char	*line;
-	char	**cmd_paths;
-	char	**t_redirection;
+	t_cmd *cmds;
 	pid_t	*pid;
+	int		save_stdout;
+	int		save_stdin;
+	int		fork_error;
+	int		pipe_stop;
 	int		cmd_nmbs;
 	int		index;
 	int		error;
-	int		fork_error;
-	int		stop;
-	int		pipe_stop;
 	int		debug;
-	int		save_stdout;
-	int		save_stdin;
-	t_cmd *cmds;
-	t_tokens *tokens;
+	int		stop;
 }			t_state;
 
 // --> signals
@@ -140,6 +131,7 @@ int		ft_quotes(char *args, int i);
 int		ft_create_token(char *args, int i, int start, t_tokens *t);
 
 // --> run comands, and pipe
+void	ft_init_state(t_state	*state, char **envp);
 char	*ft_find_env(char **envp, char *path);
 void	ft_childs(t_state state, char **envp, char *argv);
 void	ft_minishell(t_state	*state, char *line, t_tokens *tokens);
@@ -156,6 +148,8 @@ int	ft_size_table(char **array);
 void	*ft_free(void *ptr);
 void	**ft_free_table(char **array);
 void	ft_close_fd(void);
+void	ft_check_exit(t_state	*state);
+void ft_free_all(t_state *state);
 
 // --> Error
 void ft_error_message(char *str, char **table, t_state *state, int error);

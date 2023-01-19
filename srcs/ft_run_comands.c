@@ -6,14 +6,14 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/18 19:28:20 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/19 13:53:51 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 // The global variable that stores environment variables
-extern char	**g_env;
+// extern char	**g_env;
 
 // This function is in charge of finding the PATH variable, and returning its value, if there is an error it puts it in the global variable
 char	*ft_find_env(char **envp, char *path)
@@ -117,67 +117,6 @@ void ft_print_cmds(t_state *state)
 		printf("\n");
 		i++;
 	}
-}
-
-void	ft_delete_herodoc(t_cmd *cmd)
-{
-	char *number;
-	char *file;
-
-	number = ft_itoa(cmd->id);
-	file = ft_strjoin(".heredoc_tmp_", number);
-	unlink(file);
-	ft_free(number);
-	ft_free(file);
-}
-
-// We make all our commandos free
-void ft_free_comand(t_state *state)
-{
-	int i = 0;
-	int ii = 0;
-
-	state->t_comands = (char **)ft_free_table(state->t_comands);
-	i = 0;
-	if (!state->cmds)
-	{
-		return;
-	}
-	while (i < state->cmd_nmbs)
-	{
-		ii = 0;
-		while (state->cmds[i].cmd_args && state->cmds[i].cmd_args[ii])
-		{
-			ft_free(state->cmds[i].cmd_args[ii]);
-			ii++;
-		}
-		ft_delete_herodoc(&state->cmds[i]);
-		ft_free(state->cmds[i].cmd_args);
-		ft_free(state->cmds[i].cmd);
-		ii = 0;
-		while (state->cmds[i].t_redirection[ii])
-		{
-			ft_free(state->cmds[i].t_redirection[ii]);
-			ii++;
-		}
-		ft_free(state->cmds[i].t_redirection);
-		// ft_free_table(state->cmds[i].t_redirection);
-		if (state->cmds[i].file > 0 )
-		{
-			close(state->cmds[i].file);
-		}
-		i++;
-	}
-	state->cmds = ft_free(state->cmds);
-}
-
-// free to everything
-void ft_free_all(t_state *state)
-{
-	state->cmd_paths = (char **)ft_free_table(state->cmd_paths);
-	ft_free_comand(state);
-	ft_free_table(state->t_redirection);
-	state->fork_error = 0;
 }
 
 // Command process with flork, for a single command, the child process executes the command and the parent waits until it has finished.
@@ -358,7 +297,7 @@ int	ft_str_in_str(char *str, char *find)
 
 void ft_create_t_redirection(t_state *state)
 {
-	state->t_redirection = (char **)ft_calloc(sizeof(char *), 5);
+	state->t_redirection = ft_calloc(sizeof(char *), 5);
 	state->t_redirection[0] =  ft_strdup("<");
 	state->t_redirection[1] =  ft_strdup(">");
 	state->t_redirection[2] =  ft_strdup("<<");
@@ -382,15 +321,20 @@ void ft_save_type_redirection(t_state *state, int i)
 	}
 }
 
-int ft_position_in_token(t_tokens l, char *str)
+int ft_position_in_token(t_tokens l, char *str, int n_pipe)
 {
 	int i = 0;
+	int pipe = 0;
 	t_node	*aff;
 
 	aff = l.first;
 	while (aff)
 	{
-		if (ft_strncmp(aff->content, str, ft_strlen(aff->content)) == 0)
+		if (ft_strncmp(aff->content, "|", 2) == 0)
+		{
+			pipe++;
+		}
+		else if ( pipe == n_pipe && ft_strncmp(aff->content, str, ft_strlen(aff->content)) == 0)
 		{
 			return (i);
 		}
@@ -409,7 +353,7 @@ char *ft_get_char_node(t_tokens l, int position)
 	aff = l.first;
 	while (aff)
 	{
-		if (position == i)
+		if ( position == i)
 		{
 			return (aff->content);
 		}
@@ -430,7 +374,7 @@ void	ft_cmd_args_in_redirection(t_state *state, int i)
 
 	state->cmds[i].t_redirection = ft_calloc(sizeof(char *), 2);
 	cmd = &state->cmds[i];
-	position_redi = ft_position_in_token(*state->tokens, state->t_redirection[cmd->redirect]);
+	position_redi = ft_position_in_token(*state->tokens, state->t_redirection[cmd->redirect], i);
 	if (position_redi >= ft_tokens_size(*state->tokens) - 2)
 	{
 		state->cmds[i].cmd_args = NULL;
@@ -439,7 +383,6 @@ void	ft_cmd_args_in_redirection(t_state *state, int i)
 	}
 	position_redi++;
 	state->cmds[i].t_redirection[0] = ft_strdup(ft_get_char_node(*state->tokens, position_redi));
-
 	state->cmds[i].cmd_args = ft_content_tokens(state, i, *state->tokens);
 	size_copy = ft_size_table(state->cmds[i].cmd_args);
 	new = ft_calloc( sizeof(char *), size_copy);
@@ -656,7 +599,7 @@ void ft_create_command_array(t_state *state)
 	int i = 0;
 
 	ft_create_t_redirection(state);
-	state->cmds = ft_calloc(sizeof(t_cmd), state->cmd_nmbs);
+	state->cmds = ft_calloc(sizeof(t_cmd), state->cmd_nmbs + 1);
 	state->t_comands = ft_table_token(state);
 	while (i < state->cmd_nmbs)
 	{
@@ -693,12 +636,6 @@ int ft_str_is_a_number(char *str)
 	return (1);
 }
 
-void	ft_check_exit(t_state	*state)
-{
-	ft_close_fd();
-	ft_free_all(state);
-}
-
 void ft_add_info_comands(t_state *state)
 {
 	int i = 0;
@@ -716,11 +653,11 @@ void ft_add_info_comands(t_state *state)
 			if (cmd->cmd_args[ii][0] == '$' && ft_strlen(cmd->cmd_args[ii]) > 1)
 			{
 				path = ft_strjoin(cmd->cmd_args[ii] + 1, "=");
-				if (ft_find_env(g_env, path) != NULL)
+				if (ft_find_env(state->g_env, path) != NULL)
 				{
 					cmd->cmd_args[ii] = ft_free(cmd->cmd_args[ii]);
-					cmd->cmd_args[ii] = ft_calloc(sizeof(char), ft_strlen(ft_find_env(g_env, path)) + 1);
-					ft_strlcat(cmd->cmd_args[ii], ft_find_env(g_env, path), ft_strlen(ft_find_env(g_env, path)) + 1);
+					cmd->cmd_args[ii] = ft_calloc(sizeof(char), ft_strlen(ft_find_env(state->g_env, path)) + 1);
+					ft_strlcat(cmd->cmd_args[ii], ft_find_env(state->g_env, path), ft_strlen(ft_find_env(state->g_env, path)) + 1);
 				}
 				else if (ii > 0)
 				{
@@ -728,6 +665,12 @@ void ft_add_info_comands(t_state *state)
 				}
 				ft_free(path);
 			}
+			ii++;
+		}
+		ii = 0;
+		while (cmd->t_redirection && cmd->t_redirection[ii])
+		{
+			cmd->t_redirection[ii] = ft_clean_quotes(cmd->t_redirection[ii]);
 			ii++;
 		}
 		if (cmd->redirect == 1)

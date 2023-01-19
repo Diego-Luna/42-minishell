@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+         #
+#    By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 11:24:49 by mtrembla          #+#    #+#              #
-#    Updated: 2023/01/16 11:17:28 by mtrembla         ###   ########.fr        #
+#    Updated: 2023/01/19 12:59:16 by dluna-lo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,8 @@ SRC =	main.c \
 		ft_redirect.c \
 		free.c \
 		str_utils.c \
+		tables_utils.c \
+		ft_init_state.c \
 
 OBJ = $(SRC:.c=.o)
 
@@ -37,7 +39,7 @@ READLINE = ./includes/readline/libreadline.a ./includes/readline/libhistory.a -l
 
 $(ODIR)/%.o:$(SDIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
-# @echo "\033[92m.\033[0m\c"
+	@echo "\033[92m.\033[0m\c"
 
 $(NAME): $(ODIR) $(OFIX)
 	@$(MAKE) all -C ./includes/libft
@@ -54,7 +56,7 @@ clean:
 
 fclean: clean
 	@$(RM) $(NAME)
-#	@$(MAKE) fclean -C ./includes/libft
+	@$(MAKE) fclean -C ./includes/libft
 
 re: fclean all
 

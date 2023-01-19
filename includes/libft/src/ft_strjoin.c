@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 14:33:28 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/11/08 10:47:37 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/19 12:33:17 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (s1[++j])
 		str[j] = s1[j];
 	j = -1;
-	while (s2[++j])
+	while (s2 && s2[++j])
 		str[i + j] = s2[j];
 	str[i + j] = 0;
 	return (str);

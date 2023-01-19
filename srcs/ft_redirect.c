@@ -6,14 +6,14 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 18:06:30 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/18 18:23:03 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/19 13:56:00 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 // The global variable that stores environment variables
-extern char	**g_env;
+// extern char	**g_env;
 
 // <
 void	ft_redirection_one(t_state *state)
@@ -55,7 +55,6 @@ void	ft_create_herodoc_(t_state *state, int index)
 	// int index;
 	t_cmd *cmd;
 	char *str;
-	char *str_clean;
 	char *file;
 	char *number;
 
@@ -71,11 +70,10 @@ void	ft_create_herodoc_(t_state *state, int index)
 		ft_free(file);
 		return;
 	}
-	str_clean = ft_clean_str(cmd->t_redirection[0]);
 	str = readline("heredoc_tmp > ");
 	while (str)
 	{
-		if (ft_strncmp(str, str_clean, ft_strlen(str_clean)) == 0)
+		if (ft_strncmp(str, cmd->t_redirection[0], ft_strlen(str)) == 0)
 			break ;
 		ft_putstr_fd(str, cmd->file);
 		ft_putstr_fd("\n", cmd->file);
@@ -84,7 +82,6 @@ void	ft_create_herodoc_(t_state *state, int index)
 	}
 	close(cmd->file);
 	ft_free(str);
-	ft_free(str_clean);
 	ft_free(file);
 }
 
