@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 12:32:17 by diegofranci       #+#    #+#             */
-/*   Updated: 2023/01/19 16:08:09 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:57:58 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,36 @@ int	ft_strchr_get(const char *s, int c)
 	if (s[i] == (char)c)
 	{
 		return (i);
+	}
+	return (-1);
+}
+
+int	ft_str_in_str(char *str, char *find)
+{
+	int i = 0;
+	int i_save = 0;
+	int ii = 0;
+	// int size;
+
+	if (!find)
+	{
+		return(-1);
+	}
+	while (str[i])
+	{
+		ii = 0;
+		i_save = i;
+		while (find[ii] && str[i] == find[ii])
+		{
+			if (!find[ii + 1] && find[ii] != str[i + 1])
+			{
+				return (i_save);
+			}
+			ii++;
+			i++;
+		}
+		i = i_save;
+		i++;
 	}
 	return (-1);
 }

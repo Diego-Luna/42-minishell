@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/19 16:21:18 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/20 12:11:35 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,16 +132,32 @@ void	ft_minishell_split(char *args, t_tokens *t);
 int		ft_quotes(char *args, int i, t_tokens *t);
 int		ft_create_token(char *args, int i, int start, t_tokens *t);
 
-// --> run comands, and pipe
+
+// --> ft_minishell
 void	ft_init_state(t_state	*state, char **envp);
-char	*ft_find_env(char **envp, char *path);
-void	ft_childs(t_state state, char **envp, char *argv);
 void	ft_minishell(t_state	*state, char *line, t_tokens *tokens);
+void ft_create_command_array(t_state *state);
+void ft_add_info_comands(t_state *state);
+void ft_run_comands(t_state	*state);
+void	ft_handle_error_pipe(t_state *state);
+void	ft_check_exit(t_state	*state);
+
+// --> ft_run_comands
+void ft_process_comand(t_state	*state);
+void ft_process_comands(t_state	*state);
+void	ft_childs(t_state state, char **envp, char *argv);
+
+//  --> ft_create_command_array
+void	ft_cmd_args_in_redirection(t_state *state, int i);
+char **ft_content_tokens(t_state *state, int number_pipe, t_tokens l);
+char *ft_save_token(t_state *state, int number_pipe);
+int ft_position_in_token(t_tokens l, char *str, int n_pipe);
 
 // --> ENV
 char	**ft_crate_env(char **old, int size, int f);
 char	*ft_get_comand_p(char **paths, char *cmd);
 int		ft_find_env_index(char **envp, char *path);
+char	*ft_find_env(char **envp, char *path);
 
 // --> tables
 int	ft_size_table(char **array);
@@ -150,7 +166,6 @@ int	ft_size_table(char **array);
 void	*ft_free(void *ptr);
 void	**ft_free_table(char **array);
 void	ft_close_fd(void);
-void	ft_check_exit(t_state	*state);
 void ft_free_all(t_state *state);
 
 // --> Error
@@ -164,12 +179,11 @@ int	ft_run_comand_build(t_state *state);
 int ft_execve(t_state *state);
 int ft_delate_env(t_state *state, char **env_name);
 int ft_add_env(t_state *state, char **past);
-void	ft_handle_error_pipe(t_state *state);
 
 // --> redirection
 char **ft_content_tokens(t_state *state, int number_pipe, t_tokens l);
 int	ft_on_redirection(t_state *state);
-void	ft_create_herodoc_(t_state *state, int index);
+void	ft_create_herodoc(t_state *state, int index);
 void	ft_redirection_two(t_state *state, int is_dup2);
 void	ft_redirection_four(t_state *state, int is_dup2);
 

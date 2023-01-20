@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 18:06:30 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/19 13:56:00 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/20 11:44:32 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ft_redirection_two(t_state *state, int is_dup2)
 	}
 }
 
-void	ft_create_herodoc_(t_state *state, int index)
+void	ft_create_herodoc(t_state *state, int index)
 {
 	// int index;
 	t_cmd *cmd;

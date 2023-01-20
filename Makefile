@@ -6,7 +6,7 @@
 #    By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 11:24:49 by mtrembla          #+#    #+#              #
-#    Updated: 2023/01/19 12:59:16 by dluna-lo         ###   ########.fr        #
+#    Updated: 2023/01/20 12:09:11 by dluna-lo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,13 +17,22 @@ SRC =	main.c \
 		parsing.c \
 		dlist.c \
 		split.c \
-		ft_run_comands.c \
 		ft_special_commands.c \
 		ft_redirect.c \
 		free.c \
 		str_utils.c \
 		tables_utils.c \
 		ft_init_state.c \
+		0_ft_minishell.c \
+		10_ft_create_command_array.c \
+		11_ft_create_command_array.c \
+		12_ft_create_command_array.c \
+		20_ft_add_info_comands.c \
+		30_ft_run_comands.c \
+		31_ft_run_comands.c \
+		32_ft_run_comands.c \
+		40_ft_handle_error_pipe.c \
+		env.c \
 
 OBJ = $(SRC:.c=.o)
 
