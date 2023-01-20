@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   30_ft_run_comands.c                                :+:      :+:    :+:   */
+/*   ft_run_comands.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:45:15 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 11:59:26 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/20 13:59:12 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 // ft_get_comand_p, is in charge of finding the path of the command, for the execution of the mimes, or returns null.
 char	*ft_get_comand_p(char **paths, char *cmd)

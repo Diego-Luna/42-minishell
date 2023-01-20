@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   dlist.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:58:40 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/16 13:34:57 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/20 15:02:40 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	dlist_add_back(t_tokens *l, char *elem)
 {

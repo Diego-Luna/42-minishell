@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   2_ft_run_comands.c                                 :+:      :+:    :+:   */
+/*   ft_process_comands.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:49:30 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 11:50:47 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/20 13:59:09 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 // The equation of the children commands with the fork
 void	ft_run_childs(t_state *state)

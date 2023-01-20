@@ -6,11 +6,11 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 12:32:17 by diegofranci       #+#    #+#             */
-/*   Updated: 2023/01/20 11:57:58 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/20 15:02:40 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 // The global variable that stores environment variables
 // extern char	**g_env;

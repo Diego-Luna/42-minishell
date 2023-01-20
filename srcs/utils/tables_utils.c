@@ -1,36 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   12_.c                                              :+:      :+:    :+:   */
+/*   tables_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/20 12:01:29 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 12:01:37 by dluna-lo         ###   ########.fr       */
+/*   Created: 2023/01/19 12:18:43 by dluna-lo          #+#    #+#             */
+/*   Updated: 2023/01/20 15:02:40 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-int ft_position_in_token(t_tokens l, char *str, int n_pipe)
+// returns the size of an array
+int	ft_size_table(char **array)
 {
-	int i = 0;
-	int pipe = 0;
-	t_node	*aff;
+	int	i;
 
-	aff = l.first;
-	while (aff)
+	i = 0;
+	while (array[i])
 	{
-		if (ft_strncmp(aff->content, "|", 2) == 0)
-		{
-			pipe++;
-		}
-		else if ( pipe == n_pipe && ft_strncmp(aff->content, str, ft_strlen(aff->content)) == 0)
-		{
-			return (i);
-		}
 		i++;
-		aff = aff->next;
 	}
-	return (-1);
+	return (i);
 }

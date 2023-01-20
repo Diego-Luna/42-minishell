@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   0_ft_minishell.c                                   :+:      :+:    :+:   */
+/*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 12:08:00 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/20 15:02:40 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 /* Function for debug, which shows us all the created commands and their
 	information. */

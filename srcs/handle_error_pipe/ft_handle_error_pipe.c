@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   0_ft_handle_error_pipe.c                           :+:      :+:    :+:   */
+/*   ft_handle_error_pipe.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:51:11 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 11:51:32 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/20 13:58:59 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	ft_handle_error_pipe(t_state *state)
 {

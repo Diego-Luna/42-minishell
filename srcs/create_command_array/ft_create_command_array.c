@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   0_ft_create_command_array.c                        :+:      :+:    :+:   */
+/*   ft_create_command_array.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:35:55 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 11:41:39 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/20 13:58:50 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void ft_save_type_redirection(t_state *state, int i)
 {

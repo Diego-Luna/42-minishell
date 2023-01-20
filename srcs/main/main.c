@@ -6,11 +6,11 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:01 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/19 13:01:52 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/20 15:02:35 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 int	main(int argc, char **argv, char **envp)
 {

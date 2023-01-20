@@ -6,11 +6,11 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 10:47:26 by diegofranci       #+#    #+#             */
-/*   Updated: 2023/01/19 13:02:47 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/20 15:02:40 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 // we make free, and we put at the end a null.
 void	*ft_free(void *ptr)

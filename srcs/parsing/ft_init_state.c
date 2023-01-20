@@ -6,11 +6,11 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:58:19 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/19 12:58:27 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/20 15:02:40 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 // We create the necessary space to create our genv, and with the option of making the old version free.
 char	**ft_crate_env(char **old, int size, int f)

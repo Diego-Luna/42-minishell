@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   1_ft_run_comands.c                                 :+:      :+:    :+:   */
+/*   ft_process_comand.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:48:56 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 11:50:42 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/20 13:59:03 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 // Command process with flork, for a single command, the child process executes the command and the parent waits until it has finished.
 void	ft_process_comand_fork(t_state *state)

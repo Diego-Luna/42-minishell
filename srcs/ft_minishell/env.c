@@ -6,11 +6,11 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:56:24 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 11:56:42 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/20 15:02:40 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 // This function is in charge of finding the PATH variable, and returning its value, if there is an error it puts it in the global variable
 char	*ft_find_env(char **envp, char *path)
