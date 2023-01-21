@@ -6,20 +6,22 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:41:56 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 13:58:47 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/20 19:49:21 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+
+
 void ft_handle_env_varibles(t_state *state, int i, int ii)
 {
 	t_cmd *cmd;
-
-	cmd = &state->cmds[i];
 	char *path_clean;
 	char *path;
+	char **str;
 
+	cmd = &state->cmds[i];
 	if (ft_strchr_get(cmd->cmd_args[ii], '$') >= 0 && ft_strlen(cmd->cmd_args[ii]) > (size_t)ft_strchr_get(cmd->cmd_args[ii], '$')  && ft_strlen(cmd->cmd_args[ii]) > 1)
 	{
 		path_clean = ft_clean_str(ft_strchr(cmd->cmd_args[ii], '$') + 1);

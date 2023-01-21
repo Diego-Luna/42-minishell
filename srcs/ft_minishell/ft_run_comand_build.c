@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_special_commands.c                              :+:      :+:    :+:   */
+/*   ft_run_comand_build.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/26 15:05:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 15:02:40 by dluna-lo         ###   ########.fr       */
+/*   Created: 2023/01/20 16:58:12 by dluna-lo          #+#    #+#             */
+/*   Updated: 2023/01/20 16:59:44 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-// extern char	**g_env;
 
 void	ft_print_table(char **str, int new_line)
 {
@@ -46,61 +44,6 @@ void	ft_print_table(char **str, int new_line)
 		}
 		i++;
 	}
-}
-
-// look in a char table and return the position of it
-int ft_find_env_position(char **envp, char *path)
-{
-	int	i;
-	int	ii;
-	int	size;
-
-	i = 0;
-	size = ft_size_table(envp);
-	ii = ft_strlen(path);
-	while (i < size && ft_strncmp(path, envp[i], ii))
-	{
-		i++;
-	}
-	if (i == size)
-	{
-		return (-1);
-	}
-	return (i);
-}
-
-int ft_delate_env(t_state *state, char **env_name)
-{
-	int position = 0;
-	int i = 0;
-	char *str;
-
-	(void)state;
-	if (!env_name[1])
-	{
-		return (-1);
-	}
-	i = 1;
-	while (i < ft_size_table(env_name))
-	{
-		str = ft_strjoin(env_name[i], "=");
-		position = ft_find_env_position(state->g_env, str);
-		if (position < 0)
-		{
-			ft_free(str);
-			return (-1);
-		}
-		ft_free(str);
-		ft_free(state->g_env[position]);
-		while (state->g_env[position + 1])
-		{
-			state->g_env[position] = state->g_env[position + 1];
-			position++;
-		}
-		state->g_env[position] = 0;
-		i++;
-	}
-	return (1);
 }
 
 void	ft_echo(t_state *state)
@@ -196,43 +139,6 @@ void	ft_comand_pwd(t_state *state)
 	printf("%s\n", str_tem);
 }
 
-// Our own execve
-int ft_execve(t_state *state)
-{
-	int error;
-	char **erro_path;
-	int i = state->index;
-	// char *point;
-
- 	if(access(state->cmds[i].cmd_args[0], X_OK | F_OK) != -1)
-	{
-		ft_close_fd();
-		error = execve(state->cmds[i].cmd_args[0], state->cmds[i].cmd_args, state->g_env);
-		return (error);
-	}
-	if (ft_find_env(state->g_env, "PATH=") == NULL)
-	{
-		erro_path = ft_calloc(sizeof(char *) , 2);
-		erro_path[0] = ft_strdup("PATH");
-		ft_error_message(M_ERROR_FIND_ENV, erro_path, state, N_ERROR_FIND_ENV);
-		ft_free_table(erro_path);
-		ft_close_fd();
-		exit(1);
-	}
-	state->env_path = ft_find_env(state->g_env, "PATH=");
-	state->cmd_paths = ft_split(state->env_path, ':');
-	state->cmds[i].cmd = ft_get_comand_p(state->cmd_paths, state->cmds[i].cmd_args[0]);
-	if (!state->cmds[i].cmd)
-	{
-		ft_error_message(M_ERROR_PATH, state->cmds[i].cmd_args, state, N_ERROR_PATH);
-		ft_close_fd();
-		exit(1);
-	}
-	ft_close_fd();
-	error = execve(state->cmds[i].cmd, state->cmds[i].cmd_args, state->g_env);
-	return (error);
-}
-
 int	ft_run_comand_build(t_state *state)
 {
 	char *comand;
@@ -274,62 +180,5 @@ int	ft_run_comand_build(t_state *state)
 	{
 		return (0);
 	}
-	return (1);
-}
-
-void ft_env_export(t_state *state ,char *str)
-{
-	char *temp;
-	int size;
-	int temp_leng;
-	int i = 0;
-
-	temp_leng = ft_strlen(str);
-	temp = ft_calloc(sizeof(char), temp_leng + 1);
-	while (str[i] && str[i] != '=')
-	{
-		temp[i] = str[i];
-		i++;
-	}
-	if (ft_find_env(state->g_env, temp))
-	{
-		size = ft_find_env_index(state->g_env, temp);
-		state->g_env[size] = ft_free(state->g_env[size]);
-	}
-	else
-	{
-		size = ft_size_table(state->g_env);
-		state->g_env = ft_crate_env(state->g_env, 2, 1);
-	}
-	state->g_env[size] = ft_strdup(str);
-	ft_free(temp);
-}
-
-int ft_add_env(t_state *state, char **past)
-{
-	int i;
-
-	i = 0;
-	(void)state;
-	if (ft_size_table(past) == 1)
-	{
-		while (state->g_env[i])
-		{
-			printf("[%i]%s\n", i, state->g_env[i]);
-			i++;
-		}
-		return 1;
-	}
-	if (ft_strchr(past[1], '=') == NULL)
-	{
-		return 0;
-	}
-	i = 1;
-	while (i < ft_size_table(past))
-	{
-		ft_env_export(state, past[i]);
-		i++;
-	}
-
 	return (1);
 }

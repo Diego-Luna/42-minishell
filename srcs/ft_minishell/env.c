@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:56:24 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 15:02:40 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/20 16:56:47 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,59 @@ int	ft_find_env_index(char **envp, char *path)
 		return (-1);
 	}
 	return (i);
+}
+
+// look in a char table and return the position of it
+int ft_find_env_position(char **envp, char *path)
+{
+	int	i;
+	int	ii;
+	int	size;
+
+	i = 0;
+	size = ft_size_table(envp);
+	ii = ft_strlen(path);
+	while (i < size && ft_strncmp(path, envp[i], ii))
+	{
+		i++;
+	}
+	if (i == size)
+	{
+		return (-1);
+	}
+	return (i);
+}
+
+int ft_delate_env(t_state *state, char **env_name)
+{
+	int position = 0;
+	int i = 0;
+	char *str;
+
+	(void)state;
+	if (!env_name[1])
+	{
+		return (-1);
+	}
+	i = 1;
+	while (i < ft_size_table(env_name))
+	{
+		str = ft_strjoin(env_name[i], "=");
+		position = ft_find_env_position(state->g_env, str);
+		if (position < 0)
+		{
+			ft_free(str);
+			return (-1);
+		}
+		ft_free(str);
+		ft_free(state->g_env[position]);
+		while (state->g_env[position + 1])
+		{
+			state->g_env[position] = state->g_env[position + 1];
+			position++;
+		}
+		state->g_env[position] = 0;
+		i++;
+	}
+	return (1);
 }
