@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_add_info_comands.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:41:56 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 19:49:21 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/22 12:07:34 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void ft_handle_env_varibles(t_state *state, int i, int ii)
 	t_cmd *cmd;
 	char *path_clean;
 	char *path;
-	char **str;
+	// char **str;
 
 	cmd = &state->cmds[i];
 	if (ft_strchr_get(cmd->cmd_args[ii], '$') >= 0 && ft_strlen(cmd->cmd_args[ii]) > (size_t)ft_strchr_get(cmd->cmd_args[ii], '$')  && ft_strlen(cmd->cmd_args[ii]) > 1)

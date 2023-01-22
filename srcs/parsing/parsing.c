@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:30:09 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/20 15:02:40 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/22 12:09:14 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	ft_parse(char *line, t_tokens *tokens, t_state *state)
 	tokens->last =NULL;
 	tokens->error = 0;
 	ft_minishell_split(args, tokens);
-	// if (!tokens->error)
 	// view(*tokens);
+	if (!tokens->error)
 	ft_minishell(state, line, tokens); // run comands minishell
 	dlist_free(tokens);
 	free(tokens);

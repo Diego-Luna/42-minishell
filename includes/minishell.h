@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 12:11:35 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/22 12:39:33 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ typedef struct va_states
 // --> signals
 void	ft_signals();
 void    ft_disable_echo(void);
+void ft_fork_handler(int signum);
 void	ft_sigint_handler();
 void	ft_fork_signal(void);
 
@@ -121,7 +122,6 @@ void	dlist_free(t_tokens *l);
 void	view(t_tokens l);
 
 //parsing
-// void	ft_parse(char *line, t_tokens *tokens);
 void	ft_parse(char *line, t_tokens *tokens, t_state *state);
 char	*ft_clean_quotes(char *old_str);
 char	*ft_trim_char(char *str, int ptr);
@@ -131,7 +131,6 @@ int		ft_splitable(char c);
 void	ft_minishell_split(char *args, t_tokens *t);
 int		ft_quotes(char *args, int i, t_tokens *t);
 int		ft_create_token(char *args, int i, int start, t_tokens *t);
-
 
 // --> ft_minishell
 void	ft_init_state(t_state	*state, char **envp);

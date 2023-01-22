@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_process_comand.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:48:56 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 13:59:03 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/22 12:34:05 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ void	ft_process_comand_fork(t_state *state)
 		exit(error);
 	}
 	else
+	{
+		signal(SIGINT, SIG_IGN);
 		waitpid(pid, &state->fork_error, 0);
+	}
+	ft_signals();
 }
 
 // This function creates a child process where the command sent will be executed.
