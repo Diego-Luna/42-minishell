@@ -6,7 +6,7 @@
 /*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:28:21 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/22 17:13:12 by diegofranci      ###   ########.fr       */
+/*   Updated: 2023/01/22 18:31:19 by diegofranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ void	ft_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
+
 void	ft_fork_signal(void)
 {
-	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, ft_fork_handler);
 	signal(SIGQUIT, SIG_DFL);
 }
 
@@ -61,6 +62,11 @@ void    ft_disable_echo(void)
 	tcgetattr(STDIN_FILENO, &attributes);
 	attributes.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &attributes);
+}
+
+void ft_fork_handler(int signum)
+{
+	(void)signum;
 }
 
 void	ft_sigint_handler(void)

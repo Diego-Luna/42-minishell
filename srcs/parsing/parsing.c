@@ -6,7 +6,7 @@
 /*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:30:09 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/22 10:45:42 by diegofranci      ###   ########.fr       */
+/*   Updated: 2023/01/22 18:30:18 by diegofranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	ft_parse(char *line, t_tokens *tokens, t_state *state)
 	tokens->last =NULL;
 	tokens->error = 0;
 	ft_minishell_split(args, tokens);
-	// if (!tokens->error)
 	// view(*tokens);
-	ft_minishell(state, line, tokens); // run comands minishell
+	if (!tokens->error)
+	ft_minishell(state, line, tokens);
 	dlist_free(tokens);
 	free(tokens);
 }

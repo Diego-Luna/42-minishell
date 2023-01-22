@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_process_comands.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:49:30 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 13:59:09 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/22 14:30:32 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ void	ft_run_childs(t_state *state)
 	{
 		int		fd[2];
 
+		ft_fork_signal();
 		pipe(fd);
 		state->pid[state->index] = fork();
 		if (state->pid[state->index] == 0)
 		{
-			ft_fork_signal();
 			if (state->index < state->cmd_nmbs - 1)
 			{
 				close(fd[0]);
@@ -47,6 +47,8 @@ void	ft_run_childs(t_state *state)
 			close(fd[1]);
 			dup2(fd[0], STDIN_FILENO);
 		}
+		else
+		signal(SIGINT, SIG_IGN);
 		state->index++;
 	}
 }
@@ -59,6 +61,7 @@ void ft_wait_childs(t_state	*state)
 		waitpid(state->pid[state->index], &state->fork_error, 0);
 		state->index++;
 	}
+	ft_signals();
 }
 
 // Functions to run more than one, command with pipes.
