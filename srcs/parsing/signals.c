@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:28:21 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/20 15:02:40 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/22 17:13:12 by diegofranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,28 @@ void	ft_fork_signal(void)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_DFL);
+}
+
+static void	ft_interupt(int signal)
+{
+	if (signal == SIGINT)
+	{
+		kill(0, 0);
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		rl_on_new_line();
+	}
+	if (signal == SIGQUIT)
+	{
+		kill(0, 0);
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		rl_on_new_line();
+	}
+}
+
+void	ft_signal_stop(void)
+{
+	signal(SIGINT, ft_interupt);
+	signal(SIGQUIT, ft_interupt);
 }
 
 //WARNING RESET BEFORE CLOSING!!!!!!!

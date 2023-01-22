@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 19:45:08 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/22 17:14:09 by diegofranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void ft_print_cmds(t_state *state)
 	{
 		ft_printf("id{%i} cmd{%s} ", state->cmds[i].id, state->cmds[i].cmd);
 		ii = 0;
-		while (state->cmds[i].cmd_args && ii < state->cmd_nmbs && state->cmds[i].cmd_args[ii])
+		// while (state->cmds[i].cmd_args && ii < state->cmd_nmbs && state->cmds[i].cmd_args[ii])
+		while (state->cmds[i].cmd_args && state->cmds[i].cmd_args[ii])
 		{
 			ft_printf("cmd_args{%s} ", state->cmds[i].cmd_args[ii]);
 			ii++;
@@ -100,10 +101,9 @@ void	ft_minishell(t_state	*state, char *line, t_tokens *tokens)
 	{
 		state->tokens = NULL;
 		state->tokens = tokens;
+		ft_signal_stop();
 		ft_run_when_is_no_error(state, ft_create_command_array);
-		// ft_print_cmds(state);
 		ft_run_when_is_no_error(state, ft_add_info_comands);
-		// ft_print_cmds(state);
 		ft_run_when_is_no_error(state, ft_run_comands);
 		ft_handle_error_pipe(state);
 		ft_check_exit(state);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_init_state.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:58:19 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 15:02:40 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/22 11:03:36 by diegofranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,26 @@ char	**ft_crate_env(char **old, int size, int f)
 	return (new);
 }
 
+void	ft_increment_shelllevel(t_state *state)
+{
+	char **past;
+	char *str_num;
+	int num;
+
+	if (ft_find_env(state->g_env, "SHLVL=") != NULL && ft_strlen(ft_find_env(state->g_env, "SHLVL=")) > 0)
+	{
+		num = ft_atoi(ft_find_env(state->g_env, "SHLVL="));
+		num ++;
+		str_num = ft_itoa(num);
+		past = ft_calloc(sizeof(char *), 3);
+		past[0] = ft_strdup("1");
+		past[1] = ft_strjoin("SHLVL=", str_num);
+		ft_add_env(state, past);
+		ft_free_table(past);
+		ft_free(str_num);
+	}
+}
+
 // We start the state variables, and those that need mesh, start with NULL
 void	ft_init_state(t_state	*state, char **envp)
 {
@@ -58,4 +78,5 @@ void	ft_init_state(t_state	*state, char **envp)
 	state->debug = 1;
 	state->pipe_stop = -1;
 	ft_handle_error_pipe(state);
+	ft_increment_shelllevel(state);
 }

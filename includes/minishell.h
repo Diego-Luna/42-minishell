@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 12:11:35 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/22 17:14:00 by diegofranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,8 +191,11 @@ void	ft_redirection_four(t_state *state, int is_dup2);
 char *ft_clean_space_str(char *str);
 char *ft_clean_str(char *str);
 int	ft_strchr_get(const char *s, int c);
+void	ft_str_to_str(char *dst, char *src);
 
 // --> tokens utils
 int ft_tokens_size(t_tokens l);
+
+void	ft_signal_stop(void);
 
 #endif

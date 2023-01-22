@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 12:32:17 by diegofranci       #+#    #+#             */
-/*   Updated: 2023/01/20 15:02:40 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/21 20:01:03 by diegofranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ char *ft_clean_str(char *str)
 	}
 	while (str[i])
 	{
-		// if (str[i] != ' ' || str[i] != '\t')
-		if (ft_isalnum(str[i]) == 1)
+		// if (ft_isalnum(str[i]) == 1)
+		if (str[i] != ' ' || str[i] != '\t')
 		{
 			size++;
 		}
@@ -39,8 +39,8 @@ char *ft_clean_str(char *str)
 	size = 0;
 	while (str[i])
 	{
-		// if (str[i] != ' ' || str[i] != '\t')
-		if (ft_isalnum(str[i]) == 1)
+		// if (ft_isalnum(str[i]) == 1)
+		if (str[i] != ' ' || str[i] != '\t')
 		{
 			new[size] = str[i];
 			size++;
@@ -119,6 +119,24 @@ int	ft_strchr_get(const char *s, int c)
 		return (i);
 	}
 	return (-1);
+}
+
+void	ft_str_to_str(char *dst, char *src)
+{
+	int i = 0;
+	int ii = 0;
+
+	if (!src || !dst)
+	{
+		return;
+	}
+	i = ft_strlen(dst);
+	while (src[ii])
+	{
+		dst[i] = src[ii];
+		ii++;
+		i++;
+	}
 }
 
 int	ft_str_in_str(char *str, char *find)

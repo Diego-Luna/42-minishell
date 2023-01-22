@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 14:33:35 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/11/08 10:47:37 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/21 19:18:41 by diegofranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ size_t	ft_strlcat(char *restrict dst, const char *restrict src, size_t dstsize)
 	size_t	length_src;
 
 	i = 0;
+	if (!src || !dst)
+	{
+		return (-1);
+	}
 	length_src = ft_strlen(src);
 	length_dst = ft_strlen(dst);
 	if (length_dst >= dstsize || dstsize <= 0)

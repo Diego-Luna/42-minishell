@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execve.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:58:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 16:59:39 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/22 10:44:58 by diegofranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,19 +79,69 @@ void ft_env_export(t_state *state ,char *str)
 	ft_free(temp);
 }
 
+char **ft_only_names(char **env)
+{
+	int i = 0;
+	int ii = 0;
+	int iii = 0;
+	char **new;
+	char *tem;
+
+	new = ft_calloc(sizeof(char *), ft_size_table(env) + 1);
+
+	while (env[i])
+	{
+		ii = ft_strchr_get(env[i], '=');
+		tem = ft_calloc(sizeof(char), ii + 1);
+		iii = 0;
+		while (iii < ii)
+		{
+			tem[iii] = env[i][iii];
+			iii++;
+		}
+		new[i] = tem;
+		i++;
+	}
+	return (new);
+}
+
+void	ft_env_organized(char **env_original)
+{
+	int i = 0;
+	char **env;
+	char *tem;
+
+	env = ft_only_names(env_original);
+	while (env[i])
+	{
+		if (i >= 1 && ft_strncmp(env[i], env[i - 1], ft_strlen(env[i])) < 0)
+		{
+			tem = env[i - 1];
+			env[i - 1] = env[i];
+			env[i] = tem;
+			i = 0;
+		}
+		i++;
+	}
+
+	i = 0;
+	while (env[i])
+	{
+		tem = ft_strjoin(env[i], "=");
+		printf("declare -x %s=\"%s\"\n", env[i], ft_find_env(env_original, tem));
+		ft_free(tem);
+		i++;
+	}
+	ft_free_table(env);
+}
+
 int ft_add_env(t_state *state, char **past)
 {
 	int i;
 
-	i = 0;
-	(void)state;
 	if (ft_size_table(past) == 1)
 	{
-		while (state->g_env[i])
-		{
-			printf("[%i]%s\n", i, state->g_env[i]);
-			i++;
-		}
+		ft_env_organized(state->g_env);
 		return 1;
 	}
 	if (ft_strchr(past[1], '=') == NULL)
