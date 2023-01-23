@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:30:09 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/23 12:36:03 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/23 15:03:06 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,14 @@ char	*ft_trim_char(char *str, int ptr)
 
 	i = 0;
 	j = 0;
-	newstr = malloc(sizeof(char *) * ft_strlen(str));
+	// newstr = malloc(sizeof(char *) * ft_strlen(str));
+	newstr = ft_calloc(sizeof(char), ft_strlen(str) + 1);
 	while (str[i])
 	{
 		if (i != ptr)
 			newstr[j++] = str[i];
 		i++;
 	}
-	newstr[j] = '\0';
 	ft_free(str);
 	return(newstr);
 }
@@ -79,6 +79,7 @@ void	ft_repetition_check(char *str, t_tokens *t)
 	char	c;
 
 	count = 0;
+	c = 0;
 	while (*str)
 	{
 		if (*str == '|' || *str == '>' || *str == '<')

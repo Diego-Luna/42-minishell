@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_process_comands.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:49:30 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/22 14:30:32 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/23 16:08:34 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_run_childs(t_state *state)
 {
 	int error;
 
-	error = 0;
+	error = 1;
 	state->index = 0;
 	while (state->index < state->cmd_nmbs && state->error == 0)
 	{
@@ -38,6 +38,8 @@ void	ft_run_childs(t_state *state)
 			{
 				error = ft_execve(state);
 				ft_error_message(M_ERROR_EXECVE_PIPES, state->cmds[state->index].cmd_args, state, N_ERROR_EXECVE_PIPES);
+				ft_close_fd();
+				exit(errno);
 			}
 			ft_close_fd();
 			exit(error);

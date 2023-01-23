@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_process_comand.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:48:56 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/22 12:34:05 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/23 15:56:46 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	ft_process_comand_fork(t_state *state)
 		ft_fork_signal();
 		error = ft_execve(state);
 		ft_error_message(M_ERROR_EXECVE, state->cmds[0].cmd_args, state, N_ERROR_EXECVE);
-		exit(error);
+		// exit(error);
+		exit(errno);
 	}
 	else
 	{

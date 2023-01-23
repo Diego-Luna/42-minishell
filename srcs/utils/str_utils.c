@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 12:32:17 by diegofranci       #+#    #+#             */
-/*   Updated: 2023/01/21 20:01:03 by diegofranci      ###   ########.fr       */
+/*   Updated: 2023/01/23 15:51:07 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,42 @@ char *ft_clean_str(char *str)
 	}
 	return (new);
 }
+
+char *ft_only_str_isalnum(char *str)
+{
+	int i = 0;
+	int size = 0;
+	char *new;
+
+	if (!str)
+	{
+		return NULL;
+	}
+	while (str[i])
+	{
+		// if (ft_isalnum(str[i]) == 1)
+		if (!(str[i] == ' ' || str[i] == '\'' || str[i] == '\"' || str[i] == '.' || str[i] == ',' || str[i] == '(' || str[i] == ')'))
+		{
+			size++;
+		}
+		i++;
+	}
+	new = calloc(sizeof(char), size + 1);
+	i = 0;
+	size = 0;
+	while (str[i])
+	{
+		// if (ft_isalnum(str[i]) == 1)
+		if (!(str[i] == ' ' || str[i] == '\'' || str[i] == '\"' || str[i] == '.' || str[i] == ',' || str[i] == '(' || str[i] == ')'))
+		{
+			new[size] = str[i];
+			size++;
+		}
+		i++;
+	}
+	return (new);
+}
+
 char *ft_clean_space_str(char *str)
 {
 	int i = 0;
@@ -72,13 +108,22 @@ char *ft_clean_space_str(char *str)
 			i++;
 		}
 		ii = ft_strlen(str) - 1;
-		while (str[ii] && str[ii] == ' ')
+		while (ii > 0 && str[ii] && str[ii] == ' ')
 		{
 			ii--;
 		}
-		size = ii -  i;
+		size = ii - i;
 	}
-	new = calloc(sizeof(char), size + 1);
+	if (size < 0)
+	{
+		size = 0;
+	}
+	new = ft_calloc(sizeof(char), size + 2);
+	// printf("----> Diego size{%d} str[ii]{%c} \n", size + 1, str[ii]);
+	if (size == 0)
+	{
+		return (new);
+	}
 	if (clean == 1)
 	{
 		i = 0;
@@ -94,6 +139,7 @@ char *ft_clean_space_str(char *str)
 		while (i <= ii)
 		{
 			new[size] = str[i];
+			// printf("----> Diego {%s}", new);
 			size++;
 			i++;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_add_info_comands.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:41:56 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/22 18:31:04 by diegofranci      ###   ########.fr       */
+/*   Updated: 2023/01/23 15:51:19 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,45 @@ char *ft_modif(char *cmd_args, char **env, int ii)
 	char *path_clean;
 	char *path;
 	char *new;
+	int plus = 0;
+	int i = 0;
 
+	(void)ii;
 	new = NULL;
-	path_clean = ft_clean_str(cmd_args);
+	path_clean = ft_only_str_isalnum(cmd_args);
 	path = ft_strjoin(path_clean, "=");
-
+	plus = ft_strlen(cmd_args) - ft_strlen(path_clean);
 	if (ft_find_env(env, path) != NULL)
 	{
-		new = ft_calloc(sizeof(char), ft_strlen(ft_find_env(env, path)) + 1);
+		new = ft_calloc(sizeof(char), ft_strlen(ft_find_env(env, path)) + plus + 1);
 		ft_strlcat(new, ft_find_env(env, path), ft_strlen(ft_find_env(env, path)) + 1);
+		ii = -1;
 	}
 	else if (ii > 0)
 	{
 		new = NULL;
+		ii = -1;
+		new = ft_calloc(sizeof(char), plus + 1);
 	}
-	ft_free(path);
+	else
+	{
+		new = cmd_args;
+		ft_free(path);
+		ft_free(path_clean);
+		return (new);
+	}
+
+	i = ft_strlen(path_clean);
+	plus = ft_strlen(new);
+	while (cmd_args[i])
+	{
+		new[plus] = cmd_args[i];
+		plus++;
+		i++;
+	}
+
 	ft_free(cmd_args);
+	ft_free(path);
 	ft_free(path_clean);
 	return (new);
 }
@@ -92,7 +115,8 @@ void ft_add_info_comands(t_state *state)
 			}
 			cmd->cmd_args[ii] = ft_clean_quotes(cmd->cmd_args[ii]);
 			path = ft_clean_space_str(cmd->cmd_args[ii]);
-			cmd->cmd_args[ii] = ft_free(cmd->cmd_args[ii]);
+			ft_free(cmd->cmd_args[ii]);
+			cmd->cmd_args[ii] = NULL;
 			cmd->cmd_args[ii] = path;
 			if (modife == 1)
 			{

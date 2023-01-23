@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:51:11 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 13:58:59 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/23 16:13:20 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,14 @@ void	ft_handle_error_pipe(t_state *state)
 	}else if (state->fork_error > 256)
 	{
 		state->fork_error /= 256;
+	}
+	else if (state->fork_error == 255)
+	{
+		state->fork_error = 0;
+	}
+	else if ( state->fork_error == 255)
+	{
+		state->fork_error = 255 - state->fork_error;
 	}
 	status = ft_itoa(state->fork_error);
 	tem_comand = calloc(sizeof(char *), 3);

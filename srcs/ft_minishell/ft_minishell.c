@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/23 12:41:41 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/23 16:04:10 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void ft_print_cmds(t_state *state)
 			ft_printf("t_redirection{%s} ", state->cmds[i].t_redirection[iii]);
 			iii++;
 		}
-		
 		ft_printf("\n");
 		i++;
 	}
@@ -101,9 +100,9 @@ void	ft_minishell(t_state	*state, char *line, t_tokens *tokens)
 	{
 		state->tokens = NULL;
 		state->tokens = tokens;
-		// ft_signal_stop();
 		ft_run_when_is_no_error(state, ft_create_command_array);
 		ft_run_when_is_no_error(state, ft_add_info_comands);
+		// ft_print_cmds(state);
 		ft_run_when_is_no_error(state, ft_run_comands);
 		ft_handle_error_pipe(state);
 		ft_check_exit(state);

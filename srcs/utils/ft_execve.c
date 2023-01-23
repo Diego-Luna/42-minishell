@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_execve.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:58:18 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/22 10:44:58 by diegofranci      ###   ########.fr       */
+/*   Updated: 2023/01/23 15:57:39 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int ft_execve(t_state *state)
 		ft_error_message(M_ERROR_FIND_ENV, erro_path, state, N_ERROR_FIND_ENV);
 		ft_free_table(erro_path);
 		ft_close_fd();
-		exit(1);
+		// exit(1);
+		exit(errno);
 	}
 	state->env_path = ft_find_env(state->g_env, "PATH=");
 	state->cmd_paths = ft_split(state->env_path, ':');
@@ -44,7 +45,8 @@ int ft_execve(t_state *state)
 	{
 		ft_error_message(M_ERROR_PATH, state->cmds[i].cmd_args, state, N_ERROR_PATH);
 		ft_close_fd();
-		exit(1);
+		// exit(1);
+		exit(errno);
 	}
 	ft_close_fd();
 	error = execve(state->cmds[i].cmd, state->cmds[i].cmd_args, state->g_env);

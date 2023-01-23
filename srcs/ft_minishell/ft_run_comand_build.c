@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:58:12 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 16:59:44 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/23 16:04:05 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,21 @@ void	ft_print_table(char **str, int new_line)
 	}
 }
 
+int ft_is_only_char(char *str, int c)
+{
+	int i = 0;
+
+	while (str[i])
+	{
+		if (str[i] != c)
+		{
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
 void	ft_echo(t_state *state)
 {
 	char **past;
@@ -58,16 +73,17 @@ void	ft_echo(t_state *state)
 		printf("\n");
 		return;
 	}
-	else if (size >= 2 && ft_strncmp(past[1], "-n\0", 3) != 0)
+	else if (size >= 2 && ft_strncmp(past[1], "-n", 2) == 0 && ft_is_only_char(past[1] + 2, 'n') == 1)
+	{
+		ft_print_table(past + 2, 0);
+		return;
+	}
+	// else if (size >= 2 && ft_strncmp(past[1], "-n\0", 3) != 0)
+	else if (size >= 2)
 	{
 		ft_print_table(past + 1, 0);
 		printf("\n");
 		return ;
-	}
-	else if (size >= 2 && ft_strncmp(past[1], "-n\0", 3) == 0)
-	{
-		ft_print_table(past + 2, 0);
-		return;
 	}
 }
 

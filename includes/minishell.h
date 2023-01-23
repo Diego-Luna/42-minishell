@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/23 12:17:10 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/23 15:56:30 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <unistd.h>
 #include <signal.h>
 #include <termios.h>
+#include <errno.h>
 #include "./readline/readline.h"
 #include "./readline/history.h"
 
@@ -192,6 +193,7 @@ char *ft_clean_space_str(char *str);
 char *ft_clean_str(char *str);
 int	ft_strchr_get(const char *s, int c);
 void	ft_str_to_str(char *dst, char *src);
+char *ft_only_str_isalnum(char *str);
 
 // --> tokens utils
 int ft_tokens_size(t_tokens l);
