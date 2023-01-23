@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:35:55 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 13:58:50 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/23 16:47:31 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,29 @@ void ft_save_type_redirection(t_state *state, int i)
 {
 	t_node	*aff;
 	int ii;
+	int pipe;
 
 	aff = state->tokens->first;
-	(void)i;
+	pipe = 0;
 	while (aff)
 	{
 		if (aff->content)
 		{
-			ii = 3;
-			while (ii >= 0)
+			if (pipe == i)
 			{
-				if (ft_strncmp(aff->content, state->t_redirection[ii], ft_strlen(state->t_redirection[ii])) == 0)
+				ii = 3;
+				while (ii >= 0)
 				{
-					state->cmds[i].redirect = ii;
-					break;
+					if (ft_strncmp(aff->content, state->t_redirection[ii], ft_strlen(state->t_redirection[ii])) == 0)
+					{
+						state->cmds[i].redirect = ii;
+						break;
+					}
+					ii--;
 				}
-				ii--;
+			}else if (ft_strncmp(aff->content, "|\0", 2) == 0)
+			{
+				pipe++;
 			}
 		}
 		aff = aff->next;

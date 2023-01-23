@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:38:41 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 13:58:56 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/23 16:43:34 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ void	ft_cmd_args_in_redirection(t_state *state, int i)
 	state->cmds[i].t_redirection[0] = ft_strdup(ft_get_char_node(*state->tokens, position_redi));
 	state->cmds[i].cmd_args = ft_content_tokens(state, i, *state->tokens);
 	size_copy = ft_size_table(state->cmds[i].cmd_args);
-	new = ft_calloc( sizeof(char *), size_copy);
+	new = ft_calloc( sizeof(char *), size_copy + 1);
 	position_redi = 0;
 	while (ii < size_copy)
 	{
