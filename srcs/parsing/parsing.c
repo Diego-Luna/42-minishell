@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
+/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:30:09 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/22 18:30:18 by diegofranci      ###   ########.fr       */
+/*   Updated: 2023/01/23 12:36:03 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	ft_parse(char *line, t_tokens *tokens, t_state *state)
 	tokens->first =NULL;
 	tokens->last =NULL;
 	tokens->error = 0;
+	ft_repetition_check(args, tokens);
 	ft_minishell_split(args, tokens);
 	// view(*tokens);
 	if (!tokens->error)
@@ -70,4 +71,27 @@ char	*ft_trim_char(char *str, int ptr)
 	newstr[j] = '\0';
 	ft_free(str);
 	return(newstr);
+}
+
+void	ft_repetition_check(char *str, t_tokens *t)
+{
+	int		count;
+	char	c;
+
+	count = 0;
+	while (*str)
+	{
+		if (*str == '|' || *str == '>' || *str == '<')
+			c = *str;
+		while (*str++ == c)
+			count++;
+		if (count > 2)
+		{
+			printf("ERROR: Too many '%c'\n", c);
+			t->error = 1;
+			break;
+		}
+		count = 0;
+		str++;
+	}
 }

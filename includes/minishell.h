@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
+/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/22 18:29:58 by diegofranci      ###   ########.fr       */
+/*   Updated: 2023/01/23 12:17:10 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ void	view(t_tokens l);
 void	ft_parse(char *line, t_tokens *tokens, t_state *state);
 char	*ft_clean_quotes(char *old_str);
 char	*ft_trim_char(char *str, int ptr);
+void	ft_repetition_check(char *str, t_tokens *t);
 
 //split
 int		ft_splitable(char c);

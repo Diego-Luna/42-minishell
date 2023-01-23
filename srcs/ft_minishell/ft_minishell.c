@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: diegofranciscolunalopez <diegofrancisco    +#+  +:+       +#+        */
+/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/22 17:14:09 by diegofranci      ###   ########.fr       */
+/*   Updated: 2023/01/23 12:41:41 by mtrembla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	ft_minishell(t_state	*state, char *line, t_tokens *tokens)
 	{
 		state->tokens = NULL;
 		state->tokens = tokens;
-		ft_signal_stop();
+		// ft_signal_stop();
 		ft_run_when_is_no_error(state, ft_create_command_array);
 		ft_run_when_is_no_error(state, ft_add_info_comands);
 		ft_run_when_is_no_error(state, ft_run_comands);
