@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/23 17:17:08 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/24 12:49:57 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ typedef struct va_states
 	int		error;
 	int		debug;
 	int		stop;
+	int		exit;
 }			t_state;
 
 // --> signals

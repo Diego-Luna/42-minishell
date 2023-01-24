@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:58:12 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/23 16:04:05 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/24 14:20:57 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,24 @@ void	ft_comand_pwd(t_state *state)
 	printf("%s\n", str_tem);
 }
 
+void	ft_comand_exit(t_state *state, 	char **run_comand)
+{
+	state->stop = STOP;
+	state->exit = 0;
+	if (ft_size_table(run_comand) == 2)
+	{
+		if (ft_isdigit_str(run_comand[1]) == 1)
+		{
+			state->exit = ft_atoi(run_comand[1]);
+		}
+		else
+		{
+			ft_error_message(M_ERROR_NUMERIC_ARGUMENTS, run_comand + 1, state, N_ERROR_NUMERIC_ARGUMENTS);
+			state->exit = 255;
+		}
+	}
+}
+
 int	ft_run_comand_build(t_state *state)
 {
 	char *comand;
@@ -166,7 +184,7 @@ int	ft_run_comand_build(t_state *state)
 		return (1);
 	if (ft_strncmp(comand, "exit\0", 5) == 0)
 	{
-		state->stop = STOP;
+		ft_comand_exit(state, run_comand);
 	}
 	else if (ft_strncmp(comand, "env\0", 4) == 0)
 	{

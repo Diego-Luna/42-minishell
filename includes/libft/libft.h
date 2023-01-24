@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 14:35:22 by dluna-lo          #+#    #+#             */
-/*   Updated: 2022/12/19 11:14:53 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/24 14:16:06 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ int					ft_isalnum(int c);
 int					ft_isdigit(int c);
 int					ft_isprint(char c);
 int					ft_isascii(int c);
+
+/* Checker str */
+int	ft_isdigit_str(char *str);
 
 /* change */
 int					ft_atoi(const char *str);

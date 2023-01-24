@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:18:43 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 15:02:40 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/24 12:57:54 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ int	ft_size_table(char **array)
 	int	i;
 
 	i = 0;
+	if (!array)
+	{
+		return (0);
+	}
 	while (array[i])
 	{
 		i++;

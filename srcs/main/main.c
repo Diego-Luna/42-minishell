@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 12:50:01 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 19:29:00 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/24 12:53:24 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,6 @@ int	main(int argc, char **argv, char **envp)
 	}
 	ft_free_table(state.g_env);
 	rl_clear_history();
+	exit(state.exit);
   return (0);
 }
