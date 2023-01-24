@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 12:32:17 by diegofranci       #+#    #+#             */
-/*   Updated: 2023/01/23 15:51:07 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/23 19:28:11 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char *ft_clean_str(char *str)
 		}
 		i++;
 	}
-	new = calloc(sizeof(char), size + 1);
+	new = ft_calloc(sizeof(char), size + 1);
 	i = 0;
 	size = 0;
 	while (str[i])
@@ -54,6 +54,7 @@ char *ft_only_str_isalnum(char *str)
 {
 	int i = 0;
 	int size = 0;
+	int on = 1;
 	char *new;
 
 	if (!str)
@@ -62,24 +63,47 @@ char *ft_only_str_isalnum(char *str)
 	}
 	while (str[i])
 	{
-		// if (ft_isalnum(str[i]) == 1)
-		if (!(str[i] == ' ' || str[i] == '\'' || str[i] == '\"' || str[i] == '.' || str[i] == ',' || str[i] == '(' || str[i] == ')'))
+		if ( on == 1 && !(str[i] == ' ' || str[i] == '\'' || str[i] == '\"' || str[i] == '.' || str[i] == ',' || str[i] == '(' || str[i] == ')'))
+		{
+			on = 0;
+			size++;
+		}
+		else if ( on == 0  && !(str[i] == ' ' || str[i] == '\'' || str[i] == '\"' || str[i] == '.' || str[i] == ',' || str[i] == '(' || str[i] == ')'))
 		{
 			size++;
 		}
+		else if (on == 0)
+		{
+			on = 2;
+		}
 		i++;
 	}
-	new = calloc(sizeof(char), size + 1);
+	new = ft_calloc(sizeof(char), size + 1);
 	i = 0;
 	size = 0;
+	on = 1;
 	while (str[i])
 	{
-		// if (ft_isalnum(str[i]) == 1)
-		if (!(str[i] == ' ' || str[i] == '\'' || str[i] == '\"' || str[i] == '.' || str[i] == ',' || str[i] == '(' || str[i] == ')'))
+		if ( on == 1 && !(str[i] == ' ' || str[i] == '\'' || str[i] == '\"' || str[i] == '.' || str[i] == ',' || str[i] == '(' || str[i] == ')'))
+		{
+			on = 0;
+			new[size] = str[i];
+			size++;
+		}
+		else if ( on == 0  && !(str[i] == ' ' || str[i] == '\'' || str[i] == '\"' || str[i] == '.' || str[i] == ',' || str[i] == '(' || str[i] == ')'))
 		{
 			new[size] = str[i];
 			size++;
 		}
+		else if (on == 0)
+		{
+			on = 2;
+		}
+		// if (!(str[i] == ' ' || str[i] == '\'' || str[i] == '\"' || str[i] == '.' || str[i] == ',' || str[i] == '(' || str[i] == ')'))
+		// {
+		// 	new[size] = str[i];
+		// 	size++;
+		// }
 		i++;
 	}
 	return (new);

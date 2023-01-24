@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:41:56 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/23 15:51:19 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/23 19:32:28 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,18 @@ char *ft_modif(char *cmd_args, char **env, int ii)
 	int plus = 0;
 	int i = 0;
 
-	(void)ii;
 	new = NULL;
 	path_clean = ft_only_str_isalnum(cmd_args);
 	path = ft_strjoin(path_clean, "=");
 	plus = ft_strlen(cmd_args) - ft_strlen(path_clean);
-	if (ft_find_env(env, path) != NULL)
+	// printf("\n Diego \ncmd_args{%s},\n path_clean{%s}  \n", cmd_args, path_clean);
+	if (ft_find_env(env, path) != NULL && ii == 1)
 	{
 		new = ft_calloc(sizeof(char), ft_strlen(ft_find_env(env, path)) + plus + 1);
 		ft_strlcat(new, ft_find_env(env, path), ft_strlen(ft_find_env(env, path)) + 1);
 		ii = -1;
 	}
-	else if (ii > 0)
+	else if (ii == 1)
 	{
 		new = NULL;
 		ii = -1;
@@ -60,6 +60,28 @@ char *ft_modif(char *cmd_args, char **env, int ii)
 	return (new);
 }
 
+int	ft_is_delete(t_state *state, int *num, char *tem)
+{
+	t_cmd *cmd;
+	char *str;
+	// char c;
+
+	cmd = &state->cmds[num[0]];
+	str = cmd->cmd_args[num[1]];
+
+	// printf("\n --> is {%c} {%d} \n", str[ft_str_in_str(str + num[2], tem) + num[2] - 1], ft_str_in_str(str + num[2], tem) - 1);
+	if (ft_str_in_str(str + num[2], tem) >= 0)
+	{
+		 if (ft_str_in_str(str + num[2], tem) + num[2] - 1 >= 0 && str[ft_str_in_str(str + num[2], tem) + num[2] - 1] == '$')
+		 {
+			// c = str[ft_str_in_str(str + num[2], tem) + num[2] + ft_strlen(tem)];
+			num[2] = ft_str_in_str(str + num[2], tem) + 1;
+			return (1);
+		 }
+	}
+	return (0);
+}
+
 void ft_handle_env_varibles(t_state *state, int i, int ii)
 {
 	t_cmd *cmd;
@@ -67,6 +89,8 @@ void ft_handle_env_varibles(t_state *state, int i, int ii)
 	char *new;
 	int size;
 	int position;
+	int is;
+	int num[3];
 
 	table = NULL;
 	cmd = &state->cmds[i];
@@ -75,9 +99,14 @@ void ft_handle_env_varibles(t_state *state, int i, int ii)
 	if (ft_strchr_get(cmd->cmd_args[ii], '$') >= 0 && ft_strlen(cmd->cmd_args[ii]) > (size_t)ft_strchr_get(cmd->cmd_args[ii], '$')  && ft_strlen(cmd->cmd_args[ii]) > 1)
 	{
 		table = ft_split(cmd->cmd_args[ii], '$');
+		num[0] = i;
+		num[1] = ii;
+		num[2] = 0;
 		while (table[position])
 		{
-			table[position] = ft_modif(table[position], state->g_env, ii);
+			is = ft_is_delete(state, num, table[position]);
+			// printf("\n -> diego table[position]{%s} is{%d} num[2]{%d} str{%s} \n", table[position], is, num[2], cmd->cmd_args[ii]+ num[2]);
+			table[position] = ft_modif(table[position], state->g_env, is);
 			size += ft_strlen(table[position]);
 			position++;
 		}
