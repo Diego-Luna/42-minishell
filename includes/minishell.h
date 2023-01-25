@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/25 13:54:47 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:03:35 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,13 @@ int ft_tokens_size(t_tokens l);
 // --> debug
 void	ft_print_table_debug(char **table);
 
+
+// --> ft_run_comand_build
+void	ft_comand_exit(t_state *state, char **run_comand);
+void	ft_print_table(char **str, int new_line);
+void	ft_echo(t_state *state);
+void	ft_comand_pwd(t_state *state);
+int	ft_is_only_char(char *str, int c);
 
 void	ft_signal_stop(void);
 
