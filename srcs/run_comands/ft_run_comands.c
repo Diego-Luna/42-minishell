@@ -6,13 +6,14 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:45:15 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 13:59:12 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:33:33 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// ft_get_comand_p, is in charge of finding the path of the command, for the execution of the mimes, or returns null.
+// ft_get_comand_p, is in charge of finding the path of the command,
+// for the execution of the mimes, or returns null.
 char	*ft_get_comand_p(char **paths, char *cmd)
 {
 	char	*tem;
@@ -32,12 +33,12 @@ char	*ft_get_comand_p(char **paths, char *cmd)
 }
 
 // The command handler
-void ft_run_comands(t_state	*state)
+void	ft_run_comands(t_state *state)
 {
 	state->save_stdout = dup(STDOUT_FILENO);
 	state->save_stdin = dup(STDIN_FILENO);
 	state->index = 0;
-	if (state->cmd_nmbs ==  1)
+	if (state->cmd_nmbs == 1)
 	{
 		ft_process_comand(state);
 	}

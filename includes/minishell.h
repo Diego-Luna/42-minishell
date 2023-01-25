@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/25 15:03:35 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:34:15 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ void	ft_check_exit(t_state	*state);
 void ft_process_comand(t_state	*state);
 void ft_process_comands(t_state	*state);
 void	ft_childs(t_state state, char **envp, char *argv);
+void	ft_run_childs(t_state *state);
 
 //  --> ft_create_command_array
 void	ft_cmd_args_in_redirection(t_state *state, int i);
