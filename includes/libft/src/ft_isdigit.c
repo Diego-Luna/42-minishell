@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 14:28:44 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/24 14:15:38 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/25 17:20:12 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ int	ft_isdigit(int c)
 
 int	ft_isdigit_str(char *str)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	if (!str)
 	{
 		return (-1);

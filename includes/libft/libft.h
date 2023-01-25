@@ -6,16 +6,16 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 14:35:22 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/24 14:16:06 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/25 17:20:43 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# include <stdarg.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdarg.h>
 
 // get_next_line
 # ifndef BUFFER_SIZE
@@ -37,7 +37,7 @@ int					ft_isprint(char c);
 int					ft_isascii(int c);
 
 /* Checker str */
-int	ft_isdigit_str(char *str);
+int					ft_isdigit_str(char *str);
 
 /* change */
 int					ft_atoi(const char *str);
@@ -94,33 +94,33 @@ t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 						void (*del)(void *));
 
 // main
-int			ft_printf(const char *str, ...);
+int					ft_printf(const char *str, ...);
 
 // controller
-int			ft_print_and_length(va_list arg, char *str);
-int			ft_percent_controller(va_list arg, char *str);
+int					ft_print_and_length(va_list arg, char *str);
+int					ft_percent_controller(va_list arg, char *str);
 
 // utils
-int			ft_putnbr_base(unsigned long nbr, char *base);
+int					ft_putnbr_base(unsigned long nbr, char *base);
 
 // caracteres
-int			ft_result_sign(void);
-int			ft_result_c(int arg);
-int			ft_result_di(int arg);
-int			ft_result_s(char *arg);
-int			ft_result_p(unsigned long p);
-int			ft_result_u(unsigned int arg);
-int			ft_result_x(unsigned int arg, char *base);
+int					ft_result_sign(void);
+int					ft_result_c(int arg);
+int					ft_result_di(int arg);
+int					ft_result_s(char *arg);
+int					ft_result_p(unsigned long p);
+int					ft_result_u(unsigned int arg);
+int					ft_result_x(unsigned int arg, char *base);
 
 // get_next_line
 // main
-char	*get_next_line(int fd);
+char				*get_next_line(int fd);
 
 // utils
-char	*ft_strdup_gnl(const char *str_1);
-int		ft_contains_newline(const char *str);
-void	*ft_malloc_zero(size_t count, size_t size);
-char	*ft_join_strs(const char *str_1, const char *str_2);
-void	ft_strs_cleans(char **str_1, char **str_2, char **str_3);
+char				*ft_strdup_gnl(const char *str_1);
+int					ft_contains_newline(const char *str);
+void				*ft_malloc_zero(size_t count, size_t size);
+char				*ft_join_strs(const char *str_1, const char *str_2);
+void				ft_strs_cleans(char **str_1, char **str_2, char **str_3);
 
 #endif
