@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/24 12:49:57 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/24 16:54:23 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,11 @@ int	ft_strchr_get(const char *s, int c);
 void	ft_str_to_str(char *dst, char *src);
 char *ft_only_str_isalnum(char *str);
 int	ft_str_in_str(char *str, char *find);
+
+// --> add_info_comand
+char	*ft_modif(char *cmd_args, char **env, int ii);
+int	ft_is_delete(t_state *state, int *num, char *tem);
+int	ft_handle_env_varibles_if(t_state *state, int i, int ii);
 
 // --> tokens utils
 int ft_tokens_size(t_tokens l);

@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:01:29 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/20 13:58:53 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/24 19:11:46 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int ft_position_in_token(t_tokens l, char *str, int n_pipe)
 	aff = l.first;
 	while (aff)
 	{
-		if (ft_strncmp(aff->content, "|", 2) == 0)
-		{
-			pipe++;
-		}
-		else if ( pipe == n_pipe && ft_strncmp(aff->content, str, ft_strlen(aff->content)) == 0)
+		if ( pipe == n_pipe && ft_strncmp(aff->content, str, ft_strlen(aff->content)) == 0)
 		{
 			return (i);
+		}
+		else if (ft_strncmp(aff->content, "|\0", 2) == 0)
+		{
+			pipe++;
 		}
 		i++;
 		aff = aff->next;
