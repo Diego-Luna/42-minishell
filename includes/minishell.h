@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/24 16:54:23 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/25 13:54:47 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,10 @@ void	ft_cmd_args_in_redirection(t_state *state, int i);
 char **ft_content_tokens(t_state *state, int number_pipe, t_tokens l);
 char *ft_save_token(t_state *state, int number_pipe);
 int ft_position_in_token(t_tokens l, char *str, int n_pipe);
+char	*ft_get_char_node(t_tokens l, int position);
+int	ft_tokens_size(t_tokens l);
+char **ft_cmd_args_in_redirection_create(t_state *state, int i, t_cmd *cmd,
+		int size_copy);
 
 // --> ENV
 char	**ft_crate_env(char **old, int size, int f);
@@ -204,6 +208,10 @@ int	ft_handle_env_varibles_if(t_state *state, int i, int ii);
 
 // --> tokens utils
 int ft_tokens_size(t_tokens l);
+
+// --> debug
+void	ft_print_table_debug(char **table);
+
 
 void	ft_signal_stop(void);
 

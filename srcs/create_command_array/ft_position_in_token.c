@@ -6,22 +6,25 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:01:29 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/24 19:11:46 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/25 12:52:46 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int ft_position_in_token(t_tokens l, char *str, int n_pipe)
+int	ft_position_in_token(t_tokens l, char *str, int n_pipe)
 {
-	int i = 0;
-	int pipe = 0;
 	t_node	*aff;
+	int		pipe;
+	int		i;
 
+	pipe = 0;
+	i = 0;
 	aff = l.first;
 	while (aff)
 	{
-		if ( pipe == n_pipe && ft_strncmp(aff->content, str, ft_strlen(aff->content)) == 0)
+		if (pipe == n_pipe && ft_strncmp(aff->content, str,
+				ft_strlen(aff->content)) == 0)
 		{
 			return (i);
 		}

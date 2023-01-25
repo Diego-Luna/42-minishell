@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:30:09 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/24 19:12:49 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/25 13:43:06 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	ft_parse(char *line, t_tokens *tokens, t_state *state)
 	ft_repetition_check(args, tokens);
 	ft_minishell_split(args, tokens);
 	if (!tokens->error)
+	view(*tokens);
 	ft_minishell(state, line, tokens);
 	dlist_free(tokens);
 	free(tokens);
