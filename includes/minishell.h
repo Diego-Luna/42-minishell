@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/25 17:23:53 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/25 18:57:08 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@
 # define N_ERROR_EXECVE_PIPES 5
 # define M_ERROR_UNSET_MISSING "Error in unset missing argument: 🏁"
 # define N_ERROR_UNSET_MISSING 6
-# define M_ERROR_UNSET_NOT_EXIST "Error in insert missing variable does not exist: 🧶"
+# define M_ERROR_UNSET_NOT_EXIST "Error in insert missing variable \
+	does not exist: 🧶"
 # define N_ERROR_UNSET_NOT_EXIST 7
 # define M_ERROR_NUMERIC_ARGUMENTS "Numeric argument required: 🏃‍♂️"
 # define N_ERROR_NUMERIC_ARGUMENTS 8
@@ -114,7 +115,7 @@ typedef struct va_states
 void				ft_signals(void);
 void				ft_disable_echo(void);
 void				ft_fork_handler(int signum);
-void				ft_sigint_handler(void);
+void				ft_sigint_handler();
 void				ft_fork_signal(void);
 
 //dlist
@@ -216,6 +217,7 @@ int					ft_tokens_size(t_tokens l);
 
 // --> debug
 void				ft_print_table_debug(char **table);
+void				ft_print_cmds(t_state *state);
 
 // --> ft_run_comand_build
 void				ft_comand_exit(t_state *state, char **run_comand);
