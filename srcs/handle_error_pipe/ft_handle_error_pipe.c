@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:51:11 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/23 16:41:00 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:06:50 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 void	ft_handle_error_pipe(t_state *state)
 {
-	char **tem_comand;
-	char *status;
+	char	**tem_comand;
+	char	*status;
 
 	state->fork_error /= 256;
-
 	if (state->fork_error == 9)
 	{
 		state->fork_error = 127;
