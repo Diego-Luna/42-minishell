@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+        */
+/*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:28:21 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/23 12:42:13 by mtrembla         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:19:42 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,37 +25,14 @@ void	ft_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-
 void	ft_fork_signal(void)
 {
 	signal(SIGINT, ft_fork_handler);
 	signal(SIGQUIT, SIG_DFL);
 }
 
-// static void	ft_interupt(int signal)
-// {
-// 	if (signal == SIGINT)
-// 	{
-// 		kill(0, 0);
-// 		ft_putchar_fd('\n', STDOUT_FILENO);
-// 		rl_on_new_line();
-// 	}
-// 	if (signal == SIGQUIT)
-// 	{
-// 		kill(0, 0);
-// 		ft_putchar_fd('\n', STDOUT_FILENO);
-// 		rl_on_new_line();
-// 	}
-// }
-
-// void	ft_signal_stop(void)
-// {
-// 	signal(SIGINT, ft_interupt);
-// 	signal(SIGQUIT, ft_interupt);
-// }
-
 //WARNING RESET BEFORE CLOSING!!!!!!!
-void    ft_disable_echo(void)
+void	ft_disable_echo(void)
 {
 	struct termios	attributes;
 
@@ -64,7 +41,7 @@ void    ft_disable_echo(void)
 	tcsetattr(STDIN_FILENO, TCSANOW, &attributes);
 }
 
-void ft_fork_handler(int signum)
+void	ft_fork_handler(int signum)
 {
 	(void)signum;
 }

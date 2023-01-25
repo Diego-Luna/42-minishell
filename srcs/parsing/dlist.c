@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 14:58:40 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/20 15:02:40 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:12:44 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	dlist_add_back(t_tokens *l, char *elem)
 {
 	t_node	*new;
-	
+
 	new = malloc(sizeof(t_node));
 	if (!new)
 		exit(0);
@@ -29,17 +29,17 @@ void	dlist_add_back(t_tokens *l, char *elem)
 	l->last = new;
 }
 
-void	dlist_remove_node(t_node *node) 
+void	dlist_remove_node(t_node *node)
 {
-  if (!node->prev && !node->next)
-    return;
-  else if (!node->prev)
-    node->next->prev = NULL;
-  else if (!node->next)
-    node->prev->next = NULL;
-  else
-  node->prev->next = node->next;
-  node->next->prev = node->prev;
+	if (!node->prev && !node->next)
+		return ;
+	else if (!node->prev)
+		node->next->prev = NULL;
+	else if (!node->next)
+		node->prev->next = NULL;
+	else
+		node->prev->next = node->next;
+	node->next->prev = node->prev;
 }
 
 void	dlist_free(t_tokens *l)
@@ -62,8 +62,9 @@ void	dlist_free(t_tokens *l)
 void	view(t_tokens l)
 {
 	t_node	*aff;
-	int i = 1;
+	int		i;
 
+	i = 1;
 	aff = l.first;
 	while (aff)
 	{

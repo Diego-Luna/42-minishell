@@ -6,13 +6,14 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:58:19 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/24 12:50:18 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:13:04 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// We create the necessary space to create our genv, and with the option of making the old version free.
+// We create the necessary space to create our genv,
+// and with the option of making the old version free.
 char	**ft_crate_env(char **old, int size, int f)
 {
 	char	**new;
@@ -40,14 +41,15 @@ char	**ft_crate_env(char **old, int size, int f)
 
 void	ft_increment_shelllevel(t_state *state)
 {
-	char **past;
-	char *str_num;
-	int num;
+	char	**past;
+	char	*str_num;
+	int		num;
 
-	if (ft_find_env(state->g_env, "SHLVL=") != NULL && ft_strlen(ft_find_env(state->g_env, "SHLVL=")) > 0)
+	if (ft_find_env(state->g_env, "SHLVL=") != NULL
+		&& ft_strlen(ft_find_env(state->g_env, "SHLVL=")) > 0)
 	{
 		num = ft_atoi(ft_find_env(state->g_env, "SHLVL="));
-		num ++;
+		num++;
 		str_num = ft_itoa(num);
 		past = ft_calloc(sizeof(char *), 3);
 		past[0] = ft_strdup("1");
@@ -59,7 +61,7 @@ void	ft_increment_shelllevel(t_state *state)
 }
 
 // We start the state variables, and those that need mesh, start with NULL
-void	ft_init_state(t_state	*state, char **envp)
+void	ft_init_state(t_state *state, char **envp)
 {
 	state->g_env = NULL;
 	state->g_env = ft_crate_env(envp, 1, -1);
