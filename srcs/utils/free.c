@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 10:47:26 by diegofranci       #+#    #+#             */
-/*   Updated: 2023/01/25 15:48:08 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/26 13:39:33 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	ft_free_comand(t_state *state)
 		ft_free_comand_table(state->cmds[i].cmd_args);
 		ft_delete_herodoc(&state->cmds[i]);
 		ft_free(state->cmds[i].cmd);
+		ft_free(state->cmds[i].redirect);
 		ft_free_comand_table(state->cmds[i].t_redirection);
 		if (state->cmds[i].file > 0)
 		{

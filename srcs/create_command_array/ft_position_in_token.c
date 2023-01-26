@@ -6,13 +6,13 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:01:29 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/25 12:52:46 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/26 16:28:35 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	ft_position_in_token(t_tokens l, char *str, int n_pipe)
+int	ft_position_in_token(t_tokens l, char *str, int n_pipe, int *start)
 {
 	t_node	*aff;
 	int		pipe;
@@ -24,7 +24,7 @@ int	ft_position_in_token(t_tokens l, char *str, int n_pipe)
 	while (aff)
 	{
 		if (pipe == n_pipe && ft_strncmp(aff->content, str,
-				ft_strlen(aff->content)) == 0)
+				ft_strlen(aff->content)) == 0 && i > *start)
 		{
 			return (i);
 		}

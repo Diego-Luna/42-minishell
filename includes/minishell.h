@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/25 18:57:08 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/26 16:56:52 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ typedef struct va_t_cmd
 	char			**cmd_args;
 	char			*cmd;
 	char			**r_cmd_args;
-	int				redirect;
+	int				*redirect;
+	int				n_of_redi;
+	int				i_redi;
 	char			*s_redirection;
 	char			**t_redirection;
 	int				file;
@@ -156,10 +158,10 @@ void				ft_cmd_args_in_redirection(t_state *state, int i);
 char				**ft_content_tokens(t_state *state, int number_pipe,
 						t_tokens l);
 char				*ft_save_token(t_state *state, int number_pipe);
-int					ft_position_in_token(t_tokens l, char *str, int n_pipe);
+int					ft_position_in_token(t_tokens l, char *str, int n_pipe, int *start);
 char				*ft_get_char_node(t_tokens l, int position);
 int					ft_tokens_size(t_tokens l);
-char				**ft_cmd_args_in_redirection_create(t_state *state, int i,
+char				**ft_cmd_args_in_redirection_create(t_state *state, char **tem,
 						t_cmd *cmd, int size_copy);
 
 // --> ENV

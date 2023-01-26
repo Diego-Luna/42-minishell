@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:02:17 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/25 17:03:19 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/26 11:47:12 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,35 @@ int	ft_clean_space_str_size(char *str)
 	return (size);
 }
 
-void	ft_clean_space_str_create_new(int clean, char *new, char *str, int ii)
+int	ft_size_end_utils(char *str)
+{
+	int	ii;
+
+	ii = ft_strlen(str) - 1;
+	while (ii > 0 && str[ii] && str[ii] == ' ')
+	{
+		ii--;
+	}
+	return (ii);
+}
+
+int	ft_size_start_utils(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && str[i] == ' ')
+	{
+		i++;
+	}
+	return (i);
+}
+
+void	ft_clean_space_str_create_new(int clean, char *new, char *str)
 {
 	int	i;
 	int	size;
 
-	i = 0;
 	if (clean == 1)
 	{
 		i = 0;
@@ -51,7 +74,8 @@ void	ft_clean_space_str_create_new(int clean, char *new, char *str, int ii)
 	else
 	{
 		size = 0;
-		while (i <= ii)
+		i = ft_size_start_utils(str);
+		while (i <= ft_size_end_utils(str))
 		{
 			new[size] = str[i];
 			size++;
@@ -84,6 +108,6 @@ char	*ft_clean_space_str(char *str)
 	new = ft_calloc(sizeof(char), size + 2);
 	if (size == 0)
 		return (new);
-	ft_clean_space_str_create_new(clean, new, str, ii);
+	ft_clean_space_str_create_new(clean, new, str);
 	return (new);
 }

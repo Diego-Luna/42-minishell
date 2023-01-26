@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:41:56 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/25 18:57:15 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/26 17:19:23 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,19 +86,19 @@ void	ft_add_info_comands_clean(t_state *state, int i, char **table)
 	}
 }
 
-void	ft_add_info_comands_redirection(t_state *state, t_cmd *cmd, int i)
+void ft_add_info_comands_redirection_while(t_state *state, t_cmd *cmd, int i)
 {
-	if (cmd->redirect == 1)
+	if (cmd->redirect[cmd->i_redi] == 1)
 	{
 		state->index = i;
 		ft_redirection_two(state, 0);
 	}
-	if (cmd->redirect == 3)
+	if (cmd->redirect[cmd->i_redi] == 3)
 	{
 		state->index = i;
 		ft_redirection_four(state, 0);
 	}
-	if (ft_size_table(cmd->t_redirection) > 0 && cmd->redirect == 2)
+	if (ft_size_table(cmd->t_redirection) > 0 && cmd->redirect[cmd->i_redi] == 2)
 	{
 		ft_create_herodoc(state, i);
 	}
@@ -107,6 +107,17 @@ void	ft_add_info_comands_redirection(t_state *state, t_cmd *cmd, int i)
 		ft_error_message(M_ERROR_TOKENS_REDE, cmd->cmd_args, state,
 			N_ERROR_TOKENS_REDE);
 	}
+}
+
+void	ft_add_info_comands_redirection(t_state *state, t_cmd *cmd, int i)
+{
+	cmd->i_redi = 0;
+	while (cmd->i_redi < cmd->n_of_redi && state->error == NO_ERROR)
+	{
+		ft_add_info_comands_redirection_while(state, cmd, i);
+		cmd->i_redi++;
+	}
+	cmd->i_redi = 0;
 }
 
 void	ft_add_info_comands(t_state *state)
