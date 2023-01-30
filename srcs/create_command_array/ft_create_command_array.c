@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:35:55 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/26 17:10:34 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/30 17:46:46 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,10 +128,8 @@ int ft_number_of_redirection(t_state *state, t_node	*aff, int number_pipe)
 void ft_crate_array(t_state *state, t_cmd *cmd, int num_comand)
 {
 	t_node	*aff;
-	int num;
 	int i;
 
-	(void)num;
 	i = 0;
 	aff = state->tokens->first;
 	cmd->n_of_redi = 0;
@@ -164,13 +162,10 @@ void	ft_create_command_array(t_state *state)
 		ft_save_type_redirection(state, i);
 		if (state->cmds[i].redirect[0] >= 0)
 		{
-			// printf("\n 🏁 \n");
 			ft_cmd_args_in_redirection(state, i);
-			// ft_print_table_debug(state->cmds[i].cmd_args);
 		}
 		else
 		{
-			// printf("\n 🔥 \n");
 			state->cmds[i].t_redirection = ft_calloc(sizeof(char *), 1);
 			state->cmds[i].cmd_args = ft_content_tokens(state, i,
 					*state->tokens);

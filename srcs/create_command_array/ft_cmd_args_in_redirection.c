@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 12:55:08 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/26 17:10:05 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/30 16:01:08 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	ft_cmd_args_in_redirection(t_state *state, int i)
 	int		size_copy;
 
 	cmd = &state->cmds[i];
-	state->cmds[i].t_redirection = ft_calloc(sizeof(char *), cmd->n_of_redi);
+	state->cmds[i].t_redirection = ft_calloc(sizeof(char *), cmd->n_of_redi + 1);
 	cmd->i_redi = 0;
 	size_copy = -1;
 	while ( cmd->i_redi < cmd->n_of_redi - 1)
@@ -84,5 +84,6 @@ void	ft_cmd_args_in_redirection(t_state *state, int i)
 	size_copy = ft_size_table(tem);
 	new = ft_cmd_args_in_redirection_create(state, tem, cmd, size_copy);
 	ft_free_table(tem);
+	state->cmds[i].cmd_args = NULL;
 	state->cmds[i].cmd_args = new;
 }

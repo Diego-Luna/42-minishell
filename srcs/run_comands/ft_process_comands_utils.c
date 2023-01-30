@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 15:31:04 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/25 15:35:10 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/30 17:04:53 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ void	ft_run_childs_utils_run(t_state *state, int *fd)
 	}
 	ft_on_redirection(state);
 	if (ft_run_comand_build(state) == 0)
+	{
 		ft_run_childs_utils_execve(state);
+	}
 	ft_close_fd();
 	exit(error);
 }
