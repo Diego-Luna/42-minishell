@@ -31,7 +31,6 @@ void	ft_fork_signal(void)
 	signal(SIGQUIT, SIG_DFL);
 }
 
-//WARNING RESET BEFORE CLOSING!!!!!!!
 void	ft_disable_echo(void)
 {
 	struct termios	attributes;
@@ -46,8 +45,9 @@ void	ft_fork_handler(int signum)
 	(void)signum;
 }
 
-void	ft_sigint_handler(void)
+void	ft_sigint_handler(int signum)
 {
+	(void)signum;
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);

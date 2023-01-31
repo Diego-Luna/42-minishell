@@ -117,7 +117,7 @@ typedef struct va_states
 void				ft_signals(void);
 void				ft_disable_echo(void);
 void				ft_fork_handler(int signum);
-void				ft_sigint_handler(void);
+void				ft_sigint_handler(int signum);
 void				ft_fork_signal(void);
 
 //dlist
