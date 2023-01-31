@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/26 16:56:52 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/30 19:30:38 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,9 @@ char				*ft_get_char_node(t_tokens l, int position);
 int					ft_tokens_size(t_tokens l);
 char				**ft_cmd_args_in_redirection_create(t_state *state, char **tem,
 						t_cmd *cmd, int size_copy);
+int	ft_save_type_redirection_while(t_state *state, t_node *aff, int i);
+int	ft_save_type_redirection(t_state *state, int i);
+char	**ft_table_token(t_state *state);
 
 // --> ENV
 char				**ft_crate_env(char **old, int size, int f);
@@ -213,6 +216,7 @@ int					ft_str_in_str(char *str, char *find);
 char				*ft_modif(char *cmd_args, char **env, int ii);
 int					ft_is_delete(t_state *state, int *num, char *tem);
 int					ft_handle_env_varibles_if(t_state *state, int i, int ii);
+char	*ft_handle_env_varibles_utils(t_state *state, int *num, int ii, int i);
 
 // --> tokens utils
 int					ft_tokens_size(t_tokens l);

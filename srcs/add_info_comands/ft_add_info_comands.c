@@ -6,38 +6,11 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:41:56 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/30 17:39:25 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/30 17:52:05 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-char	*ft_handle_env_varibles_utils(t_state *state, int *num, int ii, int i)
-{
-	char	**table;
-	char	*new;
-	t_cmd	*cmd;
-
-	cmd = &state->cmds[i];
-	table = ft_split(cmd->cmd_args[ii], '$');
-	while (table[num[4]])
-	{
-		table[num[4]] = ft_modif(table[num[4]], state->g_env,
-				ft_is_delete(state, num, table[num[4]]));
-		num[3] += ft_strlen(table[num[4]]);
-		num[4]++;
-	}
-	new = ft_calloc(sizeof(char), num[3] + 1);
-	i = 0;
-	while (i < num[4])
-	{
-		ft_str_to_str(new, table[i]);
-		ft_free(table[i]);
-		i++;
-	}
-	ft_free(table);
-	return (new);
-}
 
 void	ft_handle_env_varibles(t_state *state, int i, int ii)
 {
@@ -86,13 +59,14 @@ void	ft_add_info_comands_clean(t_state *state, int i, char **table)
 	}
 }
 
-void ft_add_info_comands_redirection_while(t_state *state, t_cmd *cmd, int i)
+void	ft_add_info_comands_redirection_while(t_state *state, t_cmd *cmd, int i)
 {
-	if ((cmd->cmd_args[0] && ft_strncmp(cmd->cmd_args[0], "||\0", 3) == 0 )|| (ft_size_table(cmd->cmd_args) == 0 && state->cmd_nmbs == 1))
+	if ((cmd->cmd_args[0] && ft_strncmp(cmd->cmd_args[0], "||\0", 3) == 0)
+		|| (ft_size_table(cmd->cmd_args) == 0 && state->cmd_nmbs == 1))
 	{
 		ft_error_message(M_ERROR_TOKENS_REDE, cmd->cmd_args, state,
 			N_ERROR_TOKENS_REDE);
-		return;
+		return ;
 	}
 	if (cmd->redirect[cmd->i_redi] == 1)
 	{
@@ -104,7 +78,8 @@ void ft_add_info_comands_redirection_while(t_state *state, t_cmd *cmd, int i)
 		state->index = i;
 		ft_redirection_four(state, 0);
 	}
-	if (ft_size_table(cmd->t_redirection) > 0 && cmd->redirect[cmd->i_redi] == 2)
+	if (ft_size_table(cmd->t_redirection) > 0
+		&& cmd->redirect[cmd->i_redi] == 2)
 	{
 		ft_create_herodoc(state, i);
 	}
