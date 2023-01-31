@@ -44,6 +44,8 @@ $(S_OBJ)/%.o:$(S_DIR)/%.c
 
 $(NAME): $(OBJS)
 	@$(MAKE) all -C ./includes/libft
+	@cd ./includes/readline && ./configure
+	@$(MAKE) everything -C ./includes/readline
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBFT) $(READLINE)
 
 $(S_OBJ):
