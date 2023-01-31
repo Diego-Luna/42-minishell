@@ -117,7 +117,7 @@ typedef struct va_states
 void				ft_signals(void);
 void				ft_disable_echo(void);
 void				ft_fork_handler(int signum);
-void				ft_sigint_handler();
+void				ft_sigint_handler(void);
 void				ft_fork_signal(void);
 
 //dlist
@@ -158,14 +158,16 @@ void				ft_cmd_args_in_redirection(t_state *state, int i);
 char				**ft_content_tokens(t_state *state, int number_pipe,
 						t_tokens l);
 char				*ft_save_token(t_state *state, int number_pipe);
-int					ft_position_in_token(t_tokens l, char *str, int n_pipe, int *start);
+int					ft_position_in_token(t_tokens l, char *str, int n_pipe,
+						int *start);
 char				*ft_get_char_node(t_tokens l, int position);
 int					ft_tokens_size(t_tokens l);
-char				**ft_cmd_args_in_redirection_create(t_state *state, char **tem,
-						t_cmd *cmd, int size_copy);
-int	ft_save_type_redirection_while(t_state *state, t_node *aff, int i);
-int	ft_save_type_redirection(t_state *state, int i);
-char	**ft_table_token(t_state *state);
+char				**ft_cmd_args_in_redirection_create(t_state *state,
+						char **tem, t_cmd *cmd, int size_copy);
+int					ft_save_type_redirection_while(t_state *state, t_node *aff,
+						int i);
+int					ft_save_type_redirection(t_state *state, int i);
+char				**ft_table_token(t_state *state);
 
 // --> ENV
 char				**ft_crate_env(char **old, int size, int f);
@@ -216,7 +218,8 @@ int					ft_str_in_str(char *str, char *find);
 char				*ft_modif(char *cmd_args, char **env, int ii);
 int					ft_is_delete(t_state *state, int *num, char *tem);
 int					ft_handle_env_varibles_if(t_state *state, int i, int ii);
-char	*ft_handle_env_varibles_utils(t_state *state, int *num, int ii, int i);
+char				*ft_handle_env_varibles_utils(t_state *state, int *num,
+						int ii, int i);
 
 // --> tokens utils
 int					ft_tokens_size(t_tokens l);
