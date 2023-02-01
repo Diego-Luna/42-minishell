@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 14:52:38 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/02/01 15:10:29 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/01 15:19:04 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,14 @@ void	ft_comand_pwd(t_state *state)
 	char	*str_tem;
 
 	str_tem = NULL;
-	str_tem = ft_find_env(state->g_env, "PWD=");
+	str_tem = getcwd(NULL, 0);;
 	if (!str_tem)
 	{
 		ft_error_message(M_ERROR_PATH, state->t_comands, state, N_ERROR_PATH);
 		return ;
 	}
 	printf("%s\n", str_tem);
+	ft_free(str_tem);
 }
 
 void	ft_comand_exit(t_state *state, char **run_comand)
