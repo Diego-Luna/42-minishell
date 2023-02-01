@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 10:47:26 by diegofranci       #+#    #+#             */
-/*   Updated: 2023/01/26 13:39:33 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/31 18:57:58 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,6 @@ void	ft_free_all(t_state *state)
 {
 	state->cmd_paths = (char **)ft_free_table(state->cmd_paths);
 	ft_free_comand(state);
-	ft_free_table(state->t_redirection);
+	state->t_redirection = (char **)ft_free_table(state->t_redirection);
 	state->fork_error = 0;
 }

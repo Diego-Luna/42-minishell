@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 11:30:09 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/25 15:19:01 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/31 18:35:20 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,17 @@
 void	ft_parse(char *line, t_tokens *tokens, t_state *state)
 {
 	char	*args;
+	char	*args_2;
 
 	args = line;
+	args_2 = line;
 	tokens = malloc(sizeof(t_tokens));
 	tokens->first = NULL;
 	tokens->last = NULL;
 	tokens->error = 0;
 	ft_repetition_check(args, tokens);
-	ft_minishell_split(args, tokens);
+	ft_minishell_split(args_2, tokens);
+	view(*tokens);
 	if (!tokens->error)
 		ft_minishell(state, line, tokens);
 	dlist_free(tokens);
@@ -78,15 +81,15 @@ void	ft_repetition_check(char *str, t_tokens *t)
 
 	count = 0;
 	c = 0;
-	while (*str)
+	while (str && *str)
 	{
+		c = 0;
 		if (*str == '|' || *str == '>' || *str == '<')
 			c = *str;
-		while (*str++ == c)
+		while (str && *str++ == c)
 			count++;
 		if (count > 2)
 		{
-			printf("ERROR: Too many '%c'\n", c);
 			t->error = 1;
 			break ;
 		}

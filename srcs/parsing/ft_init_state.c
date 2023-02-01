@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:58:19 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/25 15:13:04 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/31 18:56:42 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_increment_shelllevel(t_state *state)
 		past = ft_calloc(sizeof(char *), 3);
 		past[0] = ft_strdup("1");
 		past[1] = ft_strjoin("SHLVL=", str_num);
-		ft_add_env(state, past);
+		ft_add_env(state, past, 1);
 		ft_free_table(past);
 		ft_free(str_num);
 	}
@@ -66,6 +66,7 @@ void	ft_init_state(t_state *state, char **envp)
 	state->g_env = NULL;
 	state->g_env = ft_crate_env(envp, 1, -1);
 	state->t_comands = NULL;
+	state->t_redirection = NULL;
 	state->env_path = NULL;
 	state->cmd_paths = NULL;
 	state->cmds = NULL;

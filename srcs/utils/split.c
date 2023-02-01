@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 13:58:06 by mtrembla          #+#    #+#             */
-/*   Updated: 2023/01/25 15:49:30 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/31 16:26:43 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_minishell_split(char *args, t_tokens *t)
 
 	i = 0;
 	start = 0;
-	while (args[i])
+	while (args && args[i])
 	{
 		while (args[i] == '\"' || args[i] == '\'')
 			i = ft_quotes(args, i, t);

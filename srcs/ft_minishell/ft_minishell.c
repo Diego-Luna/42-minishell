@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/30 17:39:48 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/31 18:49:23 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,20 @@ void	ft_error_message(char *str, char **table, t_state *state, int error)
 	int	i;
 
 	i = 0;
-	if (state->debug == 1)
-	{
-		printf("Error number:%d ", error);
-	}
-	printf("%s", str);
+	// if (state->debug == 1)
+	// {
+		// printf("Error number:%d ", error);
+	// }
+	// printf("%s", str);
+	ft_putstr_fd(str, 2);
 	while (table && table[i])
 	{
-		printf(" %s", table[i]);
+		// printf(" %s", table[i]);
+		ft_putstr_fd(table[i], 2);
 		i++;
 	}
-	printf("\n");
+	// printf("\n");
+	ft_putstr_fd("\n", 2);
 	state->error = error;
 }
 
@@ -64,6 +67,44 @@ int	ft_number_comands_parsing(t_tokens tokens)
 	return (i);
 }
 
+void ft_check_pipes(t_state *state)
+{
+	int status;
+	int i;
+	int max;
+	t_node	*aff;
+
+	aff = state->tokens->first;
+	status = 0;
+	while (aff)
+	{
+		if (aff->content && ft_strncmp(aff->content, "|\0", 2) == 0)
+		{
+			if (status == 1)
+			{
+				ft_error_message(M_ERROR_TOKEN, NULL, state, N_ERROR_TOKEN);
+				return;
+			}
+			status = 1;
+		}else
+			status = 0;
+		aff = aff->next;
+	}
+	aff = state->tokens->first;
+	max = ft_tokens_size(*state->tokens);
+	i = 0;
+	while (aff)
+	{
+		if (max - 1 == i && ft_strncmp(aff->content, "|\0", 2) == 0)
+		{
+			ft_error_message(M_ERROR_TOKEN, NULL, state, N_ERROR_TOKEN);
+				return;
+		}
+		i++;
+		aff = aff->next;
+	}
+}
+
 //  We check the number of commands sent and create our array,
 // 	with the information of each one
 void	ft_minishell(t_state *state, char *line, t_tokens *tokens)
@@ -74,6 +115,7 @@ void	ft_minishell(t_state *state, char *line, t_tokens *tokens)
 	{
 		state->tokens = NULL;
 		state->tokens = tokens;
+		ft_run_when_is_no_error(state, ft_check_pipes);
 		ft_run_when_is_no_error(state, ft_create_command_array);
 		ft_run_when_is_no_error(state, ft_add_info_comands);
 		ft_run_when_is_no_error(state, ft_run_comands);

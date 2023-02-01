@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 15:32:17 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/25 15:32:57 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/31 18:01:50 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_create_herodoc_utils(t_cmd *cmd)
 	str = readline("heredoc_tmp > ");
 	while (str)
 	{
-		if (ft_strncmp(str, cmd->t_redirection[0], ft_strlen(str)) == 0)
+		if (ft_strncmp(str, cmd->t_redirection[0], ft_strlen(cmd->t_redirection[0])) == 0)
 			break ;
 		ft_putstr_fd(str, cmd->file);
 		ft_putstr_fd("\n", cmd->file);

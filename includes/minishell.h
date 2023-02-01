@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/30 19:30:38 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/31 18:41:19 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,10 @@
 # define N_ERROR_NO_FILE_DIC 11
 # define M_ERROR_TOKENS_REDE "Syntax error near unexpected tokens: 🙅"
 # define N_ERROR_TOKENS_REDE 12
+# define M_ERROR_EXPORT "export: not a valid identifier: 🐞"
+# define N_ERROR_EXPORT 13
+# define M_ERROR_TOKEN "syntax error near unexpected token `|'"
+# define N_ERROR_TOKEN 14
 // Error control
 
 // array comands
@@ -196,7 +200,7 @@ int					ft_run_comand_build(t_state *state);
 
 int					ft_execve(t_state *state);
 int					ft_delate_env(t_state *state, char **env_name);
-int					ft_add_env(t_state *state, char **past);
+int					ft_add_env(t_state *state, char **past, int check);
 
 // --> redirection
 char				**ft_content_tokens(t_state *state, int number_pipe,

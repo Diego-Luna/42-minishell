@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 16:58:12 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/25 18:04:33 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:56:29 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ void	ft_comand_cd_utils(t_state *state)
 	ft_delate_env(state, tem_comand);
 	tem[0] = ft_find_env(state->g_env, "PWD=");
 	tem[1] = ft_strjoin("OLDPWD=", tem[0]);
-	ft_add_env(state, tem);
+	ft_add_env(state, tem, 1);
 	tem[1] = ft_free(tem[1]);
 	tem_comand[1] = ft_free(tem_comand[1]);
 	tem_comand[1] = ft_strdup("PWD");
 	ft_delate_env(state, tem_comand);
 	tem[0] = getcwd(NULL, 0);
 	tem[1] = ft_strjoin("PWD=", tem[0]);
-	ft_add_env(state, tem);
+	ft_add_env(state, tem, 1);
 	ft_free(tem[0]);
 	ft_free(tem[1]);
 	ft_free(tem_comand[0]);
@@ -92,7 +92,7 @@ int	ft_run_comand_build(t_state *state)
 	else if (ft_strncmp(comand, "unset\0", 6) == 0)
 		ft_delate_env(state, run_comand);
 	else if (ft_strncmp(comand, "export\0", 7) == 0)
-		ft_add_env(state, run_comand);
+		ft_add_env(state, run_comand, 1);
 	else if (ft_strncmp(comand, "echo\0", 5) == 0)
 		ft_echo(state);
 	else if (ft_strncmp(comand, "pwd\0", 4) == 0)
