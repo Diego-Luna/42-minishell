@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+         #
+#    By: mtrembla <mtrembla@student.42quebec>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/21 11:24:49 by mtrembla          #+#    #+#              #
-#    Updated: 2023/01/25 17:04:50 by dluna-lo         ###   ########.fr        #
+#    Updated: 2023/02/01 15:07:10 by mtrembla         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRCS		= $(foreach dir, $(SRCS_DIRS), $(wildcard $(dir)/*.c))
 OBJS		= $(subst $(S_DIR), $(S_OBJ), $(SRCS:.c=.o))
 
 CC = gcc
-CFLAGS =  -g -Wall -Wextra -Werror
+CFLAGS =  -g 
 RM = rm -fr
 LIBFT = ./includes/libft/libft.a
 
