@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/31 18:41:19 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/01 13:30:21 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ typedef struct va_states
 	int				pipe_stop;
 	int				cmd_nmbs;
 	int				index;
+	int				stop_pipes;
 	int				error;
 	int				debug;
 	int				stop;

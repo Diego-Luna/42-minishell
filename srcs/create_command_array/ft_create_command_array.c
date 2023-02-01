@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:35:55 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/30 19:26:19 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/01 14:57:47 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,26 @@ void	ft_crate_array(t_state *state, t_cmd *cmd, int num_comand)
 	cmd->redirect[0] = -1;
 }
 
+int ft_stop_pipe(t_state *state)
+{
+	int i;
+	t_node	*aff;
+
+	i = 0;
+	aff = state->tokens->first;
+	while (aff)
+	{
+		if (aff->content)
+		{
+			if (ft_strncmp(aff->content, "||\0", 3) == 0)
+				return (i);
+			i++;
+		}
+		aff = aff->next;
+	}
+	return (-1);
+}
+
 // It is in charge of creating the array of the commanded functions
 void	ft_create_command_array(t_state *state)
 {
@@ -95,6 +115,7 @@ void	ft_create_command_array(t_state *state)
 	ft_create_t_redirection(state);
 	state->cmds = ft_calloc(sizeof(t_cmd), state->cmd_nmbs);
 	state->t_comands = ft_table_token(state);
+	state->stop_pipes = ft_stop_pipe(state);
 	while (i < state->cmd_nmbs)
 	{
 		state->cmds[i].id = i;

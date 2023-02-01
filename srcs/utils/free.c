@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 10:47:26 by diegofranci       #+#    #+#             */
-/*   Updated: 2023/01/31 18:57:58 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/01 13:30:56 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	ft_check_exit(t_state *state)
 {
 	ft_close_fd();
 	ft_free_all(state);
+	state->stop_pipes = -1;
 }
 
 // free to everything

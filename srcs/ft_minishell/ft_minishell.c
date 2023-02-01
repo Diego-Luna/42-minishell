@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 14:15:00 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/31 18:49:23 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/01 14:58:40 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	ft_number_comands_parsing(t_tokens tokens)
 	aff = tokens.first;
 	while (aff)
 	{
-		if (ft_strncmp(aff->content, "|\0", 2) == 0)
+		if (ft_strncmp(aff->content, "|\0", 2) == 0 || ft_strncmp(aff->content, "||\0", 2) == 0)
 		{
 			i++;
 		}
@@ -70,8 +70,6 @@ int	ft_number_comands_parsing(t_tokens tokens)
 void ft_check_pipes(t_state *state)
 {
 	int status;
-	int i;
-	int max;
 	t_node	*aff;
 
 	aff = state->tokens->first;
@@ -91,16 +89,21 @@ void ft_check_pipes(t_state *state)
 		aff = aff->next;
 	}
 	aff = state->tokens->first;
-	max = ft_tokens_size(*state->tokens);
-	i = 0;
+	status = 0;
 	while (aff)
 	{
-		if (max - 1 == i && ft_strncmp(aff->content, "|\0", 2) == 0)
+		if (status == 1 && ft_strncmp(aff->content, "|", 1) == 0)
 		{
 			ft_error_message(M_ERROR_TOKEN, NULL, state, N_ERROR_TOKEN);
-				return;
+			return;
 		}
-		i++;
+		if (ft_strncmp(aff->content, "||\0", 3) == 0)
+		{
+			status = 1;
+		}else
+		{
+			status = 0;
+		}
 		aff = aff->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:58:19 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/31 18:56:42 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/01 13:31:16 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	ft_init_state(t_state *state, char **envp)
 	state->debug = 1;
 	state->pipe_stop = -1;
 	state->exit = -1;
+	state->stop_pipes = -1;
 	ft_handle_error_pipe(state);
 	ft_increment_shelllevel(state);
 }
