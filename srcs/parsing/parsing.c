@@ -79,19 +79,22 @@ void	ft_repetition_check(char *str, t_tokens *t)
 	int		count;
 
 	count = 0;
-	c = 0;
 	while (str && *str)
 	{
-		c = 0;
 		if (*str == '|' || *str == '>' || *str == '<')
+		{
 			c = *str;
-		while (str && *str++ == c)
-			count++;
+			while (str && *str == c)
+			{
+				count++;
+				str++;
+			}
+		}
 		if (count > 2)
 		{
 			t->error = 1;
 			printf("ERROR: Too many '%c'\n", c);
-			break ;
+			return ;
 		}
 		count = 0;
 		if (*str)
