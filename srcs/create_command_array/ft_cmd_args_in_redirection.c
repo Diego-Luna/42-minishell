@@ -6,11 +6,21 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 12:55:08 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/02/01 16:13:46 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/02 11:52:49 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	ft_check_t_redi(t_state *state, t_cmd *cmd, char **tem, int ii)
+{
+	if (ft_strncmp(state->t_redirection[cmd->redirect[cmd->i_redi]],
+			tem[ii], ft_strlen(tem[ii])) == 0)
+	{
+		return (1);
+	}
+	return (1);
+}
 
 char	**ft_cmd_args_in_redirection_create(t_state *state, char **tem,
 		t_cmd *cmd, int size_copy)
@@ -24,8 +34,8 @@ char	**ft_cmd_args_in_redirection_create(t_state *state, char **tem,
 	new = ft_calloc(sizeof(char *), size_copy);
 	while (ii < size_copy)
 	{
-		if (cmd->i_redi < cmd->n_of_redi - 1 && ft_strncmp(state->t_redirection[cmd->redirect[cmd->i_redi]],
-				tem[ii], ft_strlen(tem[ii])) == 0)
+		if (cmd->i_redi < cmd->n_of_redi - 1 && ft_check_t_redi(state, cmd, tem,
+				ii) == 1)
 		{
 			cmd->i_redi++;
 			ii++;

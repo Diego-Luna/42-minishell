@@ -6,17 +6,17 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 12:53:46 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/02/01 13:18:34 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/02 11:54:02 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int ft_ckeck_is_pipe(char *str)
+int	ft_ckeck_is_pipe(char *str)
 {
 	if (ft_strncmp(str, "|\0", 2) == 0 || ft_strncmp(str, "||\0", 2) == 0)
 	{
-		return(1);
+		return (1);
 	}
 	return (0);
 }
@@ -48,7 +48,6 @@ void	ft_content_tokens_table_else(t_node *aff, int number_pipe, char **table)
 	pipe = 0;
 	while (aff)
 	{
-		// if (ft_strncmp(aff->content, "|\0", 2) == 0)
 		if (aff->content && ft_ckeck_is_pipe(aff->content) == 1)
 			pipe++;
 		else if (pipe > number_pipe)

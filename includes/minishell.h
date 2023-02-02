@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/02/01 13:30:21 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/02 12:17:13 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ void				ft_add_info_comands(t_state *state);
 void				ft_run_comands(t_state *state);
 void				ft_handle_error_pipe(t_state *state);
 void				ft_check_exit(t_state *state);
+void				ft_check_pipes(t_state *state);
 
 // --> ft_run_comands
 void				ft_process_comand(t_state *state);
@@ -167,6 +168,7 @@ int					ft_position_in_token(t_tokens l, char *str, int n_pipe,
 						int *start);
 char				*ft_get_char_node(t_tokens l, int position);
 int					ft_tokens_size(t_tokens l);
+void				ft_create_t_redirection(t_state *state);
 char				**ft_cmd_args_in_redirection_create(t_state *state,
 						char **tem, t_cmd *cmd, int size_copy);
 int					ft_save_type_redirection_while(t_state *state, t_node *aff,
@@ -202,6 +204,7 @@ int					ft_run_comand_build(t_state *state);
 int					ft_execve(t_state *state);
 int					ft_delate_env(t_state *state, char **env_name);
 int					ft_add_env(t_state *state, char **past, int check);
+void				ft_env_export(t_state *state, char *str, int check);
 
 // --> redirection
 char				**ft_content_tokens(t_state *state, int number_pipe,

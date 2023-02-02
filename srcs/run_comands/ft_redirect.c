@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 18:06:30 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/02/01 16:03:02 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/02 12:04:04 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,13 @@ void	ft_redirection_two(t_state *state, int is_dup2)
 // <<
 void	ft_redirection_three(t_state *state)
 {
-	int		index;
 	t_cmd	*cmd;
 	char	*file;
 	char	*file_tem;
 	char	*number;
 	char	*i_redi;
 
-	index = state->index;
-	cmd = &state->cmds[index];
+	cmd = &state->cmds[state->index];
 	number = ft_itoa(cmd->id);
 	i_redi = ft_itoa(cmd->i_redi);
 	file_tem = ft_strjoin(number, i_redi);
@@ -78,7 +76,7 @@ void	ft_redirection_three(t_state *state)
 	cmd->file = open(file, O_RDONLY, 0644);
 	if (cmd->file < 0)
 	{
-
+		ft_error_message(M_ERROR_NO_FILE_DIC, NULL, state, N_ERROR_NO_FILE_DIC);
 	}
 	ft_free(file);
 	dup2(cmd->file, STDIN_FILENO);

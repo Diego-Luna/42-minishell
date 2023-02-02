@@ -6,21 +6,11 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:35:55 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/02/01 19:10:27 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/02 11:55:34 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	ft_create_t_redirection(t_state *state)
-{
-	state->t_redirection = ft_calloc(sizeof(char *), 5);
-	state->t_redirection[0] = ft_strdup("<");
-	state->t_redirection[1] = ft_strdup(">");
-	state->t_redirection[2] = ft_strdup("<<");
-	state->t_redirection[3] = ft_strdup(">>");
-	state->t_redirection[4] = 0;
-}
 
 int	ft_is_redi(t_state *state, t_node *aff)
 {
@@ -86,9 +76,9 @@ void	ft_crate_array(t_state *state, t_cmd *cmd, int num_comand)
 	cmd->redirect[0] = -1;
 }
 
-int ft_stop_pipe(t_state *state)
+int	ft_stop_pipe(t_state *state)
 {
-	int i;
+	int		i;
 	t_node	*aff;
 
 	i = 0;

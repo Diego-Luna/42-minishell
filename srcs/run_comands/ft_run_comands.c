@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:45:15 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/02/01 15:04:10 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/02 12:05:41 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ char	*ft_get_comand_p(char **paths, char *cmd)
 // The command handler
 void	ft_run_comands(t_state *state)
 {
-	int tem;
+	int	tem;
+
 	state->save_stdout = dup(STDOUT_FILENO);
 	state->save_stdin = dup(STDIN_FILENO);
 	state->index = 0;
@@ -52,7 +53,7 @@ void	ft_run_comands(t_state *state)
 	{
 		ft_process_comands(state);
 	}
-	state->cmd_nmbs = tem ;
+	state->cmd_nmbs = tem;
 	dup2(state->save_stdout, STDOUT_FILENO);
 	dup2(state->save_stdin, STDIN_FILENO);
 	close(state->save_stdin);

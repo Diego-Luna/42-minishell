@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 15:47:44 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/27 17:53:07 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/02 12:15:51 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,11 @@ void	**ft_free_table(char **array)
 	}
 	array = ft_free(array);
 	return (NULL);
+}
+
+void	ft_check_exit(t_state *state)
+{
+	ft_close_fd();
+	ft_free_all(state);
+	state->stop_pipes = -1;
 }
