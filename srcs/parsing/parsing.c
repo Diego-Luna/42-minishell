@@ -96,6 +96,6 @@ void	ft_repetition_check(char *str, t_tokens *t)
 		}
 		count = 0;
 		if (*str)
-		str++;
+			str++;
 	}
 }
