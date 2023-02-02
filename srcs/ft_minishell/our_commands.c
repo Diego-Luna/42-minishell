@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 14:52:38 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/25 15:01:32 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/01 15:19:04 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,14 @@ void	ft_comand_pwd(t_state *state)
 	char	*str_tem;
 
 	str_tem = NULL;
-	str_tem = ft_find_env(state->g_env, "PWD=");
+	str_tem = getcwd(NULL, 0);;
 	if (!str_tem)
 	{
 		ft_error_message(M_ERROR_PATH, state->t_comands, state, N_ERROR_PATH);
 		return ;
 	}
 	printf("%s\n", str_tem);
+	ft_free(str_tem);
 }
 
 void	ft_comand_exit(t_state *state, char **run_comand)
@@ -84,7 +85,7 @@ void	ft_comand_exit(t_state *state, char **run_comand)
 	state->exit = 0;
 	if (ft_size_table(run_comand) == 2)
 	{
-		if (ft_isdigit_str(run_comand[1]) == 1)
+		if ((run_comand[1][0] == '-' && ft_isdigit_str(run_comand[1] + 1) == 1) || ft_isdigit_str(run_comand[1]) == 1)
 		{
 			state->exit = ft_atoi(run_comand[1]);
 		}

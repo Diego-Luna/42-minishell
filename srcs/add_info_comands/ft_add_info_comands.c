@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:41:56 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/30 17:52:05 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/01 16:52:04 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_add_info_comands_clean(t_state *state, int i, char **table)
 
 	modife = 1;
 	ii = 0;
-	while (table[ii])
+	while (table && table[ii])
 	{
 		if (table[ii][0] == '\'')
 		{
@@ -88,7 +88,7 @@ void	ft_add_info_comands_redirection_while(t_state *state, t_cmd *cmd, int i)
 void	ft_add_info_comands_redirection(t_state *state, t_cmd *cmd, int i)
 {
 	cmd->i_redi = 0;
-	while (cmd->i_redi < cmd->n_of_redi && state->error == NO_ERROR)
+	while (cmd->i_redi < cmd->n_of_redi - 1 && state->error == NO_ERROR)
 	{
 		ft_add_info_comands_redirection_while(state, cmd, i);
 		cmd->i_redi++;
