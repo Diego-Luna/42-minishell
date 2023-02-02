@@ -17,17 +17,19 @@ void	ft_parse(char *line, t_tokens *tokens, t_state *state)
 	char	*args;
 
 	args = line;
-	tokens = malloc(sizeof(t_tokens));
-	tokens->first = NULL;
-	tokens->last = NULL;
-	tokens->error = 0;
 	ft_repetition_check(args, tokens);
 	ft_minishell_split(args, tokens);
 	view(*tokens);
 	if (!tokens->error)
 		ft_minishell(state, line, tokens);
 	dlist_free(tokens);
-	free(tokens);
+}
+
+void	ft_init_tokens(t_tokens *tokens)
+{
+	tokens->first = NULL;
+	tokens->last = NULL;
+	tokens->error = 0;
 }
 
 char	*ft_clean_quotes(char *str)

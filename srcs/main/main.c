@@ -27,6 +27,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	ft_init_tokens(&tokens);
 	state.tokens = &tokens;
 	ft_init_state(&state, envp);
 	ft_signals();
