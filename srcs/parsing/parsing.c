@@ -19,7 +19,6 @@ void	ft_parse(char *line, t_tokens *tokens, t_state *state)
 	args = line;
 	ft_repetition_check(args, tokens);
 	ft_minishell_split(args, tokens);
-	view(*tokens);
 	if (!tokens->error)
 		ft_minishell(state, line, tokens);
 	dlist_free(tokens);
