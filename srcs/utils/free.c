@@ -6,22 +6,38 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 10:47:26 by diegofranci       #+#    #+#             */
-/*   Updated: 2023/02/01 13:30:56 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/01 16:41:33 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_delete_herodoc(t_cmd *cmd)
+void	ft_delete_process(t_cmd *cmd)
 {
 	char	*number;
+	char	*i_redi;
 	char	*file;
+	char	*file_tem;
 
 	number = ft_itoa(cmd->id);
-	file = ft_strjoin(".heredoc_tmp_", number);
+	i_redi = ft_itoa(cmd->i_redi);
+	file_tem = ft_strjoin(number, i_redi);
+	file = ft_strjoin(".heredoc_tmp_", file_tem);
 	unlink(file);
 	ft_free(number);
+	ft_free(i_redi);
+	ft_free(file_tem);
 	ft_free(file);
+}
+
+void	ft_delete_herodoc(t_cmd *cmd)
+{
+	cmd->i_redi = 0;
+	while (cmd->i_redi < cmd->n_of_redi - 1)
+	{
+		ft_delete_process(cmd);
+		cmd->i_redi++;
+	}
 }
 
 void	ft_free_comand_table(char **table)

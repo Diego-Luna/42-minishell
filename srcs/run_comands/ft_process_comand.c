@@ -6,14 +6,14 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 11:48:56 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/25 15:22:15 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/01 16:04:06 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 // Command process with flork, for a single command,
-// the child process executes the command and the parent waits until 
+// the child process executes the command and the parent waits until
 // it has finished.
 void	ft_process_comand_fork(t_state *state)
 {

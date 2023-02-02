@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 18:06:30 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/30 19:29:28 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/01 16:03:02 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,24 @@ void	ft_redirection_three(t_state *state)
 	int		index;
 	t_cmd	*cmd;
 	char	*file;
+	char	*file_tem;
 	char	*number;
+	char	*i_redi;
 
 	index = state->index;
 	cmd = &state->cmds[index];
 	number = ft_itoa(cmd->id);
-	file = ft_strjoin(".heredoc_tmp_", number);
+	i_redi = ft_itoa(cmd->i_redi);
+	file_tem = ft_strjoin(number, i_redi);
+	file = ft_strjoin(".heredoc_tmp_", file_tem);
 	ft_free(number);
+	ft_free(i_redi);
+	ft_free(file_tem);
 	cmd->file = open(file, O_RDONLY, 0644);
+	if (cmd->file < 0)
+	{
+
+	}
 	ft_free(file);
 	dup2(cmd->file, STDIN_FILENO);
 }

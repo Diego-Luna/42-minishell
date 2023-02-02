@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 19:26:04 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/02/01 13:46:00 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/01 19:10:37 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,13 @@ int	ft_save_type_redirection(t_state *state, int i)
 		if (aff->content)
 		{
 			if (pipe == i)
+			{
 				ii = ft_save_type_redirection_while(state, aff, i);
-			else if (ft_strncmp(aff->content, "|\0", 2) == 0)
+			}
+			if (ft_strncmp(aff->content, "|\0", 2) == 0)
+			{
 				pipe++;
+			}
 		}
 		aff = aff->next;
 	}

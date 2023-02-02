@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:54:32 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/01/30 15:23:58 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/01 16:52:49 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_print_cmds(t_state *state)
 	{
 		ft_printf("id{%i} cmd{%s} ", state->cmds[i].id, state->cmds[i].cmd);
 		ft_print_cmds_utils(state->cmds[i].cmd_args, "cmd_args");
-		ft_print_cmds_utils(state->cmds[i].t_redirection, "t_redirection");
+		ft_print_cmds_utils(state->cmds[i].t_redirection, "\n -> t_redirection");
 		ft_printf("\n");
 		i++;
 	}
