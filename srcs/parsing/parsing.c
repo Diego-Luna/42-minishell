@@ -15,16 +15,15 @@
 void	ft_parse(char *line, t_tokens *tokens, t_state *state)
 {
 	char	*args;
-	char	*args_2;
 
 	args = line;
-	args_2 = line;
 	tokens = malloc(sizeof(t_tokens));
 	tokens->first = NULL;
 	tokens->last = NULL;
 	tokens->error = 0;
 	ft_repetition_check(args, tokens);
-	ft_minishell_split(args_2, tokens);
+	ft_minishell_split(args, tokens);
+	view(*tokens);
 	if (!tokens->error)
 		ft_minishell(state, line, tokens);
 	dlist_free(tokens);
@@ -90,6 +89,7 @@ void	ft_repetition_check(char *str, t_tokens *t)
 		if (count > 2)
 		{
 			t->error = 1;
+			printf("ERROR: Too many '%c'\n", c);
 			break ;
 		}
 		count = 0;
