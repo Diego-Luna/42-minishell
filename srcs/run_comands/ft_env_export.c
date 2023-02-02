@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:12:57 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/02/02 12:14:02 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/02 12:32:31 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,11 @@ void	ft_env_export_plus(t_state *state, char *temp, char *str, int size)
 	state->g_env[size] = ft_free(state->g_env[size]);
 }
 
-void	ft_env_export_procces(t_state *state, char *temp, char *str, int size)
+int	ft_env_export_procces(t_state *state, char *temp, char *str, int size)
 {
+	char	*temp2;
+	char	*join;
+
 	if (ft_find_env(state->g_env, temp))
 	{
 		if (ft_strchr_get(str, '=') > 0 && str[ft_strchr_get(str, '=')
@@ -62,6 +65,7 @@ void	ft_env_export_procces(t_state *state, char *temp, char *str, int size)
 		size = ft_size_table(state->g_env);
 		state->g_env = ft_crate_env(state->g_env, 2, 1);
 	}
+	return (size);
 }
 
 void	ft_env_export(t_state *state, char *str, int check)
@@ -82,7 +86,7 @@ void	ft_env_export(t_state *state, char *str, int check)
 		temp[i] = str[i];
 		i++;
 	}
-	ft_env_export_procces(state, temp, str, size);
+	size = ft_env_export_procces(state, temp, str, size);
 	state->g_env[size] = ft_strdup(str);
 	ft_free(temp);
 }
