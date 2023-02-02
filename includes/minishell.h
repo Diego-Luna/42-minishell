@@ -136,6 +136,7 @@ void				ft_parse(char *line, t_tokens *tokens, t_state *state);
 char				*ft_clean_quotes(char *old_str);
 char				*ft_trim_char(char *str, int ptr);
 void				ft_repetition_check(char *str, t_tokens *t);
+void				ft_init_tokens(t_tokens *tokens);
 
 //split
 int					ft_splitable(char c);
