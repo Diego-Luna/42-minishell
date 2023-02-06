@@ -44,9 +44,6 @@ void	ft_env_export_plus(t_state *state, char *temp, char *str, int size)
 
 int	ft_env_export_procces(t_state *state, char *temp, char *str, int size)
 {
-	char	*temp2;
-	char	*join;
-
 	if (ft_find_env(state->g_env, temp))
 	{
 		if (ft_strchr_get(str, '=') > 0 && str[ft_strchr_get(str, '=')
@@ -76,6 +73,7 @@ void	ft_env_export(t_state *state, char *str, int check)
 	int		i;
 
 	i = 0;
+	size = 0;
 	if (check == 1 && (ft_env_export_check(str, state) == 1 || ft_strchr(str,
 				'=') == NULL))
 		return ;
