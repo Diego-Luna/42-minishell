@@ -19,6 +19,17 @@ void	ft_run_code(char *line, t_state *state, t_tokens	*tokens)
 	ft_parse(line, tokens, state);
 }
 
+void	ft_reable_echo(void)
+{
+	struct termios	old;
+	struct termios	new;
+
+	tcgetattr(STDIN_FILENO, &old);
+	new = old;
+	new.c_lflag |= ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &new);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_state		state;
@@ -42,6 +53,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	ft_free_table(state.g_env);
 	rl_clear_history();
+	ft_reable_echo();
 	exit(state.exit);
 	return (0);
 }

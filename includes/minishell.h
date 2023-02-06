@@ -118,6 +118,7 @@ typedef struct va_states
 	int				exit;
 }					t_state;
 
+void				ft_reable_echo(void);
 // --> signals
 void				ft_signals(void);
 void				ft_disable_echo(void);

@@ -33,11 +33,13 @@ void	ft_fork_signal(void)
 
 void	ft_disable_echo(void)
 {
-	struct termios	attributes;
+	struct termios	old;
+	struct termios	new;
 
-	tcgetattr(STDIN_FILENO, &attributes);
-	attributes.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &attributes);
+	tcgetattr(STDIN_FILENO, &old);
+	new = old;
+	new.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &new);
 }
 
 void	ft_fork_handler(int signum)
