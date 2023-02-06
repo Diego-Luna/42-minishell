@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/02/02 12:17:13 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/06 16:26:16 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,39 +34,39 @@
 # define ERROR 1
 # define NO_ERROR 0
 
-# define M_ERROR_PATH "Error comand : 🤟"
+# define M_ERROR_PATH "Error comand : "
 # define N_ERROR_PATH 1
-# define M_ERROR_EXECVE "Error comando : 🔥"
+# define M_ERROR_EXECVE "Error comando : "
 # define N_ERROR_EXECVE 2
-# define M_ERROR_FIND_ENV "It was not found : 👨‍💻"
+# define M_ERROR_FIND_ENV "It was not found : "
 # define N_ERROR_FIND_ENV 3
-# define M_ERROR_CREATE_PIPE "Error creating pipe: 😭"
+# define M_ERROR_CREATE_PIPE "Error creating pipe: "
 # define N_ERROR_CREATE_PIPE 4
-# define M_ERROR_EXECVE_PIPES "Error creating pipe: 🖥"
+# define M_ERROR_EXECVE_PIPES "Error creating pipe: "
 # define N_ERROR_EXECVE_PIPES 5
-# define M_ERROR_UNSET_MISSING "Error in unset missing argument: 🏁"
+# define M_ERROR_UNSET_MISSING "Error in unset missing argument: "
 # define N_ERROR_UNSET_MISSING 6
 # define M_ERROR_UNSET_NOT_EXIST "Error in insert missing variable \
-	does not exist: 🧶"
+	does not exist: "
 # define N_ERROR_UNSET_NOT_EXIST 7
-# define M_ERROR_NUMERIC_ARGUMENTS "Numeric argument required: 🏃‍♂️"
+# define M_ERROR_NUMERIC_ARGUMENTS "Numeric argument required: "
 # define N_ERROR_NUMERIC_ARGUMENTS 8
-# define M_ERROR_MANY_ARGUMENTS "many arguments: 🙅"
+# define M_ERROR_MANY_ARGUMENTS "many arguments: "
 # define N_ERROR_MANY_ARGUMENTS 9
-# define M_ERROR_NO_EXIST "No exits: 😳"
+# define M_ERROR_NO_EXIST "No exits: "
 # define N_ERROR_NO_EXIST 10
-# define M_ERROR_NO_FILE_DIC "No such file or directory: 😳"
+# define M_ERROR_NO_FILE_DIC "No such file or directory: "
 # define N_ERROR_NO_FILE_DIC 11
-# define M_ERROR_TOKENS_REDE "Syntax error near unexpected tokens: 🙅"
+# define M_ERROR_TOKENS_REDE "Syntax error near unexpected tokens: "
 # define N_ERROR_TOKENS_REDE 12
-# define M_ERROR_EXPORT "export: not a valid identifier: 🐞"
+# define M_ERROR_EXPORT "export: not a valid identifier: "
 # define N_ERROR_EXPORT 13
 # define M_ERROR_TOKEN "syntax error near unexpected token `|'"
 # define N_ERROR_TOKEN 14
 // Error control
 
 // array comands
-typedef struct va_t_cmd
+typedef struct s_t_cmd
 {
 	int				id;
 	char			**cmd_args;
@@ -94,7 +94,7 @@ typedef struct s_tokens
 	int				error;
 }					t_tokens;
 
-typedef struct va_states
+typedef struct s_states
 {
 	char			**t_redirection;
 	char			**t_comands;
