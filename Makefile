@@ -31,7 +31,7 @@ SRCS		= $(foreach dir, $(SRCS_DIRS), $(wildcard $(dir)/*.c))
 OBJS		= $(subst $(S_DIR), $(S_OBJ), $(SRCS:.c=.o))
 
 CC = gcc
-CFLAGS =  -g 
+CFLAGS =  -g -Wall -Wextra -Werror
 RM = rm -fr
 LIBFT = ./includes/libft/libft.a
 
