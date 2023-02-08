@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/02/07 12:17:15 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/08 12:00:27 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@
 # define N_ERROR_EXPORT 13
 # define M_ERROR_TOKEN "syntax error near unexpected token `|'"
 # define N_ERROR_TOKEN 14
+# define M_ERROR_TOKENS "syntax error near unexpected token `||'"
+# define N_ERROR_TOKENS 15
 // Error control
 
 // array comands
