@@ -1,0 +1,1 @@
+valgrind --suppressions=ignore_rdl_leaks.txt --leak-check=full --track-fds=yes ./minishell
