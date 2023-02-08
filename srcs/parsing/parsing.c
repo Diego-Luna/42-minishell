@@ -17,8 +17,9 @@ void	ft_parse(char *line, t_tokens *tokens, t_state *state)
 	char	*args;
 
 	args = line;
-	ft_repetition_check(args, tokens);
+	tokens->error = 0;
 	ft_minishell_split(args, tokens);
+	ft_repetition_check(tokens);
 	if (!tokens->error)
 		ft_minishell(state, line, tokens);
 	dlist_free(tokens);
@@ -73,31 +74,30 @@ char	*ft_trim_char(char *str, int ptr)
 	return (newstr);
 }
 
-void	ft_repetition_check(char *str, t_tokens *t)
+void    ft_repetition_check(t_tokens *t)
 {
-	char	c;
-	int		count;
+    t_node  *temp;
+    char    *str;
+    char    c;
 
-	count = 0;
-	while (str && *str)
-	{
-		if (*str == '|' || *str == '>' || *str == '<')
-		{
-			c = *str;
-			while (str && *str == c)
-			{
-				count++;
-				str++;
-			}
-		}
-		if (count > 2)
-		{
-			t->error = 1;
-			printf("ERROR: Too many '%c'\n", c);
-			return ;
-		}
-		count = 0;
-		if (*str)
-			str++;
-	}
+    temp = t->first;
+    while (temp)
+    {
+        str = temp->content;
+        if (*str == '<' || *str == '>' || *str == '|')
+        {
+            c = *str;
+            if(!temp->next)
+                break ;
+            str = temp->next->content;
+            if (*str == c)
+                {
+                    printf("Syntax error near unexpected token '%c'\n", c);
+                    t->error = 1;
+                    break ;
+                }
+        }
+        c = '\0';
+        temp = temp->next;
+    }
 }
