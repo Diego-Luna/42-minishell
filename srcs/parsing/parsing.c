@@ -74,30 +74,30 @@ char	*ft_trim_char(char *str, int ptr)
 	return (newstr);
 }
 
-void    ft_repetition_check(t_tokens *t)
+void	ft_repetition_check(t_tokens *t)
 {
-    t_node  *temp;
-    char    *str;
-    char    c;
+	t_node	*temp;
+	char	*str;
+	char	c;
 
-    temp = t->first;
-    while (temp)
-    {
-        str = temp->content;
-        if (*str == '<' || *str == '>' || *str == '|')
-        {
-            c = *str;
-            if(!temp->next)
-                break ;
-            str = temp->next->content;
-            if (*str == c)
-                {
-                    printf("Syntax error near unexpected token '%c'\n", c);
-                    t->error = 1;
-                    break ;
-                }
-        }
-        c = '\0';
-        temp = temp->next;
-    }
+	temp = t->first;
+	while (temp)
+	{
+		str = temp->content;
+		if (*str == '<' || *str == '>' || *str == '|')
+		{
+			c = *str;
+			if (!temp->next)
+				break ;
+			str = temp->next->content;
+			if (*str == c)
+			{
+				printf("Syntax error near unexpected token '%c'\n", c);
+				t->error = 1;
+				break ;
+			}
+		}
+		c = '\0';
+		temp = temp->next;
+	}
 }
