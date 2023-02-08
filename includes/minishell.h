@@ -6,7 +6,7 @@
 /*   By: dluna-lo <dluna-lo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:42:51 by dluna-lo          #+#    #+#             */
-/*   Updated: 2023/02/06 16:26:16 by dluna-lo         ###   ########.fr       */
+/*   Updated: 2023/02/07 12:17:15 by dluna-lo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void				view(t_tokens l);
 void				ft_parse(char *line, t_tokens *tokens, t_state *state);
 char				*ft_clean_quotes(char *old_str);
 char				*ft_trim_char(char *str, int ptr);
-void				ft_repetition_check(char *str, t_tokens *t);
+void				ft_repetition_check(t_tokens *t);
 void				ft_init_tokens(t_tokens *tokens);
 
 //split
